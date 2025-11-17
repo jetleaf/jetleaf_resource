@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the RateLimitDeniedEvent.new constructor from Class RateLimitDeniedEvent from the jetleaf_resource library, for the Dart programming language.">
+  <title>RateLimitDeniedEvent.new constructor - RateLimitDeniedEvent - jetleaf_resource library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../../static-assets/styles.css?v1">
+  <link rel="icon" href="../../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../../index.html">jetleaf_resource</a></li>
+    <li><a href="../../jetleaf_resource/">jetleaf_resource.dart</a></li>
+    <li><a href="../../jetleaf_resource/RateLimitDeniedEvent-class.html">RateLimitDeniedEvent</a></li>
+    <li class="self-crumb">RateLimitDeniedEvent.new const constructor</li>
+  </ol>
+  <div class="self-name">RateLimitDeniedEvent.new</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+  <div
+      id="dartdoc-main-content"
+      class="main-content"
+      data-above-sidebar="jetleaf_resource&#47;RateLimitDeniedEvent-class-sidebar.html"
+      data-below-sidebar="">
+      <div>
+<h1><span class="kind-constructor">RateLimitDeniedEvent</span> constructor 
+</h1></div>
+
+    <section class="multi-line-signature">
+      const
+      <span class="name ">RateLimitDeniedEvent</span>(<wbr><ol class="parameter-list"> <li><span class="parameter" id="-param-source"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">source</span>, </span></li>
+<li><span class="parameter" id="-param-limitName"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/String-class.html">String</a></span> <span class="parameter-name">limitName</span>, </span></li>
+<li><span class="parameter" id="-param-retryAfter"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/DateTime-class.html">DateTime</a></span> <span class="parameter-name">retryAfter</span>, [</span></li>
+<li><span class="parameter" id="-param-timestamp"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/DateTime-class.html">DateTime</a>?</span> <span class="parameter-name">timestamp</span>, </span></li>
+</ol>])
+    </section>
+    
+<section class="desc markdown">
+  <p>Creates a new event indicating the request was denied due to exceeding the rate limit.</p>
+<p><code>source</code> identifies the entity making the request.
+<code>limitName</code> identifies the specific rate-limited resource.
+<code>retryAfter</code> specifies how long the client must wait before retrying.
+<code>timestamp</code> optionally sets the time the event occurred.</p>
+<p>Event published when a request is <strong>denied</strong> due to exceeding the configured rate limit.</p>
+<p>Observers can use this event to:</p>
+<ul>
+<li>Track blocked requests for monitoring or alerting.</li>
+<li>Inform clients about retry windows (via <code>retryAfter</code>).</li>
+<li>Update rate limit metrics (e.g., blocked request counters).</li>
+<li>Implement throttling or backoff strategies.</li>
+</ul>
+<p>This event is a subclass of <a href="../../jetleaf_resource/RateLimitEvent-class.html">RateLimitEvent</a> and carries:</p>
+<ul>
+<li><code>source</code>: The identifier of the entity making the request (e.g., user ID, IP address, API key).</li>
+<li><code>limitName</code>: The name of the rate-limited resource or bucket (e.g., <code>"login_attempts"</code>).</li>
+<li><code>retryAfter</code>: The remaining duration until the next allowed request for this entity.</li>
+<li><code>timestamp</code>: Optional time at which the event occurred; defaults to the current time.</li>
+</ul>
+<h3 id="example">Example</h3>
+<pre class="language-dart"><code class="language-dart">// Create a denied event for a request exceeding rate limit
+final deniedEvent = RateLimitDeniedEvent('user:42', 'login_attempts', DateTime(minutes: 5));
+
+// Publish the event to the application event system
+eventPublisher.publish(deniedEvent);
+
+// Observer can handle this event to notify the user or update metrics
+deniedEventListener.onEvent(deniedEvent);
+</code></pre>
+<h3 id="related-components">Related Components</h3>
+<ul>
+<li><a href="../../jetleaf_resource/RateLimitAllowedEvent-class.html">RateLimitAllowedEvent</a>: Counterpart event published when a request is allowed.</li>
+<li><a href="../../jetleaf_resource/RateLimitMetrics-class.html">RateLimitMetrics</a>: Can be updated in response to denied events.</li>
+<li><a href="../../jetleaf_resource/RateLimitStorage-class.html">RateLimitStorage</a>: Maintains counters that result in denied events.</li>
+<li><a href="../../jetleaf_resource/RateLimitManager-class.html">RateLimitManager</a>: Aggregates multiple storages and triggers allowed/denied events.</li>
+</ul>
+</section>
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">const RateLimitDeniedEvent(super.source, super.limitName, this.retryAfter, [super.timestamp]);</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../../index.html">jetleaf_resource</a></li>
+    <li><a href="../../jetleaf_resource/">jetleaf_resource</a></li>
+    <li><a href="../../jetleaf_resource/RateLimitDeniedEvent-class.html">RateLimitDeniedEvent</a></li>
+    <li class="self-crumb">RateLimitDeniedEvent.new const constructor</li>
+</ol>
+
+    <h5>RateLimitDeniedEvent class</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div><!--/.sidebar-offcanvas-left-->
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    jetleaf_resource
+      1.0.0
+  </span>
+  
+</footer>
+
+
+<script src="../../static-assets/highlight.pack.js?v1"></script>
+<script src="../../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

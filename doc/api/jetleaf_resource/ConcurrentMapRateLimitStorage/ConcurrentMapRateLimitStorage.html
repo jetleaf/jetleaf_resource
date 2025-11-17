@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the ConcurrentMapRateLimitStorage.new constructor from Class ConcurrentMapRateLimitStorage from the jetleaf_resource library, for the Dart programming language.">
+  <title>ConcurrentMapRateLimitStorage.new constructor - ConcurrentMapRateLimitStorage - jetleaf_resource library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../../static-assets/styles.css?v1">
+  <link rel="icon" href="../../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../../index.html">jetleaf_resource</a></li>
+    <li><a href="../../jetleaf_resource/">jetleaf_resource.dart</a></li>
+    <li><a href="../../jetleaf_resource/ConcurrentMapRateLimitStorage-class.html">ConcurrentMapRateLimitStorage</a></li>
+    <li class="self-crumb">ConcurrentMapRateLimitStorage.new constructor</li>
+  </ol>
+  <div class="self-name">ConcurrentMapRateLimitStorage.new</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+  <div
+      id="dartdoc-main-content"
+      class="main-content"
+      data-above-sidebar="jetleaf_resource&#47;ConcurrentMapRateLimitStorage-class-sidebar.html"
+      data-below-sidebar="">
+      <div>
+<h1><span class="kind-constructor">ConcurrentMapRateLimitStorage</span> constructor 
+</h1></div>
+
+    <section class="multi-line-signature">
+      
+      <span class="name ">ConcurrentMapRateLimitStorage</span>(<wbr>)
+    </section>
+    
+<section class="desc markdown">
+  <p>A thread-safe, in-memory rate-limit storage implementation backed by a
+concurrent <a href="../../jetleaf_resource/ConcurrentMapRateLimitResource-class.html">ConcurrentMapRateLimitResource</a>.</p>
+<p>The <a href="../../jetleaf_resource/ConcurrentMapRateLimitStorage-class.html">ConcurrentMapRateLimitStorage</a> provides a simple yet configurable
+mechanism to enforce rate-limiting policies per identifier and window.
+It integrates with JetLeaf's core rate-limiting infrastructure, supports
+configurable TTLs, event emission, and runtime metrics collection.</p>
+<h3 id="purpose">Purpose</h3>
+<p>Designed as the <strong>default in-memory rate-limit provider</strong> within the JetLeaf
+rate-limiting subsystem, this implementation balances concurrency and
+observability. Applications can quickly check, record, and enforce request
+limits while maintaining operational metrics and event hooks.</p>
+<h3 id="key-responsibilities">Key Responsibilities</h3>
+<ul>
+<li>Store rate-limit entries in an in-memory <code>_store</code> keyed by identifier.</li>
+<li>Support dynamic configuration via <a href="https://pub.dev/documentation/jetleaf_core/1.0.1/context/ApplicationContext-class.html">ApplicationContext</a> environment properties.</li>
+<li>Enforce request limits per time window (TTL-based sliding or fixed windows).</li>
+<li>Track request counts, allowed/denied requests, and resets via <code>_metrics</code>.</li>
+<li>Optionally emit JetLeaf <a href="../../jetleaf_resource/RateLimitEvent-class.html">RateLimitEvent</a>s for monitoring and auditing.</li>
+</ul>
+<h3 id="configuration">Configuration</h3>
+<p>The storage automatically resolves runtime configuration from
+<a href="../../jetleaf_resource/RateLimitConfiguration-class.html">RateLimitConfiguration</a> keys at context initialization:</p>
+<table>
+<thead>
+<tr>
+<th>Property Key</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>RateLimitConfiguration.TIMEZONE</code></td>
+<td>Zone identifier used for temporal computations</td>
+<td><code>UTC</code></td>
+</tr>
+<tr>
+<td><code>RateLimitConfiguration.ENABLE_METRICS</code></td>
+<td>Enables metrics tracking via <a href="../../jetleaf_resource/RateLimitMetrics-class.html">RateLimitMetrics</a></td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td><code>RateLimitConfiguration.ENABLE_EVENTS</code></td>
+<td>Enables rate-limit event emission</td>
+<td><code>true</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="lifecycle">Lifecycle</h3>
+<ol>
+<li>Upon startup, <a href="../../jetleaf_resource/ConcurrentMapRateLimitStorage/setApplicationContext.html">setApplicationContext</a> loads environment configuration.</li>
+<li>The storage becomes operational with defaults or environment overrides.</li>
+<li>During runtime, operations like <a href="../../jetleaf_resource/ConcurrentMapRateLimitStorage/tryConsume.html">tryConsume</a>, <a href="../../jetleaf_resource/ConcurrentMapRateLimitStorage/recordRequest.html">recordRequest</a>, and <a href="../../jetleaf_resource/ConcurrentMapRateLimitStorage/invalidate.html">invalidate</a>
+maintain both data integrity and metrics/event synchronization.</li>
+<li>Calls to <a href="../../jetleaf_resource/ConcurrentMapRateLimitStorage/clear.html">clear</a> or <a href="../../jetleaf_resource/ConcurrentMapRateLimitStorage/reset.html">reset</a> safely purge entries.</li>
+</ol>
+<h3 id="related-components">Related Components</h3>
+<ul>
+<li><a href="../../jetleaf_resource/RateLimitStorage-class.html">RateLimitStorage</a>: Base interface defining core rate-limit operations.</li>
+<li><a href="../../jetleaf_resource/ConfigurableRateLimitStorage-class.html">ConfigurableRateLimitStorage</a>: Supports runtime configuration hooks.</li>
+<li><a href="../../jetleaf_resource/RateLimitMetrics-class.html">RateLimitMetrics</a>: Used to record operational statistics.</li>
+<li><a href="../../jetleaf_resource/RateLimitEvent-class.html">RateLimitEvent</a>: Framework-level rate-limit event abstraction.</li>
+<li><a href="https://pub.dev/documentation/jetleaf_core/1.0.1/context/ApplicationContext-class.html">ApplicationContext</a>: Provides environment and event-publishing services.</li>
+</ul>
+<h3 id="example">Example</h3>
+<pre class="language-dart"><code class="language-dart">final rateLimit = ConcurrentMapRateLimitStorage();
+rateLimit.setApplicationContext(appContext);
+
+final allowed = await rateLimit.isAllowed('user:42', 100, Duration(minutes: 1));
+if (allowed) {
+  await rateLimit.recordRequest('user:42', Duration(minutes: 1));
+} else {
+  final retryAfter = await rateLimit.getRetryAfter('user:42', Duration(minutes: 1));
+  print('Rate limit exceeded, retry after $retryAfter');
+}
+
+print('Remaining requests: ${await rateLimit.getRemainingRequests('user:42', 100, Duration(minutes: 1))}');
+</code></pre>
+<h3 id="notes">Notes</h3>
+<ul>
+<li>This rate-limit storage is <strong>non-distributed</strong> and suitable for single-node deployments.</li>
+<li>All operations are asynchronous to integrate with JetLeaf’s reactive event model.</li>
+<li>Expiration and resets are evaluated lazily during <a href="../../jetleaf_resource/ConcurrentMapRateLimitStorage/tryConsume.html">tryConsume</a>, <a href="../../jetleaf_resource/ConcurrentMapRateLimitStorage/recordRequest.html">recordRequest</a>, and <a href="../../jetleaf_resource/ConcurrentMapRateLimitStorage/invalidate.html">invalidate</a> calls.</li>
+</ul>
+<p>Creates a new instance of <a href="../../jetleaf_resource/ConcurrentMapRateLimitStorage-class.html">ConcurrentMapRateLimitStorage</a> with the default
+rate-limit name (<code>"default"</code>). The storage remains inactive until it is
+initialized via <a href="../../jetleaf_resource/ConcurrentMapRateLimitStorage/setApplicationContext.html">setApplicationContext</a>.</p>
+</section>
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">ConcurrentMapRateLimitStorage() : this.named(_DEFAULT_RATE_LIMIT_NAME);</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../../index.html">jetleaf_resource</a></li>
+    <li><a href="../../jetleaf_resource/">jetleaf_resource</a></li>
+    <li><a href="../../jetleaf_resource/ConcurrentMapRateLimitStorage-class.html">ConcurrentMapRateLimitStorage</a></li>
+    <li class="self-crumb">ConcurrentMapRateLimitStorage.new constructor</li>
+</ol>
+
+    <h5>ConcurrentMapRateLimitStorage class</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div><!--/.sidebar-offcanvas-left-->
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    jetleaf_resource
+      1.0.0
+  </span>
+  
+</footer>
+
+
+<script src="../../static-assets/highlight.pack.js?v1"></script>
+<script src="../../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

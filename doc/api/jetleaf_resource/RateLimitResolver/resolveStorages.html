@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the resolveStorages method from the RateLimitResolver class, for the Dart programming language.">
+  <title>resolveStorages method - RateLimitResolver class - jetleaf_resource library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../../static-assets/styles.css?v1">
+  <link rel="icon" href="../../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../../index.html">jetleaf_resource</a></li>
+    <li><a href="../../jetleaf_resource/">jetleaf_resource.dart</a></li>
+    <li><a href="../../jetleaf_resource/RateLimitResolver-class.html">RateLimitResolver</a></li>
+    <li class="self-crumb">resolveStorages abstract method</li>
+  </ol>
+  <div class="self-name">resolveStorages</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+<div
+    id="dartdoc-main-content"
+    class="main-content"
+    data-above-sidebar="jetleaf_resource&#47;RateLimitResolver-class-sidebar.html"
+    data-below-sidebar="">
+    <div>
+<h1><span class="kind-method">resolveStorages</span> abstract method 
+</h1></div>
+
+    <section class="multi-line-signature">
+      
+<span class="returntype"><a href="https://api.dart.dev/stable/3.9.2/dart-async/FutureOr-class.html">FutureOr</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Iterable-class.html">Iterable</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../../jetleaf_resource/RateLimitStorage-class.html">RateLimitStorage</a></span>&gt;</span></span>&gt;</span></span>
+<span class="name ">resolveStorages</span>(<wbr><ol class="parameter-list single-line"> <li><span class="parameter" id="resolveStorages-param-rateLimit"><span class="type-annotation"><a href="../../jetleaf_resource/RateLimit-class.html">RateLimit</a></span> <span class="parameter-name">rateLimit</span></span></li>
+</ol>)
+
+      
+
+    </section>
+    
+<section class="desc markdown">
+  <p>Resolves the appropriate <a href="../../jetleaf_resource/RateLimitStorage-class.html">RateLimitStorage</a> instances for a given
+<a href="../../jetleaf_resource/RateLimit-class.html">RateLimit</a> operation.</p>
+<h3 id="parameters">Parameters</h3>
+<ul>
+<li><code>rateLimit</code>: The rate-limit metadata annotation specifying the
+configuration for the current operation.</li>
+</ul>
+<h3 id="returns">Returns</h3>
+<ul>
+<li>A collection of <a href="../../jetleaf_resource/RateLimitStorage-class.html">RateLimitStorage</a> instances that should participate
+in the evaluation and enforcement of the given rate limit.</li>
+</ul>
+<h3 id="behavior">Behavior</h3>
+<ul>
+<li>If multiple storages are declared, the returned collection must preserve
+their configured order of precedence.</li>
+<li>If no storages are explicitly defined, the resolver may fall back to
+a default storage policy (e.g., a globally configured primary storage).</li>
+</ul>
+<h3 id="example">Example</h3>
+<pre class="language-dart"><code class="language-dart">final storages = await resolver.resolveStorages(rateLimitAnnotation);
+for (final storage in storages) {
+  await storage.recordRequest('client:abc', window: rateLimitAnnotation.window);
+}
+</code></pre>
+<h3 id="related">Related</h3>
+<ul>
+<li><a href="../../jetleaf_resource/RateLimitStorage-class.html">RateLimitStorage</a></li>
+<li><a href="../../jetleaf_resource/RateLimitManager-class.html">RateLimitManager</a></li>
+</ul>
+</section>
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">FutureOr&lt;Iterable&lt;RateLimitStorage&gt;&gt; resolveStorages(RateLimit rateLimit);</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../../index.html">jetleaf_resource</a></li>
+    <li><a href="../../jetleaf_resource/">jetleaf_resource</a></li>
+    <li><a href="../../jetleaf_resource/RateLimitResolver-class.html">RateLimitResolver</a></li>
+    <li class="self-crumb">resolveStorages abstract method</li>
+</ol>
+
+    <h5>RateLimitResolver class</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div><!--/.sidebar-offcanvas-->
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+</div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    jetleaf_resource
+      1.0.0
+  </span>
+  
+</footer>
+
+
+<script src="../../static-assets/highlight.pack.js?v1"></script>
+<script src="../../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

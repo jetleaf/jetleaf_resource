@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the CacheMetrics class from the jetleaf_resource library, for the Dart programming language.">
+  <title>CacheMetrics class - jetleaf_resource library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../static-assets/styles.css?v1">
+  <link rel="icon" href="../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">jetleaf_resource</a></li>
+    <li><a href="../jetleaf_resource/">jetleaf_resource.dart</a></li>
+    <li class="self-crumb">CacheMetrics class</li>
+  </ol>
+  <div class="self-name">CacheMetrics</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+<div
+    id="dartdoc-main-content"
+    class="main-content"
+    data-above-sidebar="jetleaf_resource&#47;jetleaf_resource-library-sidebar.html"
+    data-below-sidebar="jetleaf_resource&#47;CacheMetrics-class-sidebar.html">
+    <div>
+<h1><span class="kind-class">CacheMetrics</span> class 
+    <a href="https://dart.dev/language/class-modifiers#abstract" class="feature feature-abstract" title="This type can not be directly constructed.">abstract</a>
+    <a href="https://dart.dev/language/class-modifiers#interface" class="feature feature-interface" title="This class can only be implemented (not extended or mixed in).">interface</a>
+ 
+</h1></div>
+
+    
+<section class="desc markdown">
+  <p>An abstract interface class for collecting and reporting <strong>cache-related metrics</strong>.</p>
+<h2 id="overview">Overview</h2>
+<p><code>CacheMetrics</code> provides a standardized way to track the behavior and performance
+of a cache implementation. Metrics include hits, misses, evictions, expirations,
+put operations, total accesses, and hit rates. Implementations can be used to
+monitor cache efficiency, tune eviction policies, or expose statistics to
+administrators.</p>
+<h2 id="metrics-explained">Metrics Explained</h2>
+<ul>
+<li><strong>Hit:</strong> A successful retrieval of a value from the cache.</li>
+<li><strong>Miss:</strong> A failed retrieval where the value was not present in the cache.</li>
+<li><strong>Eviction:</strong> Removal of an entry due to cache policy (e.g., LRU, LFU, FIFO).</li>
+<li><strong>Expiration:</strong> Removal of an entry because its time-to-live (TTL) expired.</li>
+<li><strong>Put Operation:</strong> Insertion of a value into the cache.</li>
+<li><strong>Total Accesses:</strong> The sum of hits and misses.</li>
+<li><strong>Hit Rate:</strong> The percentage of accesses that were successful (hits / total accesses * 100).</li>
+</ul>
+<h2 id="typical-usage">Typical Usage</h2>
+<pre class="language-dart"><code class="language-dart">final metrics = MyCacheMetricsImplementation();
+cache.put('key1', value);
+metrics.recordPut();
+cache.get('key1');
+metrics.recordHit();
+cache.get('key2');
+metrics.recordMiss();
+print('Cache hit rate: ${metrics.getHitRate()}%');
+</code></pre>
+<h2 id="notes">Notes</h2>
+<p>Implementations of <code>CacheMetrics</code> should ensure thread-safety in concurrent
+environments and provide efficient increment and retrieval operations.</p>
+</section>
+
+
+
+    
+    
+  <section
+      class="summary offset-anchor inherited"
+      id="instance-properties">
+    <h2>Properties</h2>
+    <dl class="properties">
+        <dt id="hashCode" class="property inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object/hashCode.html">hashCode</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/int-class.html">int</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  The hash code for this object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="runtimeType" class="property inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object/runtimeType.html">runtimeType</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/Type-class.html">Type</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  A representation of the runtime type of the object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+
+    
+  <section
+      class="summary offset-anchor"
+      id="instance-methods">
+    <h2>Methods</h2>
+    <dl class="callables">
+        <dt id="buildGraph" class="callable">
+  <span class="name"><a href="../jetleaf_resource/CacheMetrics/buildGraph.html">buildGraph</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/3.9.2/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object-class.html">Object</a></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Builds a structured graph representation of the cache state and recent operations.
+  
+
+</dd>
+
+        <dt id="getHitRate" class="callable">
+  <span class="name"><a href="../jetleaf_resource/CacheMetrics/getHitRate.html">getHitRate</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/double-class.html">double</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Returns the cache hit rate as a percentage (0.0–100.0).
+  
+
+</dd>
+
+        <dt id="getNumberOfPutOperations" class="callable">
+  <span class="name"><a href="../jetleaf_resource/CacheMetrics/getNumberOfPutOperations.html">getNumberOfPutOperations</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/int-class.html">int</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Returns the total number of put operations.
+  
+
+</dd>
+
+        <dt id="getTotalNumberOfAccesses" class="callable">
+  <span class="name"><a href="../jetleaf_resource/CacheMetrics/getTotalNumberOfAccesses.html">getTotalNumberOfAccesses</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/int-class.html">int</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Returns the total number of accesses, which is the sum of hits and misses.
+  
+
+</dd>
+
+        <dt id="getTotalNumberOfEvictions" class="callable">
+  <span class="name"><a href="../jetleaf_resource/CacheMetrics/getTotalNumberOfEvictions.html">getTotalNumberOfEvictions</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/int-class.html">int</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Returns the total number of evictions that have occurred.
+  
+
+</dd>
+
+        <dt id="getTotalNumberOfExpirations" class="callable">
+  <span class="name"><a href="../jetleaf_resource/CacheMetrics/getTotalNumberOfExpirations.html">getTotalNumberOfExpirations</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/int-class.html">int</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Returns the total number of cache expirations that have occurred.
+  
+
+</dd>
+
+        <dt id="getTotalNumberOfHits" class="callable">
+  <span class="name"><a href="../jetleaf_resource/CacheMetrics/getTotalNumberOfHits.html">getTotalNumberOfHits</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/int-class.html">int</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Returns the total number of cache hits.
+  
+
+</dd>
+
+        <dt id="getTotalNumberOfMisses" class="callable">
+  <span class="name"><a href="../jetleaf_resource/CacheMetrics/getTotalNumberOfMisses.html">getTotalNumberOfMisses</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/int-class.html">int</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Returns the total number of cache misses.
+  
+
+</dd>
+
+        <dt id="noSuchMethod" class="callable inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Invocation-class.html">Invocation</a></span> <span class="parameter-name">invocation</span></span>)
+    <span class="returntype parameter">&#8594; dynamic</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Invoked when a nonexistent method or property is accessed.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="recordEviction" class="callable">
+  <span class="name"><a href="../jetleaf_resource/CacheMetrics/recordEviction.html">recordEviction</a></span><span class="signature">(<wbr><span class="parameter" id="recordEviction-param-key"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">key</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Records the eviction of a cache entry identified by <code>key</code>.
+  
+
+</dd>
+
+        <dt id="recordExpiration" class="callable">
+  <span class="name"><a href="../jetleaf_resource/CacheMetrics/recordExpiration.html">recordExpiration</a></span><span class="signature">(<wbr><span class="parameter" id="recordExpiration-param-key"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">key</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Records the expiration of a cache entry identified by <code>key</code>.
+  
+
+</dd>
+
+        <dt id="recordHit" class="callable">
+  <span class="name"><a href="../jetleaf_resource/CacheMetrics/recordHit.html">recordHit</a></span><span class="signature">(<wbr><span class="parameter" id="recordHit-param-key"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">key</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Records a successful cache hit for the given <code>key</code>.
+  
+
+</dd>
+
+        <dt id="recordMiss" class="callable">
+  <span class="name"><a href="../jetleaf_resource/CacheMetrics/recordMiss.html">recordMiss</a></span><span class="signature">(<wbr><span class="parameter" id="recordMiss-param-key"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">key</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Records a cache miss for the specified <code>key</code>.
+  
+
+</dd>
+
+        <dt id="recordPut" class="callable">
+  <span class="name"><a href="../jetleaf_resource/CacheMetrics/recordPut.html">recordPut</a></span><span class="signature">(<wbr><span class="parameter" id="recordPut-param-key"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">key</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Records a cache write (insert or update) operation for the given <code>key</code>.
+  
+
+</dd>
+
+        <dt id="reset" class="callable">
+  <span class="name"><a href="../jetleaf_resource/CacheMetrics/reset.html">reset</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Resets all metrics to zero, clearing the historical statistics.
+  
+
+</dd>
+
+        <dt id="toString" class="callable inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object/toString.html">toString</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/String-class.html">String</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  A string representation of this object.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor inherited"
+      id="operators">
+    <h2>Operators</h2>
+    <dl class="callables">
+        <dt id="operator ==" class="callable inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">other</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  The equality operator.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+    
+    
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../index.html">jetleaf_resource</a></li>
+    <li><a href="../jetleaf_resource/">jetleaf_resource</a></li>
+    <li class="self-crumb">CacheMetrics class</li>
+</ol>
+
+    <h5>jetleaf_resource library</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div>
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    jetleaf_resource
+      1.0.0
+  </span>
+  
+</footer>
+
+
+<script src="../static-assets/highlight.pack.js?v1"></script>
+<script src="../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

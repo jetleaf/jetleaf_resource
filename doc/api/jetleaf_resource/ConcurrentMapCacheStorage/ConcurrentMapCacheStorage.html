@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the ConcurrentMapCacheStorage.new constructor from Class ConcurrentMapCacheStorage from the jetleaf_resource library, for the Dart programming language.">
+  <title>ConcurrentMapCacheStorage.new constructor - ConcurrentMapCacheStorage - jetleaf_resource library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../../static-assets/styles.css?v1">
+  <link rel="icon" href="../../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../../index.html">jetleaf_resource</a></li>
+    <li><a href="../../jetleaf_resource/">jetleaf_resource.dart</a></li>
+    <li><a href="../../jetleaf_resource/ConcurrentMapCacheStorage-class.html">ConcurrentMapCacheStorage</a></li>
+    <li class="self-crumb">ConcurrentMapCacheStorage.new constructor</li>
+  </ol>
+  <div class="self-name">ConcurrentMapCacheStorage.new</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+  <div
+      id="dartdoc-main-content"
+      class="main-content"
+      data-above-sidebar="jetleaf_resource&#47;ConcurrentMapCacheStorage-class-sidebar.html"
+      data-below-sidebar="">
+      <div>
+<h1><span class="kind-constructor">ConcurrentMapCacheStorage</span> constructor 
+</h1></div>
+
+    <section class="multi-line-signature">
+      
+      <span class="name ">ConcurrentMapCacheStorage</span>(<wbr>)
+    </section>
+    
+<section class="desc markdown">
+  <p>A thread-safe, in-memory cache implementation backed by a concurrent <a href="../../jetleaf_resource/ConcurrentMapCacheResource-class.html">ConcurrentMapCacheResource</a>.</p>
+<p>The <a href="../../jetleaf_resource/ConcurrentMapCacheStorage-class.html">ConcurrentMapCacheStorage</a> provides a simple yet configurable caching mechanism
+that integrates with JetLeaf's core caching infrastructure. It supports
+configurable eviction policies, time-to-live (TTL) expiration, event
+emission, and runtime metrics collection.</p>
+<h3 id="purpose">Purpose</h3>
+<p>Designed as the <strong>default in-memory cache provider</strong> within the JetLeaf
+caching subsystem, this implementation balances concurrency and simplicity,
+enabling applications to quickly cache and retrieve objects with minimal
+overhead while maintaining observability and lifecycle awareness.</p>
+<h3 id="key-responsibilities">Key Responsibilities</h3>
+<ul>
+<li>Store cache entries in an in-memory <code>_store</code> keyed by <code>Object</code>.</li>
+<li>Support dynamic configuration via <a href="https://pub.dev/documentation/jetleaf_core/1.0.1/context/ApplicationContext-class.html">ApplicationContext</a> environment properties.</li>
+<li>Enforce size limits and eviction rules via <a href="../../jetleaf_resource/CacheEvictionPolicy-class.html">CacheEvictionPolicy</a>.</li>
+<li>Track cache activity using <a href="../../jetleaf_resource/CacheMetrics-class.html">CacheMetrics</a>.</li>
+<li>Optionally emit JetLeaf <a href="../../jetleaf_resource/CacheEvent-class.html">CacheEvent</a>s for monitoring and auditing.</li>
+</ul>
+<h3 id="configuration">Configuration</h3>
+<p>The cache automatically resolves runtime configuration from
+<a href="../../jetleaf_resource/CacheConfiguration-class.html">CacheConfiguration</a> keys at context initialization:</p>
+<table>
+<thead>
+<tr>
+<th>Property Key</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CacheConfiguration.TIMEZONE</code></td>
+<td>Zone identifier used for temporal operations</td>
+<td><code>UTC</code></td>
+</tr>
+<tr>
+<td><code>CacheConfiguration.TTL</code></td>
+<td>Default time-to-live duration (seconds)</td>
+<td><code>null</code> (non-expiring)</td>
+</tr>
+<tr>
+<td><code>CacheConfiguration.EVICTION_POLICY</code></td>
+<td>Eviction policy (<code>LRU</code>, <code>LFU</code>, <code>FIFO</code>)</td>
+<td><code>null</code></td>
+</tr>
+<tr>
+<td><code>CacheConfiguration.MAX_ENTRIES</code></td>
+<td>Maximum allowed entries before eviction</td>
+<td><code>null</code> (unbounded)</td>
+</tr>
+<tr>
+<td><code>CacheConfiguration.ENABLE_METRICS</code></td>
+<td>Enables metrics tracking via <a href="../../jetleaf_resource/CacheMetrics-class.html">CacheMetrics</a></td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td><code>CacheConfiguration.ENABLE_EVENTS</code></td>
+<td>Enables cache event emission</td>
+<td><code>true</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="lifecycle">Lifecycle</h3>
+<ol>
+<li>Upon startup, <a href="../../jetleaf_resource/ConcurrentMapCacheStorage/setApplicationContext.html">setApplicationContext</a> loads environment configuration.</li>
+<li>The cache becomes operational with defaults or environment overrides.</li>
+<li>During runtime, cache operations such as <a href="../../jetleaf_resource/ConcurrentMapCacheStorage/get.html">get</a>, <a href="../../jetleaf_resource/ConcurrentMapCacheStorage/put.html">put</a>, and <a href="../../jetleaf_resource/ConcurrentMapCacheStorage/evict.html">evict</a> maintain
+both data integrity and metrics/event synchronization.</li>
+<li>Calls to <a href="../../jetleaf_resource/ConcurrentMapCacheStorage/invalidate.html">invalidate</a> or <a href="../../jetleaf_resource/ConcurrentMapCacheStorage/clear.html">clear</a> safely purge expired or all entries.</li>
+</ol>
+<h3 id="related-components">Related Components</h3>
+<ul>
+<li><code>TunableCacheStorage</code>: Base interface defining core cache operations.</li>
+<li><a href="../../jetleaf_resource/CacheMetrics-class.html">CacheMetrics</a>: Used to record operation-level statistics.</li>
+<li><a href="../../jetleaf_resource/CacheEvent-class.html">CacheEvent</a>: Framework-level cache event abstraction.</li>
+<li><a href="../../jetleaf_resource/CacheEvictionPolicy-class.html">CacheEvictionPolicy</a>: Determines removal logic for size-bound caches.</li>
+<li><a href="https://pub.dev/documentation/jetleaf_core/1.0.1/context/ApplicationContext-class.html">ApplicationContext</a>: Provides environment and event-publishing services.</li>
+</ul>
+<h3 id="example">Example</h3>
+<pre class="language-dart"><code class="language-dart">final cache = ConcurrentMapCache();
+cache.setApplicationContext(appContext);
+
+await cache.put('user:42', User('Alice'));
+final user = await cache.getAs&lt;User&gt;('user:42');
+
+print('Cache Hit Rate: ${cache.getMetrics().getHitRate()}%');
+</code></pre>
+<h3 id="notes">Notes</h3>
+<ul>
+<li>This cache is <strong>non-distributed</strong> and suitable for single-node deployments.</li>
+<li>All operations are asynchronous to integrate cleanly with JetLeaf’s
+reactive event model, even though the backing storage is synchronous.</li>
+<li>Expiration and eviction are evaluated lazily during <a href="../../jetleaf_resource/ConcurrentMapCacheStorage/get.html">get</a>, <a href="../../jetleaf_resource/ConcurrentMapCacheStorage/put.html">put</a>, and
+<a href="../../jetleaf_resource/ConcurrentMapCacheStorage/invalidate.html">invalidate</a> calls.</li>
+</ul>
+<p>Creates a new instance of <a href="../../jetleaf_resource/ConcurrentMapCacheStorage-class.html">ConcurrentMapCacheStorage</a> with default
+in-memory configuration. The cache remains inactive until it is
+initialized via <a href="../../jetleaf_resource/ConcurrentMapCacheStorage/setApplicationContext.html">setApplicationContext</a>.</p>
+</section>
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">ConcurrentMapCacheStorage() : this.named(_DEFAULT_CACHE_NAME);</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../../index.html">jetleaf_resource</a></li>
+    <li><a href="../../jetleaf_resource/">jetleaf_resource</a></li>
+    <li><a href="../../jetleaf_resource/ConcurrentMapCacheStorage-class.html">ConcurrentMapCacheStorage</a></li>
+    <li class="self-crumb">ConcurrentMapCacheStorage.new constructor</li>
+</ol>
+
+    <h5>ConcurrentMapCacheStorage class</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div><!--/.sidebar-offcanvas-left-->
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    jetleaf_resource
+      1.0.0
+  </span>
+  
+</footer>
+
+
+<script src="../../static-assets/highlight.pack.js?v1"></script>
+<script src="../../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the RateLimitResult class from the jetleaf_resource library, for the Dart programming language.">
+  <title>RateLimitResult class - jetleaf_resource library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../static-assets/styles.css?v1">
+  <link rel="icon" href="../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">jetleaf_resource</a></li>
+    <li><a href="../jetleaf_resource/">jetleaf_resource.dart</a></li>
+    <li class="self-crumb">RateLimitResult class</li>
+  </ol>
+  <div class="self-name">RateLimitResult</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+<div
+    id="dartdoc-main-content"
+    class="main-content"
+    data-above-sidebar="jetleaf_resource&#47;jetleaf_resource-library-sidebar.html"
+    data-below-sidebar="jetleaf_resource&#47;RateLimitResult-class-sidebar.html">
+    <div>
+<h1><span class="kind-class">RateLimitResult</span> class 
+    <a href="https://dart.dev/language/class-modifiers#final" class="feature feature-final" title="This class can neither be extended, implemented, nor mixed in.">final</a>
+ 
+</h1></div>
+
+    
+<section class="desc markdown">
+  <p>Represents the outcome of a rate-limit check for a specific identifier.</p>
+<p>Instances of <a href="../jetleaf_resource/RateLimitResult-class.html">RateLimitResult</a> encapsulate all relevant information about
+a rate-limiting evaluation, including the identifier, current request count,
+remaining requests, window duration, reset time, and retry interval. This
+class is typically returned by methods like <a href="../jetleaf_resource/ConcurrentMapRateLimitStorage/tryConsume.html">ConcurrentMapRateLimitStorage.tryConsume</a>
+or <a href="../jetleaf_resource/ConcurrentMapRateLimitStorage/getRemainingRequests.html">ConcurrentMapRateLimitStorage.getRemainingRequests</a>.</p>
+<h3 id="purpose">Purpose</h3>
+<p>Provides a structured, immutable summary of the rate-limit state for an
+identifier. Consumers can inspect this object to:</p>
+<ul>
+<li>Determine if a request is allowed or denied.</li>
+<li>Know how many requests remain in the current window.</li>
+<li>Determine when the window will reset and when the next allowed request can be made.</li>
+<li>Track the zone used for temporal calculations.</li>
+</ul>
+<h3 id="key-properties">Key Properties</h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>identifier</code></td>
+<td>The entity (user, IP, or key) subject to rate limiting.</td>
+</tr>
+<tr>
+<td><code>limitName</code></td>
+<td>The canonical name of the rate-limit bucket or rule.</td>
+</tr>
+<tr>
+<td><code>currentCount</code></td>
+<td>Number of requests already made in the current window.</td>
+</tr>
+<tr>
+<td><code>remainingCount</code></td>
+<td>Number of requests remaining before hitting the limit.</td>
+</tr>
+<tr>
+<td><code>limit</code></td>
+<td>Maximum allowed requests in the window.</td>
+</tr>
+<tr>
+<td><code>window</code></td>
+<td>Duration of the rate-limit window.</td>
+</tr>
+<tr>
+<td><code>resetTime</code></td>
+<td>Exact time when the rate limit will reset.</td>
+</tr>
+<tr>
+<td><code>retryAfter</code></td>
+<td>Duration to wait before retrying if the limit is exceeded.</td>
+</tr>
+<tr>
+<td><code>zoneId</code></td>
+<td>Time zone used for all temporal calculations.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="example">Example</h3>
+<pre class="language-dart"><code class="language-dart">final result = RateLimitResult(
+  identifier: 'user:42',
+  limitName: 'default',
+  currentCount: 5,
+  limit: 10,
+  window: Duration(minutes: 1),
+  resetTime: ZonedDateTime.now(ZoneId.UTC).plus(Duration(minutes: 1)),
+  retryAfter: Duration(seconds: 12),
+  zoneId: ZoneId.UTC,
+);
+
+if (result.remainingCount &gt; 0) {
+  print('Request allowed. ${result.remainingCount} remaining.');
+} else {
+  print('Rate limit exceeded. Retry after ${result.retryAfter.inSeconds}s.');
+}
+</code></pre>
+</section>
+
+
+    <section>
+      <dl class="dl-horizontal">
+        
+
+        
+        
+
+          <dt>Implementers</dt>
+          <dd><ul class="comma-separated clazz-relationships">
+              <li><a href="../jetleaf_resource/RateLimitExceededException-class.html">RateLimitExceededException</a></li>
+          </ul></dd>
+
+        
+        
+
+
+      </dl>
+    </section>
+
+    
+  <section class="summary offset-anchor" id="constructors">
+    <h2>Constructors</h2>
+    <dl class="constructor-summary-list">
+        <dt id="RateLimitResult.new" class="callable">
+          <span class="name"><a href="../jetleaf_resource/RateLimitResult/RateLimitResult.html">RateLimitResult.new</a></span><span class="signature">({<span class="parameter" id="-param-identifier"><span>required</span> <span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">identifier</span>, </span><span class="parameter" id="-param-limitName"><span>required</span> <span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/String-class.html">String</a></span> <span class="parameter-name">limitName</span>, </span><span class="parameter" id="-param-currentCount"><span>required</span> <span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/int-class.html">int</a></span> <span class="parameter-name">currentCount</span>, </span><span class="parameter" id="-param-limit"><span>required</span> <span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/int-class.html">int</a></span> <span class="parameter-name">limit</span>, </span><span class="parameter" id="-param-window"><span>required</span> <span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Duration-class.html">Duration</a></span> <span class="parameter-name">window</span>, </span><span class="parameter" id="-param-resetTime"><span>required</span> <span class="type-annotation"><a href="https://pub.dev/documentation/jetleaf_lang/1.0.1/lang/ZonedDateTime-class.html">ZonedDateTime</a></span> <span class="parameter-name">resetTime</span>, </span><span class="parameter" id="-param-retryAfter"><span>required</span> <span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Duration-class.html">Duration</a></span> <span class="parameter-name">retryAfter</span>, </span><span class="parameter" id="-param-zoneId"><span>required</span> <span class="type-annotation"><a href="https://pub.dev/documentation/jetleaf_lang/1.0.1/lang/ZoneId-class.html">ZoneId</a></span> <span class="parameter-name">zoneId</span></span>})</span>
+        </dt>
+        <dd>
+          Creates a new <a href="../jetleaf_resource/RateLimitResult-class.html">RateLimitResult</a> instance.
+        </dd>
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor"
+      id="instance-properties">
+    <h2>Properties</h2>
+    <dl class="properties">
+        <dt id="allowed" class="property">
+  <span class="name"><a href="../jetleaf_resource/RateLimitResult/allowed.html">allowed</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/bool-class.html">bool</a></span>
+  
+
+</dt>
+<dd>
+  Indicates whether the current request is allowed under the rate limit.
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="currentCount" class="property">
+  <span class="name"><a href="../jetleaf_resource/RateLimitResult/currentCount.html">currentCount</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/int-class.html">int</a></span>
+  
+
+</dt>
+<dd>
+  The current number of requests in the window.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="hashCode" class="property inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object/hashCode.html">hashCode</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/int-class.html">int</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  The hash code for this object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="identifier" class="property">
+  <span class="name"><a href="../jetleaf_resource/RateLimitResult/identifier.html">identifier</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/Object-class.html">Object</a></span>
+  
+
+</dt>
+<dd>
+  The entity that exceeded or is subject to the rate limit.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="limit" class="property">
+  <span class="name"><a href="../jetleaf_resource/RateLimitResult/limit.html">limit</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/int-class.html">int</a></span>
+  
+
+</dt>
+<dd>
+  The maximum allowed requests in the window.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="limitName" class="property">
+  <span class="name"><a href="../jetleaf_resource/RateLimitResult/limitName.html">limitName</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/String-class.html">String</a></span>
+  
+
+</dt>
+<dd>
+  The name of the rate limit bucket or rule.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="remainingCount" class="property">
+  <span class="name"><a href="../jetleaf_resource/RateLimitResult/remainingCount.html">remainingCount</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/int-class.html">int</a></span>
+  
+
+</dt>
+<dd>
+  The current number of requests remaining in the window.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="resetTime" class="property">
+  <span class="name"><a href="../jetleaf_resource/RateLimitResult/resetTime.html">resetTime</a></span>
+  <span class="signature">&#8594; <a href="https://pub.dev/documentation/jetleaf_lang/1.0.1/lang/ZonedDateTime-class.html">ZonedDateTime</a></span>
+  
+
+</dt>
+<dd>
+  When the rate limit will reset.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="retryAfter" class="property">
+  <span class="name"><a href="../jetleaf_resource/RateLimitResult/retryAfter.html">retryAfter</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/Duration-class.html">Duration</a></span>
+  
+
+</dt>
+<dd>
+  How long to wait before retrying.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="runtimeType" class="property inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object/runtimeType.html">runtimeType</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/Type-class.html">Type</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  A representation of the runtime type of the object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="window" class="property">
+  <span class="name"><a href="../jetleaf_resource/RateLimitResult/window.html">window</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/Duration-class.html">Duration</a></span>
+  
+
+</dt>
+<dd>
+  The duration of the rate limit window.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="zoneId" class="property">
+  <span class="name"><a href="../jetleaf_resource/RateLimitResult/zoneId.html">zoneId</a></span>
+  <span class="signature">&#8594; <a href="https://pub.dev/documentation/jetleaf_lang/1.0.1/lang/ZoneId-class.html">ZoneId</a></span>
+  
+
+</dt>
+<dd>
+  The time zone used for reset calculations.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+
+    
+  <section
+      class="summary offset-anchor inherited"
+      id="instance-methods">
+    <h2>Methods</h2>
+    <dl class="callables">
+        <dt id="noSuchMethod" class="callable inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Invocation-class.html">Invocation</a></span> <span class="parameter-name">invocation</span></span>)
+    <span class="returntype parameter">&#8594; dynamic</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Invoked when a nonexistent method or property is accessed.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="toString" class="callable inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object/toString.html">toString</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/String-class.html">String</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  A string representation of this object.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor inherited"
+      id="operators">
+    <h2>Operators</h2>
+    <dl class="callables">
+        <dt id="operator ==" class="callable inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">other</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  The equality operator.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+    
+    
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../index.html">jetleaf_resource</a></li>
+    <li><a href="../jetleaf_resource/">jetleaf_resource</a></li>
+    <li class="self-crumb">RateLimitResult class</li>
+</ol>
+
+    <h5>jetleaf_resource library</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div>
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    jetleaf_resource
+      1.0.0
+  </span>
+  
+</footer>
+
+
+<script src="../static-assets/highlight.pack.js?v1"></script>
+<script src="../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

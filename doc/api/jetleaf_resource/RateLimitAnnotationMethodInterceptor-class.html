@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the RateLimitAnnotationMethodInterceptor class from the jetleaf_resource library, for the Dart programming language.">
+  <title>RateLimitAnnotationMethodInterceptor class - jetleaf_resource library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../static-assets/styles.css?v1">
+  <link rel="icon" href="../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">jetleaf_resource</a></li>
+    <li><a href="../jetleaf_resource/">jetleaf_resource.dart</a></li>
+    <li class="self-crumb">RateLimitAnnotationMethodInterceptor class</li>
+  </ol>
+  <div class="self-name">RateLimitAnnotationMethodInterceptor</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+<div
+    id="dartdoc-main-content"
+    class="main-content"
+    data-above-sidebar="jetleaf_resource&#47;jetleaf_resource-library-sidebar.html"
+    data-below-sidebar="jetleaf_resource&#47;RateLimitAnnotationMethodInterceptor-class-sidebar.html">
+    <div>
+<h1><span class="kind-class">RateLimitAnnotationMethodInterceptor</span> class 
+    <a href="https://dart.dev/language/class-modifiers#abstract" class="feature feature-abstract" title="This type can not be directly constructed.">abstract</a>
+ 
+</h1></div>
+
+    
+<section class="desc markdown">
+  <p>A composite <code>ConditionalMethodInterceptor</code> that transparently applies
+<strong>rate limiting</strong> behavior based on JetLeaf <code>@RateLimit</code> annotations.</p>
+<p>This interceptor is automatically invoked by the JetLeaf AOP subsystem
+whenever a method carries one or more <code>@RateLimit</code> annotations. It determines
+which rate-limit rules apply and orchestrates their lifecycle, including:</p>
+<ul>
+<li>Conditional evaluation (<code>unless</code> and <code>condition</code>)</li>
+<li>Key generation</li>
+<li>Storage resolution</li>
+<li>Consumption tracking</li>
+<li>Best-effort rollback</li>
+<li>Exception or silent denial handling</li>
+</ul>
+<h3 id="interception-workflow">Interception Workflow</h3>
+<p>When a method annotated with <code>@RateLimit</code> is invoked:</p>
+<ol>
+<li>
+<p><strong>Annotation Detection</strong></p>
+<ul>
+<li>The interceptor checks if the method has a direct <code>@RateLimit</code> annotation.</li>
+<li>If no annotation is found, the method proceeds normally.</li>
+</ul>
+</li>
+<li>
+<p><strong>Conditional Evaluation</strong></p>
+<ul>
+<li>Evaluates <code>unless</code> predicate:
+<ul>
+<li>If <code>unless</code> returns <code>true</code>, the rate limit is skipped for this invocation.</li>
+</ul>
+</li>
+<li>Evaluates <code>condition</code> predicate:
+<ul>
+<li>If <code>condition</code> returns <code>false</code>, the rate limit is skipped.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Key Generation</strong></p>
+<ul>
+<li>The interceptor generates a unique key for the method invocation using
+the configured <a href="../jetleaf_resource/KeyGenerator-class.html">KeyGenerator</a>.</li>
+<li>Keys are typically derived from method parameters, target instance, and
+optional custom logic from the annotation.</li>
+</ul>
+</li>
+<li>
+<p><strong>Storage Resolution</strong></p>
+<ul>
+<li>Resolves the list of <a href="../jetleaf_resource/RateLimitStorage-class.html">RateLimitStorage</a> instances where rate-limit
+counters are maintained.</li>
+<li>Uses either:
+<ul>
+<li>A custom <code>rateLimitResolver</code> from the annotation or context, or</li>
+<li>A <code>RateLimitManager</code> configured globally.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Consumption Attempt</strong></p>
+<ul>
+<li>Calls <code>tryConsume</code> on each resolved storage.</li>
+<li>Tracks which storages successfully allowed the request.</li>
+</ul>
+</li>
+<li>
+<p><strong>Best-Effort Rollback</strong></p>
+<ul>
+<li>If any storage denies the request, previously successful storages are
+rolled back using <code>rollbackConsume</code>.</li>
+<li>Rollback is best-effort; failures are logged or swallowed without affecting
+application flow.</li>
+</ul>
+</li>
+<li>
+<p><strong>Denial Handling</strong></p>
+<ul>
+<li>If <code>throwExceptionOnExceeded</code> is <code>true</code>, a <a href="../jetleaf_resource/RateLimitExceededException-class.html">RateLimitExceededException</a>
+is thrown with detailed information from the storage result.</li>
+<li>If <code>throwExceptionOnExceeded</code> is <code>false</code>, the denial is recorded silently,
+allowing the caller to inspect <code>allowed</code> and <code>retryAfter</code> in the context.</li>
+</ul>
+</li>
+<li>
+<p><strong>Method Execution</strong></p>
+<ul>
+<li>If all storages allow the request, the method proceeds normally.</li>
+<li>Otherwise, execution is halted or a fallback mechanism can be triggered.</li>
+</ul>
+</li>
+</ol>
+<h3 id="ordering-guarantees">Ordering Guarantees</h3>
+<p>This interceptor is executed in the order defined by <a href="https://pub.dev/documentation/jetleaf_lang/1.0.1/lang/Ordered-class.html">Ordered</a> interface,
+ensuring consistent behavior when multiple interceptors are applied:</p>
+<pre class="language-text"><code class="language-text">Conditional Evaluation (unless/condition)
+  → Storage Resolution
+    → Consumption Attempt
+      → Best-Effort Rollback (if needed)
+        → Denial Handling
+          → Method Execution (if allowed)
+</code></pre>
+<h3 id="context-fields">Context Fields</h3>
+<ul>
+<li><code>applicationContext</code>: The active JetLeaf <a href="https://pub.dev/documentation/jetleaf_core/1.0.1/context/ApplicationContext-class.html">ApplicationContext</a> for
+resolving dependencies like resolvers, key generators, and storages.</li>
+<li><code>keyGenerator</code>: Responsible for generating unique keys for each invocation.</li>
+<li><code>rateLimitResolver</code>: Resolves storages by name or annotation metadata.</li>
+<li><code>throwExceptionOnExceeded</code>: Controls whether the interceptor throws
+on exceed events or silently records denial.</li>
+</ul>
+<h3 id="example">Example</h3>
+<pre class="language-dart"><code class="language-dart">class MyRateLimitInterceptor extends RateLimitAnnotationMethodInterceptor {
+  // Add logging, metrics, or fallback integration
+}
+
+final interceptor = MyRateLimitInterceptor();
+final result = await interceptor.intercept(invocation);
+// The interceptor automatically enforces rate limits based on annotations.
+</code></pre>
+<h3 id="notes">Notes</h3>
+<ul>
+<li>Supports multiple storage backends, including rollback-capable storages.</li>
+<li>Rollback is best-effort and does not throw if a previous consume cannot be reverted.</li>
+<li>Key generation and storage resolution can be customized per method or globally.</li>
+</ul>
+<h3 id="see-also">See Also</h3>
+<ul>
+<li><a href="../jetleaf_resource/RateLimit-class.html">RateLimit</a></li>
+<li><a href="../jetleaf_resource/RateLimitStorage-class.html">RateLimitStorage</a></li>
+<li><a href="../jetleaf_resource/RollbackCapableRateLimitStorage-class.html">RollbackCapableRateLimitStorage</a></li>
+<li><a href="../jetleaf_resource/RateLimitOperationContext-class.html">RateLimitOperationContext</a></li>
+<li><code>_RateLimitOperationContext</code></li>
+</ul>
+</section>
+
+
+    <section>
+      <dl class="dl-horizontal">
+        
+
+        
+  <dt>Implemented types</dt>
+  <dd>
+    <ul class="comma-separated clazz-relationships">
+        <li><a href="https://pub.dev/documentation/jetleaf_core/1.0.1/intercept/MethodBeforeInterceptor-class.html">MethodBeforeInterceptor</a></li>
+        <li><a href="https://pub.dev/documentation/jetleaf_core/1.0.1/intercept/AroundMethodInterceptor-class.html">AroundMethodInterceptor</a></li>
+        <li><a href="https://pub.dev/documentation/jetleaf_core/1.0.1/intercept/AfterThrowingInterceptor-class.html">AfterThrowingInterceptor</a></li>
+        <li><a href="https://pub.dev/documentation/jetleaf_lang/1.0.1/lang/Ordered-class.html">Ordered</a></li>
+    </ul>
+  </dd>
+        
+
+          <dt>Implementers</dt>
+          <dd><ul class="comma-separated clazz-relationships">
+              <li><a href="../jetleaf_resource/RateLimitComponentRegistrar-class.html">RateLimitComponentRegistrar</a></li>
+          </ul></dd>
+
+        
+        
+
+
+      </dl>
+    </section>
+
+    
+  <section class="summary offset-anchor" id="constructors">
+    <h2>Constructors</h2>
+    <dl class="constructor-summary-list">
+        <dt id="RateLimitAnnotationMethodInterceptor.new" class="callable">
+          <span class="name"><a href="../jetleaf_resource/RateLimitAnnotationMethodInterceptor/RateLimitAnnotationMethodInterceptor.html">RateLimitAnnotationMethodInterceptor.new</a></span><span class="signature">()</span>
+        </dt>
+        <dd>
+          
+        </dd>
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor"
+      id="instance-properties">
+    <h2>Properties</h2>
+    <dl class="properties">
+        <dt id="applicationContext" class="property">
+  <span class="name"><a href="../jetleaf_resource/RateLimitAnnotationMethodInterceptor/applicationContext.html">applicationContext</a></span>
+  <span class="signature">&#8596; <a href="https://pub.dev/documentation/jetleaf_core/1.0.1/context/ApplicationContext-class.html">ApplicationContext</a></span>
+  
+
+</dt>
+<dd>
+  The <strong>active JetLeaf <a href="https://pub.dev/documentation/jetleaf_core/1.0.1/context/ApplicationContext-class.html">ApplicationContext</a></strong> associated with this registrar.
+  <div class="features"><span class="feature">getter/setter pair</span></div>
+
+</dd>
+
+        <dt id="hashCode" class="property inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object/hashCode.html">hashCode</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/int-class.html">int</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  The hash code for this object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="keyGenerator" class="property">
+  <span class="name"><a href="../jetleaf_resource/RateLimitAnnotationMethodInterceptor/keyGenerator.html">keyGenerator</a></span>
+  <span class="signature">&#8596; <a href="../jetleaf_resource/KeyGenerator-class.html">KeyGenerator</a></span>
+  
+
+</dt>
+<dd>
+  The <a href="../jetleaf_resource/KeyGenerator-class.html">KeyGenerator</a> responsible for producing unique and consistent
+rate-limit keys for annotated method invocations.
+  <div class="features"><span class="feature">getter/setter pair</span></div>
+
+</dd>
+
+        <dt id="rateLimitResolver" class="property">
+  <span class="name"><a href="../jetleaf_resource/RateLimitAnnotationMethodInterceptor/rateLimitResolver.html">rateLimitResolver</a></span>
+  <span class="signature">&#8596; <a href="../jetleaf_resource/RateLimitResolver-class.html">RateLimitResolver</a></span>
+  
+
+</dt>
+<dd>
+  The resolver responsible for locating target <a href="../jetleaf_resource/RateLimitStorage-class.html">RateLimitStorage</a> instances by name.
+  <div class="features"><span class="feature">getter/setter pair</span></div>
+
+</dd>
+
+        <dt id="runtimeType" class="property inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object/runtimeType.html">runtimeType</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/Type-class.html">Type</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  A representation of the runtime type of the object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="throwExceptionOnExceeded" class="property">
+  <span class="name"><a href="../jetleaf_resource/RateLimitAnnotationMethodInterceptor/throwExceptionOnExceeded.html">throwExceptionOnExceeded</a></span>
+  <span class="signature">&#8596; <a href="https://api.dart.dev/stable/3.9.2/dart-core/bool-class.html">bool</a></span>
+  
+
+</dt>
+<dd>
+  Indicates whether the rate-limit operation should throw a
+<a href="../jetleaf_resource/RateLimitExceededException-class.html">RateLimitExceededException</a> when a limit is exceeded.
+  <div class="features"><span class="feature">getter/setter pair</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+
+    
+  <section
+      class="summary offset-anchor"
+      id="instance-methods">
+    <h2>Methods</h2>
+    <dl class="callables">
+        <dt id="afterThrowing" class="callable">
+  <span class="name"><a href="../jetleaf_resource/RateLimitAnnotationMethodInterceptor/afterThrowing.html">afterThrowing</a></span><span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span><span class="signature">(<wbr><span class="parameter" id="afterThrowing-param-invocation"><span class="type-annotation"><a href="https://pub.dev/documentation/jetleaf_core/1.0.1/intercept/MethodInvocation-class.html">MethodInvocation</a><span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span></span> <span class="parameter-name">invocation</span>, </span><span class="parameter" id="afterThrowing-param-exception"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">exception</span>, </span><span class="parameter" id="afterThrowing-param-exceptionClass"><span class="type-annotation"><a href="https://pub.dev/documentation/jetleaf_lang/1.0.1/lang/Class-class.html">Class</a></span> <span class="parameter-name">exceptionClass</span>, </span><span class="parameter" id="afterThrowing-param-stackTrace"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/StackTrace-class.html">StackTrace</a></span> <span class="parameter-name">stackTrace</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-async/FutureOr-class.html">FutureOr</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Executed when a target method throws an exception.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="aroundInvocation" class="callable">
+  <span class="name"><a href="../jetleaf_resource/RateLimitAnnotationMethodInterceptor/aroundInvocation.html">aroundInvocation</a></span><span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span><span class="signature">(<wbr><span class="parameter" id="aroundInvocation-param-invocation"><span class="type-annotation"><a href="https://pub.dev/documentation/jetleaf_core/1.0.1/intercept/MethodInvocation-class.html">MethodInvocation</a><span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span></span> <span class="parameter-name">invocation</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">T?</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Invoked <strong>around</strong> the target method execution, allowing interception
+both before and after invocation.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="beforeInvocation" class="callable">
+  <span class="name"><a href="../jetleaf_resource/RateLimitAnnotationMethodInterceptor/beforeInvocation.html">beforeInvocation</a></span><span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span><span class="signature">(<wbr><span class="parameter" id="beforeInvocation-param-invocation"><span class="type-annotation"><a href="https://pub.dev/documentation/jetleaf_core/1.0.1/intercept/MethodInvocation-class.html">MethodInvocation</a><span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span></span> <span class="parameter-name">invocation</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-async/FutureOr-class.html">FutureOr</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Executed immediately <strong>before</strong> the target method invocation.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="canIntercept" class="callable">
+  <span class="name"><a href="../jetleaf_resource/RateLimitAnnotationMethodInterceptor/canIntercept.html">canIntercept</a></span><span class="signature">(<wbr><span class="parameter" id="canIntercept-param-method"><span class="type-annotation"><a href="https://pub.dev/documentation/jetleaf_lang/1.0.1/lang/Method-class.html">Method</a></span> <span class="parameter-name">method</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Determines whether this interceptor can intercept the specified <code>method</code>.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="equalizedProperties" class="callable inherited">
+  <span class="name"><a href="https://pub.dev/documentation/jetleaf_build/1.0.0/jetleaf_build/EqualsAndHashCode/equalizedProperties.html">equalizedProperties</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object-class.html">Object</a>?</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Mixin-style contract for value-based equality, <code>hashCode</code>, and <code>toString</code>.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="getOrder" class="callable inherited">
+  <span class="name"><a href="https://pub.dev/documentation/jetleaf_lang/1.0.1/lang/Ordered/getOrder.html">getOrder</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/int-class.html">int</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  A contract for objects that are assigned an order or precedence value.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="noSuchMethod" class="callable inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Invocation-class.html">Invocation</a></span> <span class="parameter-name">invocation</span></span>)
+    <span class="returntype parameter">&#8594; dynamic</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Invoked when a nonexistent method or property is accessed.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="toString" class="callable inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object/toString.html">toString</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/String-class.html">String</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  A string representation of this object.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor inherited"
+      id="operators">
+    <h2>Operators</h2>
+    <dl class="callables">
+        <dt id="operator ==" class="callable inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">other</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  The equality operator.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+    
+    
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../index.html">jetleaf_resource</a></li>
+    <li><a href="../jetleaf_resource/">jetleaf_resource</a></li>
+    <li class="self-crumb">RateLimitAnnotationMethodInterceptor class</li>
+</ol>
+
+    <h5>jetleaf_resource library</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div>
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    jetleaf_resource
+      1.0.0
+  </span>
+  
+</footer>
+
+
+<script src="../static-assets/highlight.pack.js?v1"></script>
+<script src="../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

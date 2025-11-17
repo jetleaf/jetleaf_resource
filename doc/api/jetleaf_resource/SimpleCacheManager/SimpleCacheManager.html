@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the SimpleCacheManager.new constructor from Class SimpleCacheManager from the jetleaf_resource library, for the Dart programming language.">
+  <title>SimpleCacheManager.new constructor - SimpleCacheManager - jetleaf_resource library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../../static-assets/styles.css?v1">
+  <link rel="icon" href="../../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../../index.html">jetleaf_resource</a></li>
+    <li><a href="../../jetleaf_resource/">jetleaf_resource.dart</a></li>
+    <li><a href="../../jetleaf_resource/SimpleCacheManager-class.html">SimpleCacheManager</a></li>
+    <li class="self-crumb">SimpleCacheManager.new constructor</li>
+  </ol>
+  <div class="self-name">SimpleCacheManager.new</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+  <div
+      id="dartdoc-main-content"
+      class="main-content"
+      data-above-sidebar="jetleaf_resource&#47;SimpleCacheManager-class-sidebar.html"
+      data-below-sidebar="">
+      <div>
+<h1><span class="kind-constructor">SimpleCacheManager</span> constructor 
+</h1></div>
+
+    <section class="multi-line-signature">
+      
+      <span class="name ">SimpleCacheManager</span>(<wbr>)
+    </section>
+    
+<section class="desc markdown">
+  <p>A composite registry and coordinator for multiple <a href="../../jetleaf_resource/CacheManager-class.html">CacheManager</a> implementations within JetLeaf.</p>
+<p>The <a href="../../jetleaf_resource/SimpleCacheManager-class.html">SimpleCacheManager</a> acts as the central orchestrator for all cache
+managers detected in the JetLeaf dependency context. It serves as both a
+<a href="../../jetleaf_resource/CacheManager-class.html">CacheManager</a>, <a href="../../jetleaf_resource/CacheStorageRegistry-class.html">CacheStorageRegistry</a> and a <a href="../../jetleaf_resource/CacheManagerRegistry-class.html">CacheManagerRegistry</a>, unifying access, discovery, and
+lifecycle management across heterogeneous caching infrastructures.</p>
+<h3 id="overview">Overview</h3>
+<p>JetLeaf supports modular cache infrastructures, where various application
+modules or plugins may define their own <a href="../../jetleaf_resource/CacheManager-class.html">CacheManager</a> pods. This composite:</p>
+<ul>
+<li><strong>Discovers</strong> all <a href="../../jetleaf_resource/CacheStorage-class.html">CacheStorage</a> and <a href="../../jetleaf_resource/CacheConfigurer-class.html">CacheConfigurer</a> pods through
+the <a href="https://pub.dev/documentation/jetleaf_pod/1.0.1/pod/ConfigurableListablePodFactory-class.html">ConfigurableListablePodFactory</a>.</li>
+<li><strong>Registers</strong> them in deterministic order via <a href="https://pub.dev/documentation/jetleaf_core/1.0.1/core/AnnotationAwareOrderComparator-class.html">AnnotationAwareOrderComparator</a>.</li>
+<li><strong>Delegates</strong> cache operations to an internal <code>_OrderedCacheManager</code>
+to ensure predictable resolution precedence.</li>
+</ul>
+<h3 id="core-responsibilities">Core Responsibilities</h3>
+<ol>
+<li>Automatically discovers all <a href="../../jetleaf_resource/CacheStorage-class.html">CacheStorage</a> and <a href="../../jetleaf_resource/CacheConfigurer-class.html">CacheConfigurer</a> pods
+from the JetLeaf application context upon initialization.</li>
+<li>Registers them into a synchronized composite registry via <a href="../../jetleaf_resource/SimpleCacheManager/addManager.html">addManager</a>.</li>
+<li>Serves as a unified gateway for cache lookup, lifecycle management, and
+global cache operations such as <code>clearAll</code> and <code>destroy</code>.</li>
+</ol>
+<h3 id="configuration--discovery">Configuration &amp; Discovery</h3>
+<p>The composite leverages the <a href="https://pub.dev/documentation/jetleaf_core/1.0.1/core/PodFactoryAware-class.html">PodFactoryAware</a> and <a href="https://pub.dev/documentation/jetleaf_pod/1.0.1/pod/InitializingPod-class.html">InitializingPod</a>
+contracts to perform eager initialization and configuration:</p>
+<ul>
+<li>On startup, <a href="../../jetleaf_resource/SimpleCacheManager/onReady.html">onReady</a> locates and orders all <a href="../../jetleaf_resource/CacheManager-class.html">CacheManager</a> instances.</li>
+<li>Any registered <a href="../../jetleaf_resource/CacheConfigurer-class.html">CacheConfigurer</a> pods are invoked to allow
+custom programmatic adjustments to the composite itself.</li>
+<li>Each manager is wrapped into an <code>_OrderedCacheManager</code> delegate to preserve
+deterministic cache resolution ordering.</li>
+</ul>
+<h3 id="thread-safety">Thread Safety</h3>
+<p>Manager registration and mutation of the internal registry are performed under
+<a href="https://pub.dev/documentation/jetleaf_lang/1.0.1/lang/synchronized.html">synchronized</a> blocks to prevent race conditions during concurrent startup
+or configuration changes.</p>
+<h3 id="example">Example</h3>
+<pre class="language-dart"><code class="language-dart">final composite = CompositeCacheManager();
+composite.setPodFactory(appContext.getPodFactory());
+
+await composite.onReady();
+
+final userCache = await composite.getCache('users');
+await userCache?.put('42', user);
+</code></pre>
+<h3 id="related-components">Related Components</h3>
+<ul>
+<li><a href="../../jetleaf_resource/CacheManager-class.html">CacheManager</a>: The core caching interface implemented by all managers.</li>
+<li><a href="../../jetleaf_resource/CacheConfigurer-class.html">CacheConfigurer</a>: Allows customization of cache configurations at startup.</li>
+<li><a href="../../jetleaf_resource/CacheManagerRegistry-class.html">CacheManagerRegistry</a>: Defines registration behavior for cache managers.</li>
+<li><a href="https://pub.dev/documentation/jetleaf_core/1.0.1/core/PodFactoryAware-class.html">PodFactoryAware</a>: Enables factory injection and discovery.</li>
+<li><a href="https://pub.dev/documentation/jetleaf_pod/1.0.1/pod/InitializingPod-class.html">InitializingPod</a>: Lifecycle callback for post-construction setup.</li>
+<li><code>_OrderedCacheManager</code>: Delegates operations to multiple managers in order.</li>
+</ul>
+</section>
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">SimpleCacheManager();</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../../index.html">jetleaf_resource</a></li>
+    <li><a href="../../jetleaf_resource/">jetleaf_resource</a></li>
+    <li><a href="../../jetleaf_resource/SimpleCacheManager-class.html">SimpleCacheManager</a></li>
+    <li class="self-crumb">SimpleCacheManager.new constructor</li>
+</ol>
+
+    <h5>SimpleCacheManager class</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div><!--/.sidebar-offcanvas-left-->
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    jetleaf_resource
+      1.0.0
+  </span>
+  
+</footer>
+
+
+<script src="../../static-assets/highlight.pack.js?v1"></script>
+<script src="../../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

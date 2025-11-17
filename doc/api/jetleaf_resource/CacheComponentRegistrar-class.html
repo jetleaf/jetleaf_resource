@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the CacheComponentRegistrar class from the jetleaf_resource library, for the Dart programming language.">
+  <title>CacheComponentRegistrar class - jetleaf_resource library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../static-assets/styles.css?v1">
+  <link rel="icon" href="../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">jetleaf_resource</a></li>
+    <li><a href="../jetleaf_resource/">jetleaf_resource.dart</a></li>
+    <li class="self-crumb">CacheComponentRegistrar class</li>
+  </ol>
+  <div class="self-name">CacheComponentRegistrar</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+<div
+    id="dartdoc-main-content"
+    class="main-content"
+    data-above-sidebar="jetleaf_resource&#47;jetleaf_resource-library-sidebar.html"
+    data-below-sidebar="jetleaf_resource&#47;CacheComponentRegistrar-class-sidebar.html">
+    <div>
+<h1><span class="kind-class">CacheComponentRegistrar</span> class 
+    <a href="https://dart.dev/language/class-modifiers#final" class="feature feature-final" title="This class can neither be extended, implemented, nor mixed in.">final</a>
+ 
+</h1></div>
+
+    
+<section class="desc markdown">
+  <p>Central entry point for JetLeaf cache subsystem initialization and
+configuration registration.</p>
+<p>The <a href="../jetleaf_resource/CacheComponentRegistrar-class.html">CacheComponentRegistrar</a> orchestrates the integration of cache-related
+components (managers, resolvers, storages, and key generators) discovered
+through the JetLeaf dependency injection system. It also participates in
+the application lifecycle by responding to <a href="https://pub.dev/documentation/jetleaf_core/1.0.1/context/ApplicationContextEvent-class.html">ApplicationContextEvent</a>s,
+ensuring graceful teardown of cache resources.</p>
+<h3 id="responsibilities">Responsibilities</h3>
+<ul>
+<li>Acts as the <strong>main cache registry</strong> by implementing <a href="../jetleaf_resource/CacheErrorHandlerRegistry-class.html">CacheErrorHandlerRegistry</a>.</li>
+<li>Discovers and invokes all <a href="../jetleaf_resource/CacheConfigurer-class.html">CacheConfigurer</a> pods during startup.</li>
+<li>Coordinates with <a href="https://pub.dev/documentation/jetleaf_core/1.0.1/context/ApplicationContext-class.html">ApplicationContext</a> for contextual property access,
+event listening, and cleanup.</li>
+<li>Ensures deterministic initialization order through
+<a href="https://pub.dev/documentation/jetleaf_pod/1.0.1/pod/SmartInitializingSingleton-class.html">SmartInitializingSingleton</a>.</li>
+</ul>
+<h3 id="lifecycle-overview">Lifecycle Overview</h3>
+<ol>
+<li>The registrar is created and provided with a <a href="https://pub.dev/documentation/jetleaf_pod/1.0.1/pod/PodFactory-class.html">PodFactory</a>.</li>
+<li>During <a href="../jetleaf_resource/CacheComponentRegistrar/onSingletonReady.html">onSingletonReady</a>, all <a href="../jetleaf_resource/CacheConfigurer-class.html">CacheConfigurer</a> pods are discovered and
+invoked to populate this registry with configured cache components.</li>
+<li>On <a href="https://pub.dev/documentation/jetleaf_core/1.0.1/context/ContextClosedEvent-class.html">ContextClosedEvent</a>, all managed cache managers are destroyed,
+ensuring clean resource disposal.</li>
+</ol>
+<h3 id="example">Example</h3>
+<pre class="language-dart"><code class="language-dart">final registrar = CacheComponentRegistrar();
+registrar.setPodFactory(context.getPodFactory());
+
+await registrar.onSingletonReady(); // Initializes and configures caches
+</code></pre>
+<h3 id="related-components">Related Components</h3>
+<ul>
+<li><a href="../jetleaf_resource/CacheConfigurer-class.html">CacheConfigurer</a> — Contributes cache configuration during initialization.</li>
+<li><a href="../jetleaf_resource/CacheManager-class.html">CacheManager</a> — Manages cache lifecycle and instances.</li>
+<li><a href="../jetleaf_resource/CacheResolver-class.html">CacheResolver</a> — Resolves cache definitions from annotations.</li>
+<li><a href="https://pub.dev/documentation/jetleaf_core/1.0.1/context/ApplicationContext-class.html">ApplicationContext</a> — Provides contextual access and event integration.</li>
+</ul>
+</section>
+
+
+    <section>
+      <dl class="dl-horizontal">
+        
+  <dt>Inheritance</dt>
+  <dd>
+    <ul class="gt-separated dark clazz-relationships">
+      <li><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object-class.html">Object</a></li>
+        <li><a href="../jetleaf_resource/CacheAnnotationMethodInterceptor-class.html">CacheAnnotationMethodInterceptor</a></li>
+      <li>CacheComponentRegistrar</li>
+    </ul>
+  </dd>
+
+        
+  <dt>Implemented types</dt>
+  <dd>
+    <ul class="comma-separated clazz-relationships">
+        <li><a href="https://pub.dev/documentation/jetleaf_pod/1.0.1/pod/SmartInitializingSingleton-class.html">SmartInitializingSingleton</a></li>
+        <li><a href="https://pub.dev/documentation/jetleaf_core/1.0.1/core/ApplicationContextAware-class.html">ApplicationContextAware</a></li>
+        <li><a href="https://pub.dev/documentation/jetleaf_core/1.0.1/context/ApplicationEventListener-class.html">ApplicationEventListener</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/jetleaf_core/1.0.1/context/ApplicationContextEvent-class.html">ApplicationContextEvent</a></span>&gt;</span></li>
+        <li><a href="../jetleaf_resource/CacheErrorHandlerRegistry-class.html">CacheErrorHandlerRegistry</a></li>
+    </ul>
+  </dd>
+        
+
+
+        
+        
+
+
+      </dl>
+    </section>
+
+    
+  <section class="summary offset-anchor" id="constructors">
+    <h2>Constructors</h2>
+    <dl class="constructor-summary-list">
+        <dt id="CacheComponentRegistrar.new" class="callable">
+          <span class="name"><a href="../jetleaf_resource/CacheComponentRegistrar/CacheComponentRegistrar.html">CacheComponentRegistrar.new</a></span><span class="signature">(<span class="parameter" id="-param-keyGenerator"><span class="type-annotation"><a href="../jetleaf_resource/KeyGenerator-class.html">KeyGenerator</a></span> <span class="parameter-name">keyGenerator</span>, </span><span class="parameter" id="-param-errorHandler"><span class="type-annotation"><a href="../jetleaf_resource/CacheErrorHandler-class.html">CacheErrorHandler</a></span> <span class="parameter-name">errorHandler</span>, </span><span class="parameter" id="-param-cacheResolver"><span class="type-annotation"><a href="../jetleaf_resource/CacheResolver-class.html">CacheResolver</a></span> <span class="parameter-name">cacheResolver</span></span>)</span>
+        </dt>
+        <dd>
+          Central entry point for JetLeaf cache subsystem initialization and
+configuration registration.
+        </dd>
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor inherited"
+      id="instance-properties">
+    <h2>Properties</h2>
+    <dl class="properties">
+        <dt id="applicationContext" class="property inherited">
+  <span class="name"><a href="../jetleaf_resource/CacheAnnotationMethodInterceptor/applicationContext.html">applicationContext</a></span>
+  <span class="signature">&#8596; <a href="https://pub.dev/documentation/jetleaf_core/1.0.1/context/ApplicationContext-class.html">ApplicationContext</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  The <strong>active JetLeaf <a href="https://pub.dev/documentation/jetleaf_core/1.0.1/context/ApplicationContext-class.html">ApplicationContext</a></strong> associated with this registrar.
+  <div class="features"><span class="feature">getter/setter pair</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="cacheErrorHandler" class="property inherited">
+  <span class="name"><a href="../jetleaf_resource/CacheAnnotationMethodInterceptor/cacheErrorHandler.html">cacheErrorHandler</a></span>
+  <span class="signature">&#8596; <a href="../jetleaf_resource/CacheErrorHandler-class.html">CacheErrorHandler</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  The configured error handler responsible for managing cache-related exceptions.
+  <div class="features"><span class="feature">getter/setter pair</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="cacheResolver" class="property inherited">
+  <span class="name"><a href="../jetleaf_resource/CacheAnnotationMethodInterceptor/cacheResolver.html">cacheResolver</a></span>
+  <span class="signature">&#8596; <a href="../jetleaf_resource/CacheResolver-class.html">CacheResolver</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  The user-provided resolver responsible for locating caches by name.
+  <div class="features"><span class="feature">getter/setter pair</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="hashCode" class="property inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object/hashCode.html">hashCode</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/int-class.html">int</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  The hash code for this object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="keyGenerator" class="property inherited">
+  <span class="name"><a href="../jetleaf_resource/CacheAnnotationMethodInterceptor/keyGenerator.html">keyGenerator</a></span>
+  <span class="signature">&#8596; <a href="../jetleaf_resource/KeyGenerator-class.html">KeyGenerator</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  The <a href="../jetleaf_resource/KeyGenerator-class.html">KeyGenerator</a> responsible for producing unique and consistent
+cache keys for annotated method invocations.
+  <div class="features"><span class="feature">getter/setter pair</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="runtimeType" class="property inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object/runtimeType.html">runtimeType</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/Type-class.html">Type</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  A representation of the runtime type of the object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+
+    
+  <section
+      class="summary offset-anchor"
+      id="instance-methods">
+    <h2>Methods</h2>
+    <dl class="callables">
+        <dt id="afterInvocation" class="callable inherited">
+  <span class="name"><a href="../jetleaf_resource/CacheAnnotationMethodInterceptor/afterInvocation.html">afterInvocation</a></span><span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span><span class="signature">(<wbr><span class="parameter" id="afterInvocation-param-invocation"><span class="type-annotation"><a href="https://pub.dev/documentation/jetleaf_core/1.0.1/intercept/MethodInvocation-class.html">MethodInvocation</a><span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span></span> <span class="parameter-name">invocation</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-async/FutureOr-class.html">FutureOr</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Invoked <strong>after</strong> the method execution completes, whether it succeeded or failed.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="afterReturning" class="callable inherited">
+  <span class="name"><a href="../jetleaf_resource/CacheAnnotationMethodInterceptor/afterReturning.html">afterReturning</a></span><span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span><span class="signature">(<wbr><span class="parameter" id="afterReturning-param-invocation"><span class="type-annotation"><a href="https://pub.dev/documentation/jetleaf_core/1.0.1/intercept/MethodInvocation-class.html">MethodInvocation</a><span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span></span> <span class="parameter-name">invocation</span>, </span><span class="parameter" id="afterReturning-param-returnValue"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object-class.html">Object</a>?</span> <span class="parameter-name">returnValue</span>, </span><span class="parameter" id="afterReturning-param-returnClass"><span class="type-annotation"><a href="https://pub.dev/documentation/jetleaf_lang/1.0.1/lang/Class-class.html">Class</a>?</span> <span class="parameter-name">returnClass</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-async/FutureOr-class.html">FutureOr</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Invoked after a successful method execution.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="aroundInvocation" class="callable inherited">
+  <span class="name"><a href="../jetleaf_resource/CacheAnnotationMethodInterceptor/aroundInvocation.html">aroundInvocation</a></span><span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span><span class="signature">(<wbr><span class="parameter" id="aroundInvocation-param-invocation"><span class="type-annotation"><a href="https://pub.dev/documentation/jetleaf_core/1.0.1/intercept/MethodInvocation-class.html">MethodInvocation</a><span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span></span> <span class="parameter-name">invocation</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">T?</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Invoked <strong>around</strong> the target method execution, allowing interception
+both before and after invocation.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="beforeInvocation" class="callable inherited">
+  <span class="name"><a href="../jetleaf_resource/CacheAnnotationMethodInterceptor/beforeInvocation.html">beforeInvocation</a></span><span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span><span class="signature">(<wbr><span class="parameter" id="beforeInvocation-param-invocation"><span class="type-annotation"><a href="https://pub.dev/documentation/jetleaf_core/1.0.1/intercept/MethodInvocation-class.html">MethodInvocation</a><span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span></span> <span class="parameter-name">invocation</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-async/FutureOr-class.html">FutureOr</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Executed immediately <strong>before</strong> the target method invocation.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="canIntercept" class="callable inherited">
+  <span class="name"><a href="../jetleaf_resource/CacheAnnotationMethodInterceptor/canIntercept.html">canIntercept</a></span><span class="signature">(<wbr><span class="parameter" id="canIntercept-param-method"><span class="type-annotation"><a href="https://pub.dev/documentation/jetleaf_lang/1.0.1/lang/Method-class.html">Method</a></span> <span class="parameter-name">method</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Determines whether this interceptor can intercept the specified <code>method</code>.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="equalizedProperties" class="callable">
+  <span class="name"><a href="../jetleaf_resource/CacheComponentRegistrar/equalizedProperties.html">equalizedProperties</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object-class.html">Object</a>?</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Mixin-style contract for value-based equality, <code>hashCode</code>, and <code>toString</code>.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="getPackageName" class="callable">
+  <span class="name"><a href="../jetleaf_resource/CacheComponentRegistrar/getPackageName.html">getPackageName</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/String-class.html">String</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Represents an abstraction for identifying the package that an object,
+resource, or service belongs to.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="noSuchMethod" class="callable inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Invocation-class.html">Invocation</a></span> <span class="parameter-name">invocation</span></span>)
+    <span class="returntype parameter">&#8594; dynamic</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Invoked when a nonexistent method or property is accessed.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="onApplicationEvent" class="callable">
+  <span class="name"><a href="../jetleaf_resource/CacheComponentRegistrar/onApplicationEvent.html">onApplicationEvent</a></span><span class="signature">(<wbr><span class="parameter" id="onApplicationEvent-param-event"><span class="type-annotation"><a href="https://pub.dev/documentation/jetleaf_core/1.0.1/context/ApplicationContextEvent-class.html">ApplicationContextEvent</a></span> <span class="parameter-name">event</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Handle an application event of type <code>E</code>.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="onSingletonReady" class="callable">
+  <span class="name"><a href="../jetleaf_resource/CacheComponentRegistrar/onSingletonReady.html">onSingletonReady</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Callback interface triggered at the end of the singleton pre-instantiation phase.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="setApplicationContext" class="callable">
+  <span class="name"><a href="../jetleaf_resource/CacheComponentRegistrar/setApplicationContext.html">setApplicationContext</a></span><span class="signature">(<wbr><span class="parameter" id="setApplicationContext-param-applicationContext"><span class="type-annotation"><a href="https://pub.dev/documentation/jetleaf_core/1.0.1/context/ApplicationContext-class.html">ApplicationContext</a></span> <span class="parameter-name">applicationContext</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Sets the <a href="https://pub.dev/documentation/jetleaf_core/1.0.1/context/ApplicationContext-class.html">ApplicationContext</a> that this component runs in.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="setErrorHandler" class="callable">
+  <span class="name"><a href="../jetleaf_resource/CacheComponentRegistrar/setErrorHandler.html">setErrorHandler</a></span><span class="signature">(<wbr><span class="parameter" id="setErrorHandler-param-errorHandler"><span class="type-annotation"><a href="../jetleaf_resource/CacheErrorHandler-class.html">CacheErrorHandler</a></span> <span class="parameter-name">errorHandler</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Sets the global <a href="../jetleaf_resource/CacheErrorHandler-class.html">CacheErrorHandler</a> for the cache system.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="supportsEventOf" class="callable">
+  <span class="name"><a href="../jetleaf_resource/CacheComponentRegistrar/supportsEventOf.html">supportsEventOf</a></span><span class="signature">(<wbr><span class="parameter" id="supportsEventOf-param-event"><span class="type-annotation"><a href="https://pub.dev/documentation/jetleaf_core/1.0.1/context/ApplicationEvent-class.html">ApplicationEvent</a></span> <span class="parameter-name">event</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Returns true if the listener supports the given event.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="toString" class="callable inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object/toString.html">toString</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/String-class.html">String</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  A string representation of this object.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor inherited"
+      id="operators">
+    <h2>Operators</h2>
+    <dl class="callables">
+        <dt id="operator ==" class="callable inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">other</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  The equality operator.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+    
+    
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../index.html">jetleaf_resource</a></li>
+    <li><a href="../jetleaf_resource/">jetleaf_resource</a></li>
+    <li class="self-crumb">CacheComponentRegistrar class</li>
+</ol>
+
+    <h5>jetleaf_resource library</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div>
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    jetleaf_resource
+      1.0.0
+  </span>
+  
+</footer>
+
+
+<script src="../static-assets/highlight.pack.js?v1"></script>
+<script src="../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

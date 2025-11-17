@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="jetleaf_resource library API docs, for the Dart programming language.">
+  <title>jetleaf_resource library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../static-assets/styles.css?v1">
+  <link rel="icon" href="../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">jetleaf_resource</a></li>
+    <li class="self-crumb">jetleaf_resource.dart</li>
+  </ol>
+  <div class="self-name">jetleaf_resource</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+<div
+    id="dartdoc-main-content"
+    class="main-content"
+    data-above-sidebar=""
+    data-below-sidebar="jetleaf_resource&#47;jetleaf_resource-library-sidebar.html">
+  
+    <div>
+      
+
+      <h1>
+        <span class="kind-library">jetleaf_resource</span>
+        library 
+ 
+
+      </h1>
+    </div>
+
+    
+<section class="desc markdown">
+  <p>JetLeaf Resource Library</p>
+<p>Provides unified resource management utilities for caching,
+rate limiting, and key generation in JetLeaf applications.</p>
+<p>This library serves as the entry point for resource-related
+functionality, combining cache and rate limit modules with
+supporting components such as:</p>
+<ul>
+<li><code>conditions.dart</code> → declarative resource condition handling</li>
+<li><code>exceptions.dart</code> → resource-specific exception types</li>
+<li><code>resource.dart</code> → base resource interfaces</li>
+<li><code>key_generator/</code> → customizable cache key generation strategies</li>
+<li><code>resource_auto_configuration.dart</code> → automatic resource registration</li>
+</ul>
+<p>Exported modules:</p>
+<ul>
+<li><code>cache.dart</code> — cache management API</li>
+<li><code>rate_limit.dart</code> — rate limit management API</li>
+</ul>
+<p>Typically imported as:</p>
+<pre class="language-dart"><code class="language-dart">import 'package:jetleaf_resource/jetleaf_resource.dart';
+</code></pre>
+</section>
+
+
+    <section class="summary offset-anchor" id="classes">
+      <h2>Classes</h2>
+      <dl>
+          <dt id="Cache">
+  <span class="name "><a href="../jetleaf_resource/Cache-class.html">Cache</a></span> 
+
+</dt>
+<dd>
+  Represents a single cache entry, encapsulating both the <strong>cached value</strong>
+and its associated <strong>lifecycle metadata</strong>.
+</dd>
+
+          <dt id="Cacheable">
+  <span class="name "><a href="../jetleaf_resource/Cacheable-class.html">Cacheable</a></span> 
+
+</dt>
+<dd>
+  Marks a method as cacheable — its result will be stored in one or more caches.
+</dd>
+
+          <dt id="CacheAnnotationMethodInterceptor">
+  <span class="name "><a href="../jetleaf_resource/CacheAnnotationMethodInterceptor-class.html">CacheAnnotationMethodInterceptor</a></span> 
+
+</dt>
+<dd>
+  A composite <code>ConditionalMethodInterceptor</code> that transparently applies
+caching behavior based on JetLeaf cache annotations such as
+<a href="../jetleaf_resource/Cacheable-class.html">Cacheable</a>, <a href="../jetleaf_resource/CachePut-class.html">CachePut</a>, and <a href="../jetleaf_resource/CacheEvict-class.html">CacheEvict</a>.
+</dd>
+
+          <dt id="CacheClearEvent">
+  <span class="name "><a href="../jetleaf_resource/CacheClearEvent-class.html">CacheClearEvent</a></span> 
+
+</dt>
+<dd>
+  Event published when one or more entries in a cache are cleared.
+</dd>
+
+          <dt id="CacheComponentRegistrar">
+  <span class="name "><a href="../jetleaf_resource/CacheComponentRegistrar-class.html">CacheComponentRegistrar</a></span> 
+
+</dt>
+<dd>
+  Central entry point for JetLeaf cache subsystem initialization and
+configuration registration.
+</dd>
+
+          <dt id="CacheConfiguration">
+  <span class="name "><a href="../jetleaf_resource/CacheConfiguration-class.html">CacheConfiguration</a></span> 
+
+</dt>
+<dd>
+  Primary configuration class for the JetLeaf caching subsystem.
+</dd>
+
+          <dt id="CacheConfigurer">
+  <span class="name "><a href="../jetleaf_resource/CacheConfigurer-class.html">CacheConfigurer</a></span> 
+
+</dt>
+<dd>
+  Contract for JetLeaf cache configuration contributors.
+</dd>
+
+          <dt id="CacheErrorHandler">
+  <span class="name "><a href="../jetleaf_resource/CacheErrorHandler-class.html">CacheErrorHandler</a></span> 
+
+</dt>
+<dd>
+  A strategy interface for handling exceptions that occur during cache operations.
+</dd>
+
+          <dt id="CacheErrorHandlerRegistry">
+  <span class="name "><a href="../jetleaf_resource/CacheErrorHandlerRegistry-class.html">CacheErrorHandlerRegistry</a></span> 
+
+</dt>
+<dd>
+  A central registry for all cache-related infrastructure components.
+</dd>
+
+          <dt id="CacheEvent">
+  <span class="name "><a href="../jetleaf_resource/CacheEvent-class.html">CacheEvent</a></span> 
+
+</dt>
+<dd>
+  Base class representing an event related to a cache operation.
+</dd>
+
+          <dt id="CacheEvict">
+  <span class="name "><a href="../jetleaf_resource/CacheEvict-class.html">CacheEvict</a></span> 
+
+</dt>
+<dd>
+  Marks a method that triggers the removal (or invalidation) of cache entries.
+</dd>
+
+          <dt id="CacheEvictEvent">
+  <span class="name "><a href="../jetleaf_resource/CacheEvictEvent-class.html">CacheEvictEvent</a></span> 
+
+</dt>
+<dd>
+  Event published when an entry is removed (evicted) from a cache.
+</dd>
+
+          <dt id="CacheEvictionPolicy">
+  <span class="name "><a href="../jetleaf_resource/CacheEvictionPolicy-class.html">CacheEvictionPolicy</a></span> 
+
+</dt>
+<dd>
+  Represents a cache eviction strategy for determining which cache entry
+should be removed when the cache reaches capacity or when specific
+conditions are met.
+</dd>
+
+          <dt id="CacheExpireEvent">
+  <span class="name "><a href="../jetleaf_resource/CacheExpireEvent-class.html">CacheExpireEvent</a></span> 
+
+</dt>
+<dd>
+  Event published when a cache entry expires due to reaching its TTL (time-to-live).
+</dd>
+
+          <dt id="CacheHitEvent">
+  <span class="name "><a href="../jetleaf_resource/CacheHitEvent-class.html">CacheHitEvent</a></span> 
+
+</dt>
+<dd>
+  Event published when a cached value is successfully retrieved.
+</dd>
+
+          <dt id="CacheManager">
+  <span class="name "><a href="../jetleaf_resource/CacheManager-class.html">CacheManager</a></span> 
+
+</dt>
+<dd>
+  Manages multiple <a href="../jetleaf_resource/CacheStorage-class.html">CacheStorage</a> instances and provides lookup by name.
+</dd>
+
+          <dt id="CacheManagerRegistry">
+  <span class="name "><a href="../jetleaf_resource/CacheManagerRegistry-class.html">CacheManagerRegistry</a></span> 
+
+</dt>
+<dd>
+  A registry contract for managing multiple <a href="../jetleaf_resource/CacheManager-class.html">CacheManager</a> pods within JetLeaf.
+</dd>
+
+          <dt id="CacheMetrics">
+  <span class="name "><a href="../jetleaf_resource/CacheMetrics-class.html">CacheMetrics</a></span> 
+
+</dt>
+<dd>
+  An abstract interface class for collecting and reporting <strong>cache-related metrics</strong>.
+</dd>
+
+          <dt id="CacheMissEvent">
+  <span class="name "><a href="../jetleaf_resource/CacheMissEvent-class.html">CacheMissEvent</a></span> 
+
+</dt>
+<dd>
+  Event published when a cache lookup fails to find a value.
+</dd>
+
+          <dt id="CacheOperation">
+  <span class="name "><a href="../jetleaf_resource/CacheOperation-class.html">CacheOperation</a></span> 
+
+</dt>
+<dd>
+  Defines the contract for a cache operation within the JetLeaf caching subsystem.
+</dd>
+
+          <dt id="CacheOperationContext">
+  <span class="name "><a href="../jetleaf_resource/CacheOperationContext-class.html">CacheOperationContext</a><span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span></span> 
+
+</dt>
+<dd>
+  Defines the execution context for a cache operation within JetLeaf’s
+caching subsystem.
+</dd>
+
+          <dt id="CachePut">
+  <span class="name "><a href="../jetleaf_resource/CachePut-class.html">CachePut</a></span> 
+
+</dt>
+<dd>
+  Marks a method whose result should always be stored (or updated) in the cache.
+</dd>
+
+          <dt id="CachePutEvent">
+  <span class="name "><a href="../jetleaf_resource/CachePutEvent-class.html">CachePutEvent</a></span> 
+
+</dt>
+<dd>
+  Event published when a value is stored in a cache.
+</dd>
+
+          <dt id="CacheResolver">
+  <span class="name "><a href="../jetleaf_resource/CacheResolver-class.html">CacheResolver</a></span> 
+
+</dt>
+<dd>
+  Strategy interface for resolving one or more <a href="../jetleaf_resource/CacheStorage-class.html">CacheStorage</a> instances
+associated with a particular <a href="../jetleaf_resource/Cacheable-class.html">Cacheable</a> operation.
+</dd>
+
+          <dt id="CacheResolverRegistry">
+  <span class="name "><a href="../jetleaf_resource/CacheResolverRegistry-class.html">CacheResolverRegistry</a></span> 
+
+</dt>
+<dd>
+  A registry contract for managing multiple <a href="../jetleaf_resource/CacheResolver-class.html">CacheResolver</a> pods within JetLeaf.
+</dd>
+
+          <dt id="CacheStorage">
+  <span class="name "><a href="../jetleaf_resource/CacheStorage-class.html">CacheStorage</a></span> 
+
+</dt>
+<dd>
+  The core abstraction representing a single named cache.
+</dd>
+
+          <dt id="CacheStorageRegistry">
+  <span class="name "><a href="../jetleaf_resource/CacheStorageRegistry-class.html">CacheStorageRegistry</a></span> 
+
+</dt>
+<dd>
+  Defines a registry contract for managing <a href="../jetleaf_resource/CacheStorage-class.html">CacheStorage</a> instances.
+</dd>
+
+          <dt id="CompositeKeyGenerator">
+  <span class="name "><a href="../jetleaf_resource/CompositeKeyGenerator-class.html">CompositeKeyGenerator</a></span> 
+
+</dt>
+<dd>
+  A composite <a href="../jetleaf_resource/KeyGenerator-class.html">KeyGenerator</a> that aggregates and coordinates multiple
+<a href="../jetleaf_resource/KeyGenerator-class.html">KeyGenerator</a> pods registered within the JetLeaf application context.
+</dd>
+
+          <dt id="ConcurrentMapCacheResource">
+  <span class="name "><a href="../jetleaf_resource/ConcurrentMapCacheResource-class.html">ConcurrentMapCacheResource</a></span> 
+
+</dt>
+<dd>
+  A concurrent in-memory cache resource based on <a href="https://pub.dev/documentation/jetleaf_lang/1.0.1/lang/HashMap-class.html">HashMap</a>, implementing
+the <a href="../jetleaf_resource/Resource-class.html">Resource</a> interface.
+</dd>
+
+          <dt id="ConcurrentMapCacheStorage">
+  <span class="name "><a href="../jetleaf_resource/ConcurrentMapCacheStorage-class.html">ConcurrentMapCacheStorage</a></span> 
+
+</dt>
+<dd>
+  A thread-safe, in-memory cache implementation backed by a concurrent <a href="../jetleaf_resource/ConcurrentMapCacheResource-class.html">ConcurrentMapCacheResource</a>.
+</dd>
+
+          <dt id="ConcurrentMapRateLimitResource">
+  <span class="name "><a href="../jetleaf_resource/ConcurrentMapRateLimitResource-class.html">ConcurrentMapRateLimitResource</a></span> 
+
+</dt>
+<dd>
+  A thread-safe in-memory resource for storing rate limit entries.
+</dd>
+
+          <dt id="ConcurrentMapRateLimitStorage">
+  <span class="name "><a href="../jetleaf_resource/ConcurrentMapRateLimitStorage-class.html">ConcurrentMapRateLimitStorage</a></span> 
+
+</dt>
+<dd>
+  A thread-safe, in-memory rate-limit storage implementation backed by a
+concurrent <a href="../jetleaf_resource/ConcurrentMapRateLimitResource-class.html">ConcurrentMapRateLimitResource</a>.
+</dd>
+
+          <dt id="ConditionalKeyGenerator">
+  <span class="name "><a href="../jetleaf_resource/ConditionalKeyGenerator-class.html">ConditionalKeyGenerator</a></span> 
+
+</dt>
+<dd>
+  A specialized <a href="../jetleaf_resource/KeyGenerator-class.html">KeyGenerator</a> that can conditionally participate in key generation
+based on runtime or reflective characteristics of a method invocation.
+</dd>
+
+          <dt id="ConfigurableCacheStorage">
+  <span class="name "><a href="../jetleaf_resource/ConfigurableCacheStorage-class.html">ConfigurableCacheStorage</a></span> 
+
+</dt>
+<dd>
+  Defines configuration capabilities for a cache storage implementation.
+</dd>
+
+          <dt id="ConfigurableRateLimitStorage">
+  <span class="name "><a href="../jetleaf_resource/ConfigurableRateLimitStorage-class.html">ConfigurableRateLimitStorage</a></span> 
+
+</dt>
+<dd>
+  Represents a configurable rate-limit storage that allows runtime tuning
+of critical operational parameters, primarily the time zone used for
+window tracking and expiration calculations.
+</dd>
+
+          <dt id="EnableResource">
+  <span class="name "><a href="../jetleaf_resource/EnableResource-class.html">EnableResource</a></span> 
+
+</dt>
+<dd>
+  Annotation used to <strong>enable JetLeaf resource and caching infrastructure</strong>
+within an application context.
+</dd>
+
+          <dt id="FifoEvictionPolicy">
+  <span class="name "><a href="../jetleaf_resource/FifoEvictionPolicy-class.html">FifoEvictionPolicy</a></span> 
+
+</dt>
+<dd>
+  A <strong>First-In-First-Out (FIFO) cache eviction policy</strong> that removes
+the oldest entry from the cache when eviction is necessary.
+</dd>
+
+          <dt id="KeyGenerator">
+  <span class="name "><a href="../jetleaf_resource/KeyGenerator-class.html">KeyGenerator</a></span> 
+
+</dt>
+<dd>
+  KeyGenerator — Strategy for Cache Key Generation
+</dd>
+
+          <dt id="KeyGeneratorRegistry">
+  <span class="name "><a href="../jetleaf_resource/KeyGeneratorRegistry-class.html">KeyGeneratorRegistry</a></span> 
+
+</dt>
+<dd>
+  Central registry interface for managing <a href="../jetleaf_resource/KeyGenerator-class.html">KeyGenerator</a> pods within the
+JetLeaf caching subsystem.
+</dd>
+
+          <dt id="LfuEvictionPolicy">
+  <span class="name "><a href="../jetleaf_resource/LfuEvictionPolicy-class.html">LfuEvictionPolicy</a></span> 
+
+</dt>
+<dd>
+  A <strong>Least-Frequently-Used (LFU) cache eviction policy</strong> for managing
+cache memory efficiently by evicting the entries that are accessed least often.
+</dd>
+
+          <dt id="LoggableCacheErrorHandler">
+  <span class="name "><a href="../jetleaf_resource/LoggableCacheErrorHandler-class.html">LoggableCacheErrorHandler</a></span> 
+
+</dt>
+<dd>
+  A <a href="../jetleaf_resource/CacheErrorHandler-class.html">CacheErrorHandler</a> implementation that logs all cache operation failures.
+</dd>
+
+          <dt id="LruEvictionPolicy">
+  <span class="name "><a href="../jetleaf_resource/LruEvictionPolicy-class.html">LruEvictionPolicy</a></span> 
+
+</dt>
+<dd>
+  A <strong>Least-Recently-Used (LRU) cache eviction policy</strong> that removes the cache
+entry that has not been accessed for the longest time when eviction is required.
+</dd>
+
+          <dt id="OperationContext">
+  <span class="name "><a href="../jetleaf_resource/OperationContext-class.html">OperationContext</a></span> 
+
+</dt>
+<dd>
+  A central contract in <strong>JetLeaf</strong> representing the operational context
+available to runtime components, interceptors, and infrastructure extensions.
+</dd>
+
+          <dt id="RateLimit">
+  <span class="name "><a href="../jetleaf_resource/RateLimit-class.html">RateLimit</a></span> 
+
+</dt>
+<dd>
+  Annotation that marks a method to be subject to rate limiting.
+</dd>
+
+          <dt id="RateLimitAllowedEvent">
+  <span class="name "><a href="../jetleaf_resource/RateLimitAllowedEvent-class.html">RateLimitAllowedEvent</a></span> 
+
+</dt>
+<dd>
+  Event published when a request is <strong>allowed</strong> under the configured rate limit.
+</dd>
+
+          <dt id="RateLimitAnnotationMethodInterceptor">
+  <span class="name "><a href="../jetleaf_resource/RateLimitAnnotationMethodInterceptor-class.html">RateLimitAnnotationMethodInterceptor</a></span> 
+
+</dt>
+<dd>
+  A composite <code>ConditionalMethodInterceptor</code> that transparently applies
+<strong>rate limiting</strong> behavior based on JetLeaf <code>@RateLimit</code> annotations.
+</dd>
+
+          <dt id="RateLimitClearEvent">
+  <span class="name "><a href="../jetleaf_resource/RateLimitClearEvent-class.html">RateLimitClearEvent</a></span> 
+
+</dt>
+<dd>
+  Event published when all request counters for a given rate limit bucket
+or storage have been cleared.
+</dd>
+
+          <dt id="RateLimitComponentRegistrar">
+  <span class="name "><a href="../jetleaf_resource/RateLimitComponentRegistrar-class.html">RateLimitComponentRegistrar</a></span> 
+
+</dt>
+<dd>
+  A specialized <a href="../jetleaf_resource/RateLimitAnnotationMethodInterceptor-class.html">RateLimitAnnotationMethodInterceptor</a> that integrates
+rate-limit enforcement with the <strong>JetLeaf application lifecycle</strong>.
+</dd>
+
+          <dt id="RateLimitConfiguration">
+  <span class="name "><a href="../jetleaf_resource/RateLimitConfiguration-class.html">RateLimitConfiguration</a></span> 
+
+</dt>
+<dd>
+  Central configuration class for the <strong>JetLeaf Rate-Limit subsystem</strong>.
+</dd>
+
+          <dt id="RateLimitConfigurer">
+  <span class="name "><a href="../jetleaf_resource/RateLimitConfigurer-class.html">RateLimitConfigurer</a></span> 
+
+</dt>
+<dd>
+  Defines the programmatic configuration entry point for the rate-limiting subsystem.
+</dd>
+
+          <dt id="RateLimitDeniedEvent">
+  <span class="name "><a href="../jetleaf_resource/RateLimitDeniedEvent-class.html">RateLimitDeniedEvent</a></span> 
+
+</dt>
+<dd>
+  Event published when a request is <strong>denied</strong> due to exceeding the configured rate limit.
+</dd>
+
+          <dt id="RateLimitEntry">
+  <span class="name "><a href="../jetleaf_resource/RateLimitEntry-class.html">RateLimitEntry</a></span> 
+
+</dt>
+<dd>
+  Represents a single tracked rate limit record within a <a href="../jetleaf_resource/RateLimitStorage-class.html">RateLimitStorage</a>.
+</dd>
+
+          <dt id="RateLimitEvent">
+  <span class="name "><a href="../jetleaf_resource/RateLimitEvent-class.html">RateLimitEvent</a></span> 
+
+</dt>
+<dd>
+  Base class for all <strong>rate limit events</strong> in JetLeaf.
+</dd>
+
+          <dt id="RateLimitManager">
+  <span class="name "><a href="../jetleaf_resource/RateLimitManager-class.html">RateLimitManager</a></span> 
+
+</dt>
+<dd>
+  The <a href="../jetleaf_resource/RateLimitManager-class.html">RateLimitManager</a> interface defines the orchestration layer for managing
+multiple <a href="../jetleaf_resource/RateLimitStorage-class.html">RateLimitStorage</a> instances within JetLeaf’s traffic control
+subsystem.
+</dd>
+
+          <dt id="RateLimitManagerRegistry">
+  <span class="name "><a href="../jetleaf_resource/RateLimitManagerRegistry-class.html">RateLimitManagerRegistry</a></span> 
+
+</dt>
+<dd>
+  Registry for managing and exposing <a href="../jetleaf_resource/RateLimitManager-class.html">RateLimitManager</a> instances.
+</dd>
+
+          <dt id="RateLimitMetrics">
+  <span class="name "><a href="../jetleaf_resource/RateLimitMetrics-class.html">RateLimitMetrics</a></span> 
+
+</dt>
+<dd>
+  Defines the contract for recording and reporting rate limit activity metrics.
+</dd>
+
+          <dt id="RateLimitOperationContext">
+  <span class="name "><a href="../jetleaf_resource/RateLimitOperationContext-class.html">RateLimitOperationContext</a><span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span></span> 
+
+</dt>
+<dd>
+  Context object representing the state and behavior of a rate-limited
+method invocation or resource access.
+</dd>
+
+          <dt id="RateLimitResetEvent">
+  <span class="name "><a href="../jetleaf_resource/RateLimitResetEvent-class.html">RateLimitResetEvent</a></span> 
+
+</dt>
+<dd>
+  Event published when a rate limit window has been <strong>reset</strong> for a particular entity.
+</dd>
+
+          <dt id="RateLimitResolver">
+  <span class="name "><a href="../jetleaf_resource/RateLimitResolver-class.html">RateLimitResolver</a></span> 
+
+</dt>
+<dd>
+  The <a href="../jetleaf_resource/RateLimitResolver-class.html">RateLimitResolver</a> defines the strategy contract for resolving one or more
+<a href="../jetleaf_resource/RateLimitStorage-class.html">RateLimitStorage</a> instances for a specific <a href="../jetleaf_resource/RateLimit-class.html">RateLimit</a> operation.
+</dd>
+
+          <dt id="RateLimitResolverRegistry">
+  <span class="name "><a href="../jetleaf_resource/RateLimitResolverRegistry-class.html">RateLimitResolverRegistry</a></span> 
+
+</dt>
+<dd>
+  Registry for managing <a href="../jetleaf_resource/RateLimitResolver-class.html">RateLimitResolver</a> instances.
+</dd>
+
+          <dt id="RateLimitResult">
+  <span class="name "><a href="../jetleaf_resource/RateLimitResult-class.html">RateLimitResult</a></span> 
+
+</dt>
+<dd>
+  Represents the outcome of a rate-limit check for a specific identifier.
+</dd>
+
+          <dt id="RateLimitStorage">
+  <span class="name "><a href="../jetleaf_resource/RateLimitStorage-class.html">RateLimitStorage</a></span> 
+
+</dt>
+<dd>
+  The <a href="../jetleaf_resource/RateLimitStorage-class.html">RateLimitStorage</a> interface defines the abstraction for JetLeaf’s
+rate-limiting persistence and quota tracking mechanism.
+</dd>
+
+          <dt id="RateLimitStorageRegistry">
+  <span class="name "><a href="../jetleaf_resource/RateLimitStorageRegistry-class.html">RateLimitStorageRegistry</a></span> 
+
+</dt>
+<dd>
+  Central registry for managing <a href="../jetleaf_resource/RateLimitStorage-class.html">RateLimitStorage</a> instances.
+</dd>
+
+          <dt id="Resource">
+  <span class="name "><a href="../jetleaf_resource/Resource-class.html">Resource</a></span> 
+
+</dt>
+<dd>
+  Represents the contract for any JetLeaf-backed storage mechanism.
+</dd>
+
+          <dt id="ResourceAutoConfiguration">
+  <span class="name "><a href="../jetleaf_resource/ResourceAutoConfiguration-class.html">ResourceAutoConfiguration</a></span> 
+
+</dt>
+<dd>
+  Auto-configuration entry point for JetLeaf <strong>resource and key generation infrastructure</strong>.
+</dd>
+
+          <dt id="ResourceCondition">
+  <span class="name "><a href="../jetleaf_resource/ResourceCondition-class.html">ResourceCondition</a></span> 
+
+</dt>
+<dd>
+  Defines a generalized conditional policy for applying resource-level operations.
+</dd>
+
+          <dt id="RollbackCapableRateLimitStorage">
+  <span class="name "><a href="../jetleaf_resource/RollbackCapableRateLimitStorage-class.html">RollbackCapableRateLimitStorage</a></span> 
+
+</dt>
+<dd>
+  An in-memory rate-limit storage variant that supports <strong>best-effort rollback</strong> of
+a prior successful consume.
+</dd>
+
+          <dt id="SimpleCacheManager">
+  <span class="name "><a href="../jetleaf_resource/SimpleCacheManager-class.html">SimpleCacheManager</a></span> 
+
+</dt>
+<dd>
+  A composite registry and coordinator for multiple <a href="../jetleaf_resource/CacheManager-class.html">CacheManager</a> implementations within JetLeaf.
+</dd>
+
+          <dt id="SimpleCacheResolver">
+  <span class="name "><a href="../jetleaf_resource/SimpleCacheResolver-class.html">SimpleCacheResolver</a></span> 
+
+</dt>
+<dd>
+  Default JetLeaf implementation of the <a href="../jetleaf_resource/CacheResolver-class.html">CacheResolver</a> interface, providing
+a simple yet extensible mechanism for resolving <a href="../jetleaf_resource/Cacheable-class.html">Cacheable</a> annotations
+to their corresponding <a href="../jetleaf_resource/CacheStorage-class.html">CacheStorage</a> instances.
+</dd>
+
+          <dt id="SimpleKeyGenerator">
+  <span class="name "><a href="../jetleaf_resource/SimpleKeyGenerator-class.html">SimpleKeyGenerator</a></span> 
+
+</dt>
+<dd>
+  A lightweight <a href="../jetleaf_resource/KeyGenerator-class.html">KeyGenerator</a> implementation that delegates directly to the
+base key generation strategy defined in <a href="../jetleaf_resource/KeyGenerator-class.html">KeyGenerator</a>.
+</dd>
+
+          <dt id="SimpleRateLimitManager">
+  <span class="name "><a href="../jetleaf_resource/SimpleRateLimitManager-class.html">SimpleRateLimitManager</a></span> 
+
+</dt>
+<dd>
+  A composite <a href="../jetleaf_resource/RateLimitManager-class.html">RateLimitManager</a> implementation that manages discovery,
+registration, and resolution of <a href="../jetleaf_resource/RateLimitStorage-class.html">RateLimitStorage</a> instances.
+</dd>
+
+          <dt id="SimpleRateLimitResolver">
+  <span class="name "><a href="../jetleaf_resource/SimpleRateLimitResolver-class.html">SimpleRateLimitResolver</a></span> 
+
+</dt>
+<dd>
+  A simple, composite <a href="../jetleaf_resource/RateLimitResolver-class.html">RateLimitResolver</a> implementation that delegates
+storage resolution to a chain of configured resolvers and a primary
+<a href="../jetleaf_resource/RateLimitManager-class.html">RateLimitManager</a> fallback.
+</dd>
+
+          <dt id="ThrowableCacheErrorHandler">
+  <span class="name "><a href="../jetleaf_resource/ThrowableCacheErrorHandler-class.html">ThrowableCacheErrorHandler</a></span> 
+
+</dt>
+<dd>
+  A strict <a href="../jetleaf_resource/CacheErrorHandler-class.html">CacheErrorHandler</a> implementation that immediately rethrows any
+exception encountered during cache operations.
+</dd>
+
+          <dt id="WhenAll">
+  <span class="name "><a href="../jetleaf_resource/WhenAll-class.html">WhenAll</a></span> 
+
+</dt>
+<dd>
+  A composite <a href="../jetleaf_resource/ResourceCondition-class.html">ResourceCondition</a> that evaluates to <code>true</code> only if <strong>both</strong>
+the left and right conditions evaluate to <code>true</code>.
+</dd>
+
+          <dt id="WhenAlways">
+  <span class="name "><a href="../jetleaf_resource/WhenAlways-class.html">WhenAlways</a></span> 
+
+</dt>
+<dd>
+  A <a href="../jetleaf_resource/ResourceCondition-class.html">ResourceCondition</a> that always evaluates to <code>true</code>.
+</dd>
+
+          <dt id="WhenAny">
+  <span class="name "><a href="../jetleaf_resource/WhenAny-class.html">WhenAny</a></span> 
+
+</dt>
+<dd>
+  A composite <a href="../jetleaf_resource/ResourceCondition-class.html">ResourceCondition</a> that evaluates to <code>true</code> if <strong>either</strong>
+the left or right condition evaluates to <code>true</code>.
+</dd>
+
+          <dt id="WhenEnv">
+  <span class="name "><a href="../jetleaf_resource/WhenEnv-class.html">WhenEnv</a></span> 
+
+</dt>
+<dd>
+  A <a href="../jetleaf_resource/ResourceCondition-class.html">ResourceCondition</a> that evaluates based on environment variables.
+</dd>
+
+          <dt id="WhenNever">
+  <span class="name "><a href="../jetleaf_resource/WhenNever-class.html">WhenNever</a></span> 
+
+</dt>
+<dd>
+  A <a href="../jetleaf_resource/ResourceCondition-class.html">ResourceCondition</a> that always evaluates to <code>false</code>.
+</dd>
+
+          <dt id="WhenNone">
+  <span class="name "><a href="../jetleaf_resource/WhenNone-class.html">WhenNone</a></span> 
+
+</dt>
+<dd>
+  A condition that evaluates to <code>true</code> only if <strong>both</strong> nested conditions
+evaluate to <code>false</code>.
+</dd>
+
+          <dt id="WhenNot">
+  <span class="name "><a href="../jetleaf_resource/WhenNot-class.html">WhenNot</a></span> 
+
+</dt>
+<dd>
+  A negation <a href="../jetleaf_resource/ResourceCondition-class.html">ResourceCondition</a> that inverts the result of another condition.
+</dd>
+
+      </dl>
+    </section>
+
+    <section class="summary offset-anchor" id="enums">
+      <h2>Enums</h2>
+      <dl>
+          <dt id="EnvMatchType">
+  <span class="name "><a href="../jetleaf_resource/EnvMatchType.html">EnvMatchType</a></span> 
+
+</dt>
+<dd>
+  Defines how a <a href="../jetleaf_resource/WhenEnv-class.html">WhenEnv</a> condition compares an environment value.
+</dd>
+
+      </dl>
+    </section>
+
+
+
+
+
+
+
+
+    <section class="summary offset-anchor" id="exceptions">
+      <h2>Exceptions / Errors</h2>
+      <dl>
+          <dt id="CacheCapacityExceededException">
+  <span class="name "><a href="../jetleaf_resource/CacheCapacityExceededException-class.html">CacheCapacityExceededException</a></span> 
+
+</dt>
+<dd>
+  Exception thrown when a cache exceeds its configured capacity and no
+eviction policy is available to free up space.
+</dd>
+
+          <dt id="CacheException">
+  <span class="name "><a href="../jetleaf_resource/CacheException-class.html">CacheException</a></span> 
+
+</dt>
+<dd>
+  Represents a runtime exception that occurs during cache operations.
+</dd>
+
+          <dt id="NoCacheFoundException">
+  <span class="name "><a href="../jetleaf_resource/NoCacheFoundException-class.html">NoCacheFoundException</a></span> 
+
+</dt>
+<dd>
+  Thrown when a requested cache entry cannot be found.
+</dd>
+
+          <dt id="NoRateLimitFoundException">
+  <span class="name "><a href="../jetleaf_resource/NoRateLimitFoundException-class.html">NoRateLimitFoundException</a></span> 
+
+</dt>
+<dd>
+  Exception thrown when a requested rate-limit configuration or storage
+cannot be found within the active <a href="../jetleaf_resource/RateLimitManager-class.html">RateLimitManager</a> or resolver chain.
+</dd>
+
+          <dt id="RateLimitExceededException">
+  <span class="name "><a href="../jetleaf_resource/RateLimitExceededException-class.html">RateLimitExceededException</a></span> 
+
+</dt>
+<dd>
+  Exception thrown when a rate limit is exceeded.
+</dd>
+
+      </dl>
+    </section>
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../index.html">jetleaf_resource</a></li>
+    <li class="self-crumb">jetleaf_resource.dart</li>
+</ol>
+
+    <h5><span class="package-name">jetleaf_resource</span> <span class="package-kind">package</span></h5>
+    <ol>
+      <li class="section-title">Libraries</li>
+      <li><a href="../cache/">cache</a></li>
+      <li><a href="../jetleaf_resource/">jetleaf_resource</a></li>
+      <li><a href="../rate_limit/">rate_limit</a></li>
+</ol>
+
+  </div>
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+    <h5>jetleaf_resource library</h5>
+  </div><!--/sidebar-offcanvas-right-->
+</main>
+<footer>
+  <span class="no-break">
+    jetleaf_resource
+      1.0.0
+  </span>
+  
+</footer>
+
+
+<script src="../static-assets/highlight.pack.js?v1"></script>
+<script src="../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

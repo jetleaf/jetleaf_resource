@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the ConcurrentMapRateLimitStorage class from the jetleaf_resource library, for the Dart programming language.">
+  <title>ConcurrentMapRateLimitStorage class - jetleaf_resource library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../static-assets/styles.css?v1">
+  <link rel="icon" href="../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">jetleaf_resource</a></li>
+    <li><a href="../jetleaf_resource/">jetleaf_resource.dart</a></li>
+    <li class="self-crumb">ConcurrentMapRateLimitStorage class</li>
+  </ol>
+  <div class="self-name">ConcurrentMapRateLimitStorage</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+<div
+    id="dartdoc-main-content"
+    class="main-content"
+    data-above-sidebar="jetleaf_resource&#47;jetleaf_resource-library-sidebar.html"
+    data-below-sidebar="jetleaf_resource&#47;ConcurrentMapRateLimitStorage-class-sidebar.html">
+    <div>
+<h1><span class="kind-class">ConcurrentMapRateLimitStorage</span> class 
+    <a href="https://dart.dev/language/class-modifiers#final" class="feature feature-final" title="This class can neither be extended, implemented, nor mixed in.">final</a>
+ 
+</h1></div>
+
+    
+<section class="desc markdown">
+  <p>A thread-safe, in-memory rate-limit storage implementation backed by a
+concurrent <a href="../jetleaf_resource/ConcurrentMapRateLimitResource-class.html">ConcurrentMapRateLimitResource</a>.</p>
+<p>The <a href="../jetleaf_resource/ConcurrentMapRateLimitStorage-class.html">ConcurrentMapRateLimitStorage</a> provides a simple yet configurable
+mechanism to enforce rate-limiting policies per identifier and window.
+It integrates with JetLeaf's core rate-limiting infrastructure, supports
+configurable TTLs, event emission, and runtime metrics collection.</p>
+<h3 id="purpose">Purpose</h3>
+<p>Designed as the <strong>default in-memory rate-limit provider</strong> within the JetLeaf
+rate-limiting subsystem, this implementation balances concurrency and
+observability. Applications can quickly check, record, and enforce request
+limits while maintaining operational metrics and event hooks.</p>
+<h3 id="key-responsibilities">Key Responsibilities</h3>
+<ul>
+<li>Store rate-limit entries in an in-memory <code>_store</code> keyed by identifier.</li>
+<li>Support dynamic configuration via <a href="https://pub.dev/documentation/jetleaf_core/1.0.1/context/ApplicationContext-class.html">ApplicationContext</a> environment properties.</li>
+<li>Enforce request limits per time window (TTL-based sliding or fixed windows).</li>
+<li>Track request counts, allowed/denied requests, and resets via <code>_metrics</code>.</li>
+<li>Optionally emit JetLeaf <a href="../jetleaf_resource/RateLimitEvent-class.html">RateLimitEvent</a>s for monitoring and auditing.</li>
+</ul>
+<h3 id="configuration">Configuration</h3>
+<p>The storage automatically resolves runtime configuration from
+<a href="../jetleaf_resource/RateLimitConfiguration-class.html">RateLimitConfiguration</a> keys at context initialization:</p>
+<table>
+<thead>
+<tr>
+<th>Property Key</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>RateLimitConfiguration.TIMEZONE</code></td>
+<td>Zone identifier used for temporal computations</td>
+<td><code>UTC</code></td>
+</tr>
+<tr>
+<td><code>RateLimitConfiguration.ENABLE_METRICS</code></td>
+<td>Enables metrics tracking via <a href="../jetleaf_resource/RateLimitMetrics-class.html">RateLimitMetrics</a></td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td><code>RateLimitConfiguration.ENABLE_EVENTS</code></td>
+<td>Enables rate-limit event emission</td>
+<td><code>true</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="lifecycle">Lifecycle</h3>
+<ol>
+<li>Upon startup, <a href="../jetleaf_resource/ConcurrentMapRateLimitStorage/setApplicationContext.html">setApplicationContext</a> loads environment configuration.</li>
+<li>The storage becomes operational with defaults or environment overrides.</li>
+<li>During runtime, operations like <a href="../jetleaf_resource/ConcurrentMapRateLimitStorage/tryConsume.html">tryConsume</a>, <a href="../jetleaf_resource/ConcurrentMapRateLimitStorage/recordRequest.html">recordRequest</a>, and <a href="../jetleaf_resource/ConcurrentMapRateLimitStorage/invalidate.html">invalidate</a>
+maintain both data integrity and metrics/event synchronization.</li>
+<li>Calls to <a href="../jetleaf_resource/ConcurrentMapRateLimitStorage/clear.html">clear</a> or <a href="../jetleaf_resource/ConcurrentMapRateLimitStorage/reset.html">reset</a> safely purge entries.</li>
+</ol>
+<h3 id="related-components">Related Components</h3>
+<ul>
+<li><a href="../jetleaf_resource/RateLimitStorage-class.html">RateLimitStorage</a>: Base interface defining core rate-limit operations.</li>
+<li><a href="../jetleaf_resource/ConfigurableRateLimitStorage-class.html">ConfigurableRateLimitStorage</a>: Supports runtime configuration hooks.</li>
+<li><a href="../jetleaf_resource/RateLimitMetrics-class.html">RateLimitMetrics</a>: Used to record operational statistics.</li>
+<li><a href="../jetleaf_resource/RateLimitEvent-class.html">RateLimitEvent</a>: Framework-level rate-limit event abstraction.</li>
+<li><a href="https://pub.dev/documentation/jetleaf_core/1.0.1/context/ApplicationContext-class.html">ApplicationContext</a>: Provides environment and event-publishing services.</li>
+</ul>
+<h3 id="example">Example</h3>
+<pre class="language-dart"><code class="language-dart">final rateLimit = ConcurrentMapRateLimitStorage();
+rateLimit.setApplicationContext(appContext);
+
+final allowed = await rateLimit.isAllowed('user:42', 100, Duration(minutes: 1));
+if (allowed) {
+  await rateLimit.recordRequest('user:42', Duration(minutes: 1));
+} else {
+  final retryAfter = await rateLimit.getRetryAfter('user:42', Duration(minutes: 1));
+  print('Rate limit exceeded, retry after $retryAfter');
+}
+
+print('Remaining requests: ${await rateLimit.getRemainingRequests('user:42', 100, Duration(minutes: 1))}');
+</code></pre>
+<h3 id="notes">Notes</h3>
+<ul>
+<li>This rate-limit storage is <strong>non-distributed</strong> and suitable for single-node deployments.</li>
+<li>All operations are asynchronous to integrate with JetLeaf’s reactive event model.</li>
+<li>Expiration and resets are evaluated lazily during <a href="../jetleaf_resource/ConcurrentMapRateLimitStorage/tryConsume.html">tryConsume</a>, <a href="../jetleaf_resource/ConcurrentMapRateLimitStorage/recordRequest.html">recordRequest</a>, and <a href="../jetleaf_resource/ConcurrentMapRateLimitStorage/invalidate.html">invalidate</a> calls.</li>
+</ul>
+</section>
+
+
+    <section>
+      <dl class="dl-horizontal">
+        
+
+        
+  <dt>Implemented types</dt>
+  <dd>
+    <ul class="comma-separated clazz-relationships">
+        <li><a href="../jetleaf_resource/RateLimitStorage-class.html">RateLimitStorage</a></li>
+        <li><a href="../jetleaf_resource/ConfigurableRateLimitStorage-class.html">ConfigurableRateLimitStorage</a></li>
+        <li><a href="https://pub.dev/documentation/jetleaf_core/1.0.1/core/ApplicationContextAware-class.html">ApplicationContextAware</a></li>
+        <li><a href="https://pub.dev/documentation/jetleaf_pod/1.0.1/pod/SmartInitializingSingleton-class.html">SmartInitializingSingleton</a></li>
+    </ul>
+  </dd>
+        
+
+          <dt>Implementers</dt>
+          <dd><ul class="comma-separated clazz-relationships">
+              <li><a href="../jetleaf_resource/RollbackCapableRateLimitStorage-class.html">RollbackCapableRateLimitStorage</a></li>
+          </ul></dd>
+
+        
+        
+
+
+      </dl>
+    </section>
+
+    
+  <section class="summary offset-anchor" id="constructors">
+    <h2>Constructors</h2>
+    <dl class="constructor-summary-list">
+        <dt id="ConcurrentMapRateLimitStorage.new" class="callable">
+          <span class="name"><a href="../jetleaf_resource/ConcurrentMapRateLimitStorage/ConcurrentMapRateLimitStorage.html">ConcurrentMapRateLimitStorage.new</a></span><span class="signature">()</span>
+        </dt>
+        <dd>
+          A thread-safe, in-memory rate-limit storage implementation backed by a
+concurrent <a href="../jetleaf_resource/ConcurrentMapRateLimitResource-class.html">ConcurrentMapRateLimitResource</a>.
+        </dd>
+        <dt id="ConcurrentMapRateLimitStorage.named" class="callable">
+          <span class="name"><a href="../jetleaf_resource/ConcurrentMapRateLimitStorage/ConcurrentMapRateLimitStorage.named.html">ConcurrentMapRateLimitStorage.named</a></span><span class="signature">(<span class="parameter" id="named-param-name"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/String-class.html">String</a></span> <span class="parameter-name">name</span></span>)</span>
+        </dt>
+        <dd>
+          A thread-safe, in-memory rate-limit storage implementation backed by a
+concurrent <a href="../jetleaf_resource/ConcurrentMapRateLimitResource-class.html">ConcurrentMapRateLimitResource</a>.
+        </dd>
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor inherited"
+      id="instance-properties">
+    <h2>Properties</h2>
+    <dl class="properties">
+        <dt id="hashCode" class="property inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object/hashCode.html">hashCode</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/int-class.html">int</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  The hash code for this object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="runtimeType" class="property inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object/runtimeType.html">runtimeType</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/Type-class.html">Type</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  A representation of the runtime type of the object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+
+    
+  <section
+      class="summary offset-anchor"
+      id="instance-methods">
+    <h2>Methods</h2>
+    <dl class="callables">
+        <dt id="clear" class="callable">
+  <span class="name"><a href="../jetleaf_resource/ConcurrentMapRateLimitStorage/clear.html">clear</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-async/FutureOr-class.html">FutureOr</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Clears all rate-limit tracking data across all identifiers.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="equalizedProperties" class="callable">
+  <span class="name"><a href="../jetleaf_resource/ConcurrentMapRateLimitStorage/equalizedProperties.html">equalizedProperties</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object-class.html">Object</a>?</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Mixin-style contract for value-based equality, <code>hashCode</code>, and <code>toString</code>.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="getMetrics" class="callable">
+  <span class="name"><a href="../jetleaf_resource/ConcurrentMapRateLimitStorage/getMetrics.html">getMetrics</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="../jetleaf_resource/RateLimitMetrics-class.html">RateLimitMetrics</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Returns the metrics associated with this rate limit storage.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="getName" class="callable">
+  <span class="name"><a href="../jetleaf_resource/ConcurrentMapRateLimitStorage/getName.html">getName</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/String-class.html">String</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Returns the canonical name of this <a href="../jetleaf_resource/RateLimitStorage-class.html">RateLimitStorage</a> instance.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="getPackageName" class="callable">
+  <span class="name"><a href="../jetleaf_resource/ConcurrentMapRateLimitStorage/getPackageName.html">getPackageName</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/String-class.html">String</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Represents an abstraction for identifying the package that an object,
+resource, or service belongs to.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="getRemainingRequests" class="callable">
+  <span class="name"><a href="../jetleaf_resource/ConcurrentMapRateLimitStorage/getRemainingRequests.html">getRemainingRequests</a></span><span class="signature">(<wbr><span class="parameter" id="getRemainingRequests-param-identifier"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">identifier</span>, </span><span class="parameter" id="getRemainingRequests-param-limit"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/int-class.html">int</a></span> <span class="parameter-name">limit</span>, </span><span class="parameter" id="getRemainingRequests-param-window"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Duration-class.html">Duration</a></span> <span class="parameter-name">window</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-async/FutureOr-class.html">FutureOr</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/3.9.2/dart-core/int-class.html">int</a></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Calculates how many requests remain before the rate limit is reached.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="getRequestCount" class="callable">
+  <span class="name"><a href="../jetleaf_resource/ConcurrentMapRateLimitStorage/getRequestCount.html">getRequestCount</a></span><span class="signature">(<wbr><span class="parameter" id="getRequestCount-param-identifier"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">identifier</span>, </span><span class="parameter" id="getRequestCount-param-window"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Duration-class.html">Duration</a></span> <span class="parameter-name">window</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-async/FutureOr-class.html">FutureOr</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/3.9.2/dart-core/int-class.html">int</a></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Retrieves the current number of requests recorded for the given <code>identifier</code>.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="getResetTime" class="callable">
+  <span class="name"><a href="../jetleaf_resource/ConcurrentMapRateLimitStorage/getResetTime.html">getResetTime</a></span><span class="signature">(<wbr><span class="parameter" id="getResetTime-param-identifier"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">identifier</span>, </span><span class="parameter" id="getResetTime-param-window"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Duration-class.html">Duration</a></span> <span class="parameter-name">window</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-async/FutureOr-class.html">FutureOr</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/3.9.2/dart-core/DateTime-class.html">DateTime</a>?</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Returns the timestamp when the rate-limit window will reset for a given <code>identifier</code>.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="getResource" class="callable">
+  <span class="name"><a href="../jetleaf_resource/ConcurrentMapRateLimitStorage/getResource.html">getResource</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="../jetleaf_resource/Resource-class.html">Resource</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Returns the underlying native rate-limit provider object.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="getRetryAfter" class="callable">
+  <span class="name"><a href="../jetleaf_resource/ConcurrentMapRateLimitStorage/getRetryAfter.html">getRetryAfter</a></span><span class="signature">(<wbr><span class="parameter" id="getRetryAfter-param-identifier"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">identifier</span>, </span><span class="parameter" id="getRetryAfter-param-window"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Duration-class.html">Duration</a></span> <span class="parameter-name">window</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-async/FutureOr-class.html">FutureOr</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/jetleaf_lang/1.0.1/lang/ZonedDateTime-class.html">ZonedDateTime</a>?</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Calculates and returns the remaining duration before the current
+rate limit window resets for the given <code>identifier</code>.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="getZoneId" class="callable">
+  <span class="name"><a href="../jetleaf_resource/ConcurrentMapRateLimitStorage/getZoneId.html">getZoneId</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://pub.dev/documentation/jetleaf_lang/1.0.1/lang/ZoneId-class.html">ZoneId</a>?</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Retrieves the currently active <a href="https://pub.dev/documentation/jetleaf_lang/1.0.1/lang/ZoneId-class.html">ZoneId</a> used by this storage for
+all time-sensitive computations such as:
+  
+
+</dd>
+
+        <dt id="invalidate" class="callable">
+  <span class="name"><a href="../jetleaf_resource/ConcurrentMapRateLimitStorage/invalidate.html">invalidate</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-async/FutureOr-class.html">FutureOr</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Invalidates the current rate-limit storage and cleans up its resources.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="noSuchMethod" class="callable inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Invocation-class.html">Invocation</a></span> <span class="parameter-name">invocation</span></span>)
+    <span class="returntype parameter">&#8594; dynamic</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Invoked when a nonexistent method or property is accessed.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="onSingletonReady" class="callable">
+  <span class="name"><a href="../jetleaf_resource/ConcurrentMapRateLimitStorage/onSingletonReady.html">onSingletonReady</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Callback interface triggered at the end of the singleton pre-instantiation phase.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="recordRequest" class="callable">
+  <span class="name"><a href="../jetleaf_resource/ConcurrentMapRateLimitStorage/recordRequest.html">recordRequest</a></span><span class="signature">(<wbr><span class="parameter" id="recordRequest-param-identifier"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">identifier</span>, </span><span class="parameter" id="recordRequest-param-window"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Duration-class.html">Duration</a></span> <span class="parameter-name">window</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-async/FutureOr-class.html">FutureOr</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Records a successful request for the given <code>identifier</code>.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="reset" class="callable">
+  <span class="name"><a href="../jetleaf_resource/ConcurrentMapRateLimitStorage/reset.html">reset</a></span><span class="signature">(<wbr><span class="parameter" id="reset-param-identifier"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">identifier</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-async/FutureOr-class.html">FutureOr</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Resets the rate-limit state for a specific <code>identifier</code>.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="setApplicationContext" class="callable">
+  <span class="name"><a href="../jetleaf_resource/ConcurrentMapRateLimitStorage/setApplicationContext.html">setApplicationContext</a></span><span class="signature">(<wbr><span class="parameter" id="setApplicationContext-param-applicationContext"><span class="type-annotation"><a href="https://pub.dev/documentation/jetleaf_core/1.0.1/context/ApplicationContext-class.html">ApplicationContext</a></span> <span class="parameter-name">applicationContext</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Sets the <a href="https://pub.dev/documentation/jetleaf_core/1.0.1/context/ApplicationContext-class.html">ApplicationContext</a> that this component runs in.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="setZoneId" class="callable">
+  <span class="name"><a href="../jetleaf_resource/ConcurrentMapRateLimitStorage/setZoneId.html">setZoneId</a></span><span class="signature">(<wbr><span class="parameter" id="setZoneId-param-zone"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/String-class.html">String</a></span> <span class="parameter-name">zone</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Represents a configurable rate-limit storage that allows runtime tuning
+of critical operational parameters, primarily the time zone used for
+window tracking and expiration calculations.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="toString" class="callable inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object/toString.html">toString</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/String-class.html">String</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  A string representation of this object.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="tryConsume" class="callable">
+  <span class="name"><a href="../jetleaf_resource/ConcurrentMapRateLimitStorage/tryConsume.html">tryConsume</a></span><span class="signature">(<wbr><span class="parameter" id="tryConsume-param-identifier"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">identifier</span>, </span><span class="parameter" id="tryConsume-param-limit"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/int-class.html">int</a></span> <span class="parameter-name">limit</span>, </span><span class="parameter" id="tryConsume-param-window"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Duration-class.html">Duration</a></span> <span class="parameter-name">window</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-async/FutureOr-class.html">FutureOr</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../jetleaf_resource/RateLimitResult-class.html">RateLimitResult</a></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Determines whether a request is permitted under the defined rate limit.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor inherited"
+      id="operators">
+    <h2>Operators</h2>
+    <dl class="callables">
+        <dt id="operator ==" class="callable inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">other</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  The equality operator.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+    
+    
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../index.html">jetleaf_resource</a></li>
+    <li><a href="../jetleaf_resource/">jetleaf_resource</a></li>
+    <li class="self-crumb">ConcurrentMapRateLimitStorage class</li>
+</ol>
+
+    <h5>jetleaf_resource library</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div>
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    jetleaf_resource
+      1.0.0
+  </span>
+  
+</footer>
+
+
+<script src="../static-assets/highlight.pack.js?v1"></script>
+<script src="../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

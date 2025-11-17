@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the LruEvictionPolicy.new constructor from Class LruEvictionPolicy from the jetleaf_resource library, for the Dart programming language.">
+  <title>LruEvictionPolicy.new constructor - LruEvictionPolicy - jetleaf_resource library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../../static-assets/styles.css?v1">
+  <link rel="icon" href="../../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../../index.html">jetleaf_resource</a></li>
+    <li><a href="../../jetleaf_resource/">jetleaf_resource.dart</a></li>
+    <li><a href="../../jetleaf_resource/LruEvictionPolicy-class.html">LruEvictionPolicy</a></li>
+    <li class="self-crumb">LruEvictionPolicy.new const constructor</li>
+  </ol>
+  <div class="self-name">LruEvictionPolicy.new</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+  <div
+      id="dartdoc-main-content"
+      class="main-content"
+      data-above-sidebar="jetleaf_resource&#47;LruEvictionPolicy-class-sidebar.html"
+      data-below-sidebar="">
+      <div>
+<h1><span class="kind-constructor">LruEvictionPolicy</span> constructor 
+</h1></div>
+
+    <section class="multi-line-signature">
+      const
+      <span class="name ">LruEvictionPolicy</span>(<wbr>)
+    </section>
+    
+<section class="desc markdown">
+  <p>Creates a new LRU eviction policy instance.</p>
+<p>A <strong>Least-Recently-Used (LRU) cache eviction policy</strong> that removes the cache
+entry that has not been accessed for the longest time when eviction is required.</p>
+<h2 id="overview">Overview</h2>
+<p>LRU tracks the last access time of each cache entry. When the cache reaches its
+maximum capacity and needs to evict an entry, it selects the entry that was
+<strong>least recently accessed</strong>. This policy helps retain frequently used data while
+discarding stale or rarely used entries.</p>
+<p>LRU is commonly used in scenarios where:</p>
+<ul>
+<li>Recent access patterns are good predictors of future accesses.</li>
+<li>Old entries should gradually expire in favor of newer entries.</li>
+</ul>
+<h2 id="behavior">Behavior</h2>
+<ul>
+<li>Each cache entry maintains a timestamp of its last access.</li>
+<li>On each cache read or write, the last access timestamp is updated.</li>
+<li>When eviction is triggered, the policy scans all entries and selects the one
+with the oldest last access timestamp.</li>
+</ul>
+<h2 id="complexity">Complexity</h2>
+<ul>
+<li><strong>Time Complexity:</strong> O(n) per eviction operation, where <code>n</code> is the number of
+entries in the cache, due to scanning all entries.</li>
+<li><strong>Space Complexity:</strong> O(n) to store last access timestamps for all cache entries.</li>
+</ul>
+<h2 id="trade-offs">Trade-offs</h2>
+<ul>
+<li>Slightly slower than simpler policies like FIFO if implemented with a naive scan.</li>
+<li>Requires updating timestamps on each access, which adds minimal overhead.</li>
+<li>Works best when recent accesses are more likely to be reused than older ones.</li>
+</ul>
+<h2 id="usage-example">Usage Example</h2>
+<pre class="language-dart"><code class="language-dart">final cache = Cache&lt;String, Object&gt;(evictionPolicy: LruEvictionPolicy());
+cache.put('a', 1);
+cache.put('b', 2);
+cache.get('a'); // updates last accessed time for 'a'
+cache.put('c', 3); // if capacity exceeded, the least recently used entry is evicted
+</code></pre>
+</section>
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">const LruEvictionPolicy();</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../../index.html">jetleaf_resource</a></li>
+    <li><a href="../../jetleaf_resource/">jetleaf_resource</a></li>
+    <li><a href="../../jetleaf_resource/LruEvictionPolicy-class.html">LruEvictionPolicy</a></li>
+    <li class="self-crumb">LruEvictionPolicy.new const constructor</li>
+</ol>
+
+    <h5>LruEvictionPolicy class</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div><!--/.sidebar-offcanvas-left-->
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    jetleaf_resource
+      1.0.0
+  </span>
+  
+</footer>
+
+
+<script src="../../static-assets/highlight.pack.js?v1"></script>
+<script src="../../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

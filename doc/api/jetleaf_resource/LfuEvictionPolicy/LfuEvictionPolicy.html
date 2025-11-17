@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the LfuEvictionPolicy.new constructor from Class LfuEvictionPolicy from the jetleaf_resource library, for the Dart programming language.">
+  <title>LfuEvictionPolicy.new constructor - LfuEvictionPolicy - jetleaf_resource library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../../static-assets/styles.css?v1">
+  <link rel="icon" href="../../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../../index.html">jetleaf_resource</a></li>
+    <li><a href="../../jetleaf_resource/">jetleaf_resource.dart</a></li>
+    <li><a href="../../jetleaf_resource/LfuEvictionPolicy-class.html">LfuEvictionPolicy</a></li>
+    <li class="self-crumb">LfuEvictionPolicy.new const constructor</li>
+  </ol>
+  <div class="self-name">LfuEvictionPolicy.new</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+  <div
+      id="dartdoc-main-content"
+      class="main-content"
+      data-above-sidebar="jetleaf_resource&#47;LfuEvictionPolicy-class-sidebar.html"
+      data-below-sidebar="">
+      <div>
+<h1><span class="kind-constructor">LfuEvictionPolicy</span> constructor 
+</h1></div>
+
+    <section class="multi-line-signature">
+      const
+      <span class="name ">LfuEvictionPolicy</span>(<wbr>)
+    </section>
+    
+<section class="desc markdown">
+  <p>Creates a new LFU eviction policy instance.</p>
+<p>A <strong>Least-Frequently-Used (LFU) cache eviction policy</strong> for managing
+cache memory efficiently by evicting the entries that are accessed least often.</p>
+<h2 id="overview">Overview</h2>
+<p>LFU maintains an access count for each cached entry. When the cache reaches
+its capacity and an eviction is required, the entry with the <strong>lowest access
+frequency</strong> is removed first. This ensures that frequently accessed entries
+remain in the cache, improving hit rates for common operations.</p>
+<p>LFU is especially useful in workloads with:</p>
+<ul>
+<li>Hotspots where certain entries are accessed very frequently.</li>
+<li>Rarely accessed entries that should not occupy cache space unnecessarily.</li>
+</ul>
+<h2 id="behavior">Behavior</h2>
+<ul>
+<li>Each cache entry has an associated access count that increments each time
+the entry is read or used.</li>
+<li>When eviction is needed, the policy scans all entries and selects the one
+with the smallest access count.</li>
+<li>Ties (entries with the same access count) are resolved arbitrarily, typically
+based on the iteration order of the entries.</li>
+</ul>
+<h2 id="complexity">Complexity</h2>
+<ul>
+<li><strong>Time Complexity:</strong> O(n) per eviction operation, where <code>n</code> is the number of
+entries in the cache. This is because each entry’s access count must be
+inspected to find the least frequently used item.</li>
+<li><strong>Space Complexity:</strong> O(n) to maintain access counts for all cached entries.</li>
+</ul>
+<h2 id="trade-offs">Trade-offs</h2>
+<ul>
+<li>LFU can be memory-intensive for large caches since it needs to track access
+frequency for each entry.</li>
+<li>Eviction decision may be slower compared to simpler policies like FIFO or LRU,
+due to scanning all entries on each eviction.</li>
+<li>Works best for workloads with stable access patterns.</li>
+</ul>
+<h2 id="usage-example">Usage Example</h2>
+<pre class="language-dart"><code class="language-dart">final cache = Cache&lt;String, Object&gt;(evictionPolicy: LfuEvictionPolicy());
+cache.put('a', 1);
+cache.put('b', 2);
+cache.get('a'); // access count of 'a' increases
+cache.put('c', 3); // if capacity exceeded, the entry with lowest access count is evicted
+</code></pre>
+</section>
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">const LfuEvictionPolicy();</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../../index.html">jetleaf_resource</a></li>
+    <li><a href="../../jetleaf_resource/">jetleaf_resource</a></li>
+    <li><a href="../../jetleaf_resource/LfuEvictionPolicy-class.html">LfuEvictionPolicy</a></li>
+    <li class="self-crumb">LfuEvictionPolicy.new const constructor</li>
+</ol>
+
+    <h5>LfuEvictionPolicy class</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div><!--/.sidebar-offcanvas-left-->
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    jetleaf_resource
+      1.0.0
+  </span>
+  
+</footer>
+
+
+<script src="../../static-assets/highlight.pack.js?v1"></script>
+<script src="../../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

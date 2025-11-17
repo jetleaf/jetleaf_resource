@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the Cache class from the jetleaf_resource library, for the Dart programming language.">
+  <title>Cache class - jetleaf_resource library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../static-assets/styles.css?v1">
+  <link rel="icon" href="../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">jetleaf_resource</a></li>
+    <li><a href="../jetleaf_resource/">jetleaf_resource.dart</a></li>
+    <li class="self-crumb">Cache class</li>
+  </ol>
+  <div class="self-name">Cache</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+<div
+    id="dartdoc-main-content"
+    class="main-content"
+    data-above-sidebar="jetleaf_resource&#47;jetleaf_resource-library-sidebar.html"
+    data-below-sidebar="jetleaf_resource&#47;Cache-class-sidebar.html">
+    <div>
+<h1><span class="kind-class">Cache</span> class 
+    <a href="https://dart.dev/language/class-modifiers#abstract" class="feature feature-abstract" title="This type can not be directly constructed.">abstract</a>
+    <a href="https://dart.dev/language/class-modifiers#interface" class="feature feature-interface" title="This class can only be implemented (not extended or mixed in).">interface</a>
+ 
+</h1></div>
+
+    
+<section class="desc markdown">
+  <p>Represents a single cache entry, encapsulating both the <strong>cached value</strong>
+and its associated <strong>lifecycle metadata</strong>.</p>
+<p>A <a href="../jetleaf_resource/Cache-class.html">Cache</a> is the foundational abstraction for all cache systems
+built on top of Jetleaf’s caching infrastructure. It models not only
+the stored value itself but also the essential temporal and behavioral
+characteristics that define the entry’s validity, usage frequency,
+and expiration semantics.</p>
+<h2 id="overview">Overview</h2>
+<p>When a method annotated with <code>@Cacheable</code> or <code>@CachePut</code> is invoked,
+the framework stores its computed result within a <a href="../jetleaf_resource/CacheStorage-class.html">CacheStorage</a> instance.
+Rather than simply persisting the raw result, the cache backend wraps
+it inside a <a href="../jetleaf_resource/Cache-class.html">Cache</a>, allowing the framework to reason about:</p>
+<ul>
+<li>When the value was created</li>
+<li>When it was last accessed</li>
+<li>How many times it has been accessed</li>
+<li>Whether it has expired</li>
+<li>How much time remains before it expires (TTL-based)</li>
+</ul>
+<p>This metadata enables the framework to perform intelligent cache
+management, including:</p>
+<ul>
+<li><strong>Expiration</strong>: Automatically removing stale entries based on TTL.</li>
+<li><strong>Eviction policies</strong>: Prioritizing old or infrequently used entries.</li>
+<li><strong>Monitoring and metrics</strong>: Collecting access and lifetime statistics.</li>
+</ul>
+<h2 id="contract-and-semantics">Contract and Semantics</h2>
+<p>Implementations of this interface are expected to adhere to the
+following core rules:</p>
+<ol>
+<li>
+<p><strong>Thread-safety</strong>: If a cache implementation supports concurrent
+access (e.g., multi-threaded environments or async I/O),
+<code>CacheValue</code> instances must be safe to read and update concurrently.</p>
+</li>
+<li>
+<p><strong>Immutability of value</strong>: The value returned by <a href="../jetleaf_resource/Cache/get.html">get</a> should be
+treated as immutable by consumers. If the object is mutable,
+any external modifications may invalidate the cache semantics.</p>
+</li>
+<li>
+<p><strong>Time consistency</strong>: All timestamp-related methods
+(<a href="../jetleaf_resource/Cache/getCreatedAt.html">getCreatedAt</a>, <a href="../jetleaf_resource/Cache/getLastAccessedAt.html">getLastAccessedAt</a>, etc.) should use the same
+system time source (typically UTC or a monotonic clock) to ensure
+consistent comparisons and expiry calculations.</p>
+</li>
+<li>
+<p><strong>Expiration semantics</strong>: The <a href="../jetleaf_resource/Cache/isExpired.html">isExpired</a> method must accurately
+reflect whether the entry should be considered invalid according
+to its configured <a href="../jetleaf_resource/Cache/getTtl.html">getTtl</a> and current system time.</p>
+</li>
+</ol>
+<h2 id="example-usage">Example Usage</h2>
+<p>A simplified interaction pattern might look like this:</p>
+<pre class="language-dart"><code class="language-dart">final cacheValue = await cache.get('user:42');
+
+if (cacheValue != null) {
+  if (!cacheValue.isExpired()) {
+    // Access the stored value.
+    final user = cacheValue.get();
+
+    // Optionally update its access metadata.
+    cacheValue.recordAccess();
+  } else {
+    // The value has expired — remove it or refresh it.
+    await cache.evict('user:42');
+  }
+}
+</code></pre>
+<h2 id="implementor-guidelines">Implementor Guidelines</h2>
+<p>When implementing this interface, you should:</p>
+<ul>
+<li>
+<p>Maintain internal fields for:</p>
+<ul>
+<li>The cached object itself</li>
+<li>Creation time (<code>ZonedDateTime</code>)</li>
+<li>Last accessed time (<code>ZonedDateTime</code>)</li>
+<li>Access count (<code>int</code>)</li>
+<li>Time-to-live (<code>Duration?</code>)</li>
+</ul>
+</li>
+<li>
+<p>Update <a href="../jetleaf_resource/Cache/recordAccess.html">recordAccess</a> on every retrieval or usage of the cached
+value, including framework-driven accesses (e.g., in
+<code>CacheableOperation</code>).</p>
+</li>
+<li>
+<p>Accurately calculate remaining TTL in <a href="../jetleaf_resource/Cache/getRemainingTtl.html">getRemainingTtl</a> by subtracting
+the elapsed time since creation from the configured <a href="../jetleaf_resource/Cache/getTtl.html">getTtl</a>.</p>
+</li>
+</ul>
+<h2 id="relationship-to-other-components">Relationship to Other Components</h2>
+<p><a href="../jetleaf_resource/Cache-class.html">Cache</a> instances are returned from <a href="../jetleaf_resource/CacheStorage/get.html">CacheStorage.get</a>, stored by
+<a href="../jetleaf_resource/CacheStorage/put.html">CacheStorage.put</a>, and inspected by caching operations such as
+<code>CacheableOperation</code>, <code>CachePutOperation</code>, and <code>CacheEvictOperation</code>.</p>
+<p>The interface is designed to be <strong>cache-engine agnostic</strong> — it can be
+backed by simple in-memory structures, distributed cache clusters,
+or persistent storage.</p>
+<h2 id="see-also">See Also</h2>
+<ul>
+<li><a href="../jetleaf_resource/CacheStorage-class.html">CacheStorage</a>: Defines the cache container abstraction.</li>
+<li><a href="../jetleaf_resource/CacheManager-class.html">CacheManager</a>: Provides high-level lifecycle management of caches.</li>
+<li><a href="../jetleaf_resource/CacheErrorHandler-class.html">CacheErrorHandler</a>: Handles operational errors during cache access.</li>
+<li><a href="../jetleaf_resource/Cacheable-class.html">Cacheable</a>, <a href="../jetleaf_resource/CachePut-class.html">CachePut</a>, <a href="../jetleaf_resource/CacheEvict-class.html">CacheEvict</a>: Declarative caching annotations.</li>
+</ul>
+<h2 id="api-summary">API Summary</h2>
+<p>Each method on this interface contributes to understanding the
+lifecycle of a cached entry:</p>
+</section>
+
+
+
+    
+    
+  <section
+      class="summary offset-anchor inherited"
+      id="instance-properties">
+    <h2>Properties</h2>
+    <dl class="properties">
+        <dt id="hashCode" class="property inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object/hashCode.html">hashCode</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/int-class.html">int</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  The hash code for this object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="runtimeType" class="property inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object/runtimeType.html">runtimeType</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/Type-class.html">Type</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  A representation of the runtime type of the object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+
+    
+  <section
+      class="summary offset-anchor"
+      id="instance-methods">
+    <h2>Methods</h2>
+    <dl class="callables">
+        <dt id="get" class="callable">
+  <span class="name"><a href="../jetleaf_resource/Cache/get.html">get</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/Object-class.html">Object</a>?</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Returns the actual value stored within this cache entry.
+  
+
+</dd>
+
+        <dt id="getAccessCount" class="callable">
+  <span class="name"><a href="../jetleaf_resource/Cache/getAccessCount.html">getAccessCount</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/int-class.html">int</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Returns the total number of times this cache entry has been accessed
+since creation.
+  
+
+</dd>
+
+        <dt id="getAgeInMilliseconds" class="callable">
+  <span class="name"><a href="../jetleaf_resource/Cache/getAgeInMilliseconds.html">getAgeInMilliseconds</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/int-class.html">int</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Returns the total time in milliseconds since this cache entry was
+first created and added to the cache.
+  
+
+</dd>
+
+        <dt id="getCreatedAt" class="callable">
+  <span class="name"><a href="../jetleaf_resource/Cache/getCreatedAt.html">getCreatedAt</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://pub.dev/documentation/jetleaf_lang/1.0.1/lang/ZonedDateTime-class.html">ZonedDateTime</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Returns the timestamp representing when this cache entry was
+originally created.
+  
+
+</dd>
+
+        <dt id="getLastAccessedAt" class="callable">
+  <span class="name"><a href="../jetleaf_resource/Cache/getLastAccessedAt.html">getLastAccessedAt</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://pub.dev/documentation/jetleaf_lang/1.0.1/lang/ZonedDateTime-class.html">ZonedDateTime</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Returns the timestamp representing when this entry was last accessed.
+  
+
+</dd>
+
+        <dt id="getRemainingTtl" class="callable">
+  <span class="name"><a href="../jetleaf_resource/Cache/getRemainingTtl.html">getRemainingTtl</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/Duration-class.html">Duration</a>?</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Calculates and returns the <strong>remaining time-to-live</strong> for this entry,
+i.e., how long until it expires.
+  
+
+</dd>
+
+        <dt id="getTimeSinceLastAccessInMilliseconds" class="callable">
+  <span class="name"><a href="../jetleaf_resource/Cache/getTimeSinceLastAccessInMilliseconds.html">getTimeSinceLastAccessInMilliseconds</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/int-class.html">int</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Returns the elapsed time in milliseconds since the last access
+to this cache entry.
+  
+
+</dd>
+
+        <dt id="getTtl" class="callable">
+  <span class="name"><a href="../jetleaf_resource/Cache/getTtl.html">getTtl</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/Duration-class.html">Duration</a>?</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Returns the configured <strong>Time-To-Live (TTL)</strong> duration for this
+cache entry, or <code>null</code> if the entry does not expire.
+  
+
+</dd>
+
+        <dt id="isExpired" class="callable">
+  <span class="name"><a href="../jetleaf_resource/Cache/isExpired.html">isExpired</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Determines whether this cache entry has expired according to its
+configured <a href="../jetleaf_resource/Cache/getTtl.html">getTtl</a> or custom expiration strategy.
+  
+
+</dd>
+
+        <dt id="noSuchMethod" class="callable inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Invocation-class.html">Invocation</a></span> <span class="parameter-name">invocation</span></span>)
+    <span class="returntype parameter">&#8594; dynamic</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Invoked when a nonexistent method or property is accessed.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="recordAccess" class="callable">
+  <span class="name"><a href="../jetleaf_resource/Cache/recordAccess.html">recordAccess</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Records an access event for this cache entry.
+  
+
+</dd>
+
+        <dt id="toString" class="callable inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object/toString.html">toString</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/String-class.html">String</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  A string representation of this object.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor inherited"
+      id="operators">
+    <h2>Operators</h2>
+    <dl class="callables">
+        <dt id="operator ==" class="callable inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">other</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  The equality operator.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+    
+    
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../index.html">jetleaf_resource</a></li>
+    <li><a href="../jetleaf_resource/">jetleaf_resource</a></li>
+    <li class="self-crumb">Cache class</li>
+</ol>
+
+    <h5>jetleaf_resource library</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div>
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    jetleaf_resource
+      1.0.0
+  </span>
+  
+</footer>
+
+
+<script src="../static-assets/highlight.pack.js?v1"></script>
+<script src="../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

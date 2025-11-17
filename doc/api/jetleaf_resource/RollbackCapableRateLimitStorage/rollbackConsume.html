@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the rollbackConsume method from the RollbackCapableRateLimitStorage class, for the Dart programming language.">
+  <title>rollbackConsume method - RollbackCapableRateLimitStorage class - jetleaf_resource library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../../static-assets/styles.css?v1">
+  <link rel="icon" href="../../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../../index.html">jetleaf_resource</a></li>
+    <li><a href="../../jetleaf_resource/">jetleaf_resource.dart</a></li>
+    <li><a href="../../jetleaf_resource/RollbackCapableRateLimitStorage-class.html">RollbackCapableRateLimitStorage</a></li>
+    <li class="self-crumb">rollbackConsume method</li>
+  </ol>
+  <div class="self-name">rollbackConsume</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+<div
+    id="dartdoc-main-content"
+    class="main-content"
+    data-above-sidebar="jetleaf_resource&#47;RollbackCapableRateLimitStorage-class-sidebar.html"
+    data-below-sidebar="">
+    <div>
+<h1><span class="kind-method">rollbackConsume</span> method 
+</h1></div>
+
+    <section class="multi-line-signature">
+      
+<span class="returntype"><a href="https://api.dart.dev/stable/3.9.2/dart-async/FutureOr-class.html">FutureOr</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
+<span class="name ">rollbackConsume</span>(<wbr><ol class="parameter-list single-line"> <li><span class="parameter" id="rollbackConsume-param-identifier"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">identifier</span>, </span></li>
+<li><span class="parameter" id="rollbackConsume-param-window"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Duration-class.html">Duration</a></span> <span class="parameter-name">window</span></span></li>
+</ol>)
+
+      
+
+    </section>
+    
+<section class="desc markdown">
+  <p>Best-effort rollback: decrement the counter for the given <code>identifier</code> and <code>window</code>.</p>
+<p>If an entry exists and is not expired, the count is decremented by 1.
+If the count reaches zero, the inner map is cleaned up to prevent memory leaks.</p>
+<p><strong>Behavior notes:</strong></p>
+<ul>
+<li>Does nothing if no entry exists or the entry is expired.</li>
+<li>Metrics are adjusted only if <code>_metricsEnabled</code> is true.</li>
+<li>Exceptions are swallowed and logged at DEBUG level.</li>
+</ul>
+</section>
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">FutureOr&lt;void&gt; rollbackConsume(Object identifier, Duration window) async {
+  final windowKey = _getWindowKey(window);
+
+  await synchronizedAsync(_store, () async {
+    final inner = _store[identifier];
+    if (inner == null) return;
+
+    final entry = inner[windowKey];
+    if (entry == null) return;
+
+    &#47;&#47; If expired, nothing to rollback
+    if (entry.isExpired()) return;
+
+    try {
+      &#47;&#47; decrement once (best-effort) and get the new count
+      final concrete = entry;
+      final newCount = concrete.decrement(); &#47;&#47; should return the new count (&gt;= 0)
+
+      &#47;&#47; adjust metrics only if enabled
+      if (_metricsEnabled) {
+        _metrics.decrementAllowed(identifier);
+      }
+
+      &#47;&#47; if the count reached zero, remove the inner key and cleanup outer map
+      if (newCount &lt;= 0) {
+        inner.remove(windowKey);
+        if (inner.isEmpty) {
+          _store.remove(identifier);
+        }
+      }
+    } catch (e, st) {
+      &#47;&#47; Best-effort rollback: swallow exceptions but consider logging at DEBUG level.
+
+      if (_logger.getIsDebugEnabled()) {
+        _logger.debug(&#39;rollbackConsume failed for $identifier: $e&#39;, error: e, stacktrace: st);
+      }
+    }
+  });
+}</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../../index.html">jetleaf_resource</a></li>
+    <li><a href="../../jetleaf_resource/">jetleaf_resource</a></li>
+    <li><a href="../../jetleaf_resource/RollbackCapableRateLimitStorage-class.html">RollbackCapableRateLimitStorage</a></li>
+    <li class="self-crumb">rollbackConsume method</li>
+</ol>
+
+    <h5>RollbackCapableRateLimitStorage class</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div><!--/.sidebar-offcanvas-->
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+</div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    jetleaf_resource
+      1.0.0
+  </span>
+  
+</footer>
+
+
+<script src="../../static-assets/highlight.pack.js?v1"></script>
+<script src="../../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

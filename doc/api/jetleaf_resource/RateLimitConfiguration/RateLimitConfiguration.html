@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the RateLimitConfiguration.new constructor from Class RateLimitConfiguration from the jetleaf_resource library, for the Dart programming language.">
+  <title>RateLimitConfiguration.new constructor - RateLimitConfiguration - jetleaf_resource library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../../static-assets/styles.css?v1">
+  <link rel="icon" href="../../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../../index.html">jetleaf_resource</a></li>
+    <li><a href="../../jetleaf_resource/">jetleaf_resource.dart</a></li>
+    <li><a href="../../jetleaf_resource/RateLimitConfiguration-class.html">RateLimitConfiguration</a></li>
+    <li class="self-crumb">RateLimitConfiguration.new constructor</li>
+  </ol>
+  <div class="self-name">RateLimitConfiguration.new</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+  <div
+      id="dartdoc-main-content"
+      class="main-content"
+      data-above-sidebar="jetleaf_resource&#47;RateLimitConfiguration-class-sidebar.html"
+      data-below-sidebar="">
+      <div>
+<h1><span class="kind-constructor">RateLimitConfiguration</span> constructor 
+</h1></div>
+
+    <section class="multi-line-signature">
+      
+      <span class="name ">RateLimitConfiguration</span>(<wbr>)
+    </section>
+    
+<section class="desc markdown">
+  <p>Central configuration class for the <strong>JetLeaf Rate-Limit subsystem</strong>.</p>
+<p>This class defines configuration properties, default storage, manager,
+resolver, and component registration pods. It serves as the main
+entry point for initializing and customizing rate-limit behavior.</p>
+<h3 id="configuration-properties">Configuration Properties</h3>
+<ul>
+<li><a href="../../jetleaf_resource/RateLimitConfiguration/TIMEZONE-constant.html">TIMEZONE</a>: Defines the timezone for rate-limit windows and metrics.</li>
+<li><a href="../../jetleaf_resource/RateLimitConfiguration/ENABLE_EVENTS-constant.html">ENABLE_EVENTS</a>: Enables event emission for rate-limit actions.</li>
+<li><a href="../../jetleaf_resource/RateLimitConfiguration/ENABLE_METRICS-constant.html">ENABLE_METRICS</a>: Enables metrics collection for monitoring rate-limit usage.</li>
+<li><a href="../../jetleaf_resource/RateLimitConfiguration/AUTO_CREATE_WHEN_NOT_FOUND-constant.html">AUTO_CREATE_WHEN_NOT_FOUND</a>: Automatically create missing rate-limit instances.</li>
+<li><a href="../../jetleaf_resource/RateLimitConfiguration/FAIL_IF_NOT_FOUND-constant.html">FAIL_IF_NOT_FOUND</a>: Fail when a rate-limit cannot be located.</li>
+</ul>
+<h3 id="default-pods">Default Pods</h3>
+<p>JetLeaf uses these default implementations when no user-provided pod exists:</p>
+<ol>
+<li><a href="../../jetleaf_resource/RateLimitConfiguration/rateLimitComponentRegistrar.html">rateLimitComponentRegistrar</a>: Registers and initializes the entire rate-limit subsystem.</li>
+<li><a href="../../jetleaf_resource/RateLimitConfiguration/rateLimitStorage.html">rateLimitStorage</a>: Default in-memory, thread-safe <a href="../../jetleaf_resource/ConcurrentMapRateLimitStorage-class.html">ConcurrentMapRateLimitStorage</a>.</li>
+<li><a href="../../jetleaf_resource/RateLimitConfiguration/rollbackRateLimitStorage.html">rollbackRateLimitStorage</a>: Optional rollback-capable in-memory storage.</li>
+<li><a href="../../jetleaf_resource/RateLimitConfiguration/rateLimitManager.html">rateLimitManager</a>: Default <a href="../../jetleaf_resource/SimpleRateLimitManager-class.html">SimpleRateLimitManager</a> coordinating all rate-limit storage.</li>
+<li><a href="../../jetleaf_resource/RateLimitConfiguration/rateLimitResolver.html">rateLimitResolver</a>: Default <a href="../../jetleaf_resource/SimpleRateLimitResolver-class.html">SimpleRateLimitResolver</a> resolving storages by name or annotation.</li>
+</ol>
+<h3 id="example">Example</h3>
+<pre class="language-dart"><code class="language-dart">final config = RateLimitConfiguration();
+final registrar = config.rateLimitComponentRegistrar(myKeyGenerator, myResolver);
+final storage = config.rateLimitStorage();
+final manager = config.rateLimitManager();
+final resolver = config.rateLimitResolver(manager);
+</code></pre>
+<h3 id="notes">Notes</h3>
+<ul>
+<li>Users may override any of the default pods by providing their own implementation.</li>
+<li>Conditional annotations (<code>@ConditionalOnMissingPod</code>, <code>@ConditionalOnProperty</code>) control
+automatic registration of default pods.</li>
+<li>The registrar handles discovery of <a href="../../jetleaf_resource/RateLimitConfigurer-class.html">RateLimitConfigurer</a> and ensures
+the full subsystem is initialized with lifecycle-aware cleanup.</li>
+</ul>
+</section>
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">RateLimitConfiguration();</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../../index.html">jetleaf_resource</a></li>
+    <li><a href="../../jetleaf_resource/">jetleaf_resource</a></li>
+    <li><a href="../../jetleaf_resource/RateLimitConfiguration-class.html">RateLimitConfiguration</a></li>
+    <li class="self-crumb">RateLimitConfiguration.new constructor</li>
+</ol>
+
+    <h5>RateLimitConfiguration class</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div><!--/.sidebar-offcanvas-left-->
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    jetleaf_resource
+      1.0.0
+  </span>
+  
+</footer>
+
+
+<script src="../../static-assets/highlight.pack.js?v1"></script>
+<script src="../../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

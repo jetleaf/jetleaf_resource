@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the RateLimitMetrics class from the jetleaf_resource library, for the Dart programming language.">
+  <title>RateLimitMetrics class - jetleaf_resource library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../static-assets/styles.css?v1">
+  <link rel="icon" href="../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">jetleaf_resource</a></li>
+    <li><a href="../jetleaf_resource/">jetleaf_resource.dart</a></li>
+    <li class="self-crumb">RateLimitMetrics class</li>
+  </ol>
+  <div class="self-name">RateLimitMetrics</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+<div
+    id="dartdoc-main-content"
+    class="main-content"
+    data-above-sidebar="jetleaf_resource&#47;jetleaf_resource-library-sidebar.html"
+    data-below-sidebar="jetleaf_resource&#47;RateLimitMetrics-class-sidebar.html">
+    <div>
+<h1><span class="kind-class">RateLimitMetrics</span> class 
+    <a href="https://dart.dev/language/class-modifiers#abstract" class="feature feature-abstract" title="This type can not be directly constructed.">abstract</a>
+    <a href="https://dart.dev/language/class-modifiers#interface" class="feature feature-interface" title="This class can only be implemented (not extended or mixed in).">interface</a>
+ 
+</h1></div>
+
+    
+<section class="desc markdown">
+  <p>Defines the contract for recording and reporting rate limit activity metrics.</p>
+<p>The <a href="../jetleaf_resource/RateLimitMetrics-class.html">RateLimitMetrics</a> interface provides visibility into runtime behavior
+of rate-limited operations by tracking requests, blocks, and reset events.
+Implementations can use this interface to collect, analyze, and visualize
+traffic control patterns across distributed systems.</p>
+<h3 id="overview">Overview</h3>
+<p>Each rate limit configuration can be associated with a <a href="../jetleaf_resource/RateLimitMetrics-class.html">RateLimitMetrics</a>
+instance that tracks quantitative data such as:</p>
+<ul>
+<li>Allowed (successful) requests</li>
+<li>Denied (rate-limited) requests</li>
+<li>Reset operations (window resets or manual resets)</li>
+<li>Last update timestamp</li>
+</ul>
+<p>Metrics can be consumed by monitoring tools, observability dashboards,
+or auditing components to measure traffic distribution and rate-limit
+efficiency over time.</p>
+<h3 id="typical-implementations">Typical Implementations</h3>
+<ul>
+<li><code>DefaultRateLimitMetrics</code></li>
+<li><code>DistributedRateLimitMetrics</code></li>
+<li><code>InMemoryRateLimitMetrics</code></li>
+</ul>
+<h3 id="integration">Integration</h3>
+<ul>
+<li>Used internally by <a href="../jetleaf_resource/RateLimitManager-class.html">RateLimitManager</a> and <a href="../jetleaf_resource/RateLimitStorage-class.html">RateLimitStorage</a>.</li>
+<li>Exposed via <code>RateLimitEndpoint</code> for operational dashboards.</li>
+<li>Can be reset periodically to align with observation windows.</li>
+<li>Serves as a data source for analytics or visualization backends.</li>
+</ul>
+<h3 id="example">Example</h3>
+<pre class="language-dart"><code class="language-dart">final metrics = InMemoryRateLimitMetrics('auth');
+
+metrics.recordAllowed('user:42');
+metrics.recordDenied('user:17');
+
+print(metrics.buildGraph());
+</code></pre>
+<p>Example output:</p>
+<pre class="language-dart"><code class="language-dart">{
+  "rate_limit_name": "auth",
+  "operations": {
+    "allowed": {"user:42": 3},
+    "denied": {"user:17": 1},
+    "resets": 0
+  },
+  "last_updated": "2025-10-20T12:34:56Z"
+}
+</code></pre>
+</section>
+
+
+
+    
+    
+  <section
+      class="summary offset-anchor inherited"
+      id="instance-properties">
+    <h2>Properties</h2>
+    <dl class="properties">
+        <dt id="hashCode" class="property inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object/hashCode.html">hashCode</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/int-class.html">int</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  The hash code for this object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="runtimeType" class="property inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object/runtimeType.html">runtimeType</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/Type-class.html">Type</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  A representation of the runtime type of the object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+
+    
+  <section
+      class="summary offset-anchor"
+      id="instance-methods">
+    <h2>Methods</h2>
+    <dl class="callables">
+        <dt id="buildGraph" class="callable">
+  <span class="name"><a href="../jetleaf_resource/RateLimitMetrics/buildGraph.html">buildGraph</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/3.9.2/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object-class.html">Object</a></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Builds a structured, JSON-compatible representation of the rate limit metrics.
+  
+
+</dd>
+
+        <dt id="decrementAllowed" class="callable">
+  <span class="name"><a href="../jetleaf_resource/RateLimitMetrics/decrementAllowed.html">decrementAllowed</a></span><span class="signature">(<wbr><span class="parameter" id="decrementAllowed-param-identifier"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">identifier</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/int-class.html">int</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Decrements the allowed request counter for the specified <code>identifier</code>.
+  
+
+</dd>
+
+        <dt id="decrementDenied" class="callable">
+  <span class="name"><a href="../jetleaf_resource/RateLimitMetrics/decrementDenied.html">decrementDenied</a></span><span class="signature">(<wbr><span class="parameter" id="decrementDenied-param-identifier"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">identifier</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/int-class.html">int</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Decrements the denied request counter for the specified <code>identifier</code>.
+  
+
+</dd>
+
+        <dt id="getAllowedRequests" class="callable">
+  <span class="name"><a href="../jetleaf_resource/RateLimitMetrics/getAllowedRequests.html">getAllowedRequests</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/int-class.html">int</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Returns the total number of allowed (non-denied) requests recorded.
+  
+
+</dd>
+
+        <dt id="getDeniedRequests" class="callable">
+  <span class="name"><a href="../jetleaf_resource/RateLimitMetrics/getDeniedRequests.html">getDeniedRequests</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/int-class.html">int</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Returns the total number of denied requests recorded.
+  
+
+</dd>
+
+        <dt id="getLastUpdated" class="callable">
+  <span class="name"><a href="../jetleaf_resource/RateLimitMetrics/getLastUpdated.html">getLastUpdated</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://pub.dev/documentation/jetleaf_lang/1.0.1/lang/ZonedDateTime-class.html">ZonedDateTime</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Returns the timestamp of the last metric update.
+  
+
+</dd>
+
+        <dt id="getName" class="callable">
+  <span class="name"><a href="../jetleaf_resource/RateLimitMetrics/getName.html">getName</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/String-class.html">String</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Returns the logical name of the rate limit metric instance.
+  
+
+</dd>
+
+        <dt id="getResets" class="callable">
+  <span class="name"><a href="../jetleaf_resource/RateLimitMetrics/getResets.html">getResets</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/int-class.html">int</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Returns the total number of reset events recorded.
+  
+
+</dd>
+
+        <dt id="noSuchMethod" class="callable inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Invocation-class.html">Invocation</a></span> <span class="parameter-name">invocation</span></span>)
+    <span class="returntype parameter">&#8594; dynamic</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Invoked when a nonexistent method or property is accessed.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="recordAllowed" class="callable">
+  <span class="name"><a href="../jetleaf_resource/RateLimitMetrics/recordAllowed.html">recordAllowed</a></span><span class="signature">(<wbr><span class="parameter" id="recordAllowed-param-identifier"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">identifier</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Records an allowed request for the specified <code>identifier</code>.
+  
+
+</dd>
+
+        <dt id="recordDenied" class="callable">
+  <span class="name"><a href="../jetleaf_resource/RateLimitMetrics/recordDenied.html">recordDenied</a></span><span class="signature">(<wbr><span class="parameter" id="recordDenied-param-identifier"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">identifier</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Records a denied request for the specified <code>identifier</code>.
+  
+
+</dd>
+
+        <dt id="recordReset" class="callable">
+  <span class="name"><a href="../jetleaf_resource/RateLimitMetrics/recordReset.html">recordReset</a></span><span class="signature">(<wbr><span class="parameter" id="recordReset-param-identifier"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">identifier</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Records a rate limit reset event for the specified <code>identifier</code>.
+  
+
+</dd>
+
+        <dt id="reset" class="callable">
+  <span class="name"><a href="../jetleaf_resource/RateLimitMetrics/reset.html">reset</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Resets all metrics to zero, clearing accumulated statistics.
+  
+
+</dd>
+
+        <dt id="toString" class="callable inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object/toString.html">toString</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/String-class.html">String</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  A string representation of this object.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor inherited"
+      id="operators">
+    <h2>Operators</h2>
+    <dl class="callables">
+        <dt id="operator ==" class="callable inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">other</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  The equality operator.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+    
+    
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../index.html">jetleaf_resource</a></li>
+    <li><a href="../jetleaf_resource/">jetleaf_resource</a></li>
+    <li class="self-crumb">RateLimitMetrics class</li>
+</ol>
+
+    <h5>jetleaf_resource library</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div>
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    jetleaf_resource
+      1.0.0
+  </span>
+  
+</footer>
+
+
+<script src="../static-assets/highlight.pack.js?v1"></script>
+<script src="../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

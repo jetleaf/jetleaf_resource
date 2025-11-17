@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the CacheEvict.new constructor from Class CacheEvict from the jetleaf_resource library, for the Dart programming language.">
+  <title>CacheEvict.new constructor - CacheEvict - jetleaf_resource library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../../static-assets/styles.css?v1">
+  <link rel="icon" href="../../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../../index.html">jetleaf_resource</a></li>
+    <li><a href="../../jetleaf_resource/">jetleaf_resource.dart</a></li>
+    <li><a href="../../jetleaf_resource/CacheEvict-class.html">CacheEvict</a></li>
+    <li class="self-crumb">CacheEvict.new const constructor</li>
+  </ol>
+  <div class="self-name">CacheEvict.new</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+  <div
+      id="dartdoc-main-content"
+      class="main-content"
+      data-above-sidebar="jetleaf_resource&#47;CacheEvict-class-sidebar.html"
+      data-below-sidebar="">
+      <div>
+<h1><span class="kind-constructor">CacheEvict</span> constructor 
+</h1></div>
+
+    <section class="multi-line-signature">
+      const
+      <span class="name ">CacheEvict</span>(<wbr><ol class="parameter-list"> <li><span class="parameter" id="-param-cacheNames"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Set-class.html">Set</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/3.9.2/dart-core/String-class.html">String</a></span>&gt;</span></span> <span class="parameter-name">cacheNames</span>, {</span></li>
+<li><span class="parameter" id="-param-condition"><span class="type-annotation"><a href="../../jetleaf_resource/ResourceCondition-class.html">ResourceCondition</a></span> <span class="parameter-name">condition</span> = <span class="default-value">const WhenAlways()</span>, </span></li>
+<li><span class="parameter" id="-param-unless"><span class="type-annotation"><a href="../../jetleaf_resource/ResourceCondition-class.html">ResourceCondition</a></span> <span class="parameter-name">unless</span> = <span class="default-value">const WhenNever()</span>, </span></li>
+<li><span class="parameter" id="-param-allEntries"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">allEntries</span> = <span class="default-value">false</span>, </span></li>
+<li><span class="parameter" id="-param-beforeInvocation"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">beforeInvocation</span> = <span class="default-value">false</span>, </span></li>
+<li><span class="parameter" id="-param-keyGenerator"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">keyGenerator</span>, </span></li>
+<li><span class="parameter" id="-param-cacheManager"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">cacheManager</span>, </span></li>
+<li><span class="parameter" id="-param-cacheResolver"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">cacheResolver</span>, </span></li>
+</ol>})
+    </section>
+    
+<section class="desc markdown">
+  <p>Creates a new <a href="../../jetleaf_resource/CacheEvict-class.html">CacheEvict</a> annotation for cache invalidation methods.</p>
+<p>Supports both conditional and expression-based eviction logic, as well as
+full-cache clearing via <code>allEntries</code>.</p>
+<p>Marks a method that triggers the removal (or invalidation) of cache entries.</p>
+<p>The <code>@CacheEvict</code> annotation provides fine-grained control over cache
+eviction, allowing developers to clear specific cache keys or entire caches
+based on configurable conditions.</p>
+<p>CacheEvict works with the <a href="https://pub.dev/documentation/jetleaf_core/1.0.1/intercept/Interceptable-class.html">Interceptable</a> mixin that provides <code>when</code> method, and it is required, else caching cannot
+intercept the method call.</p>
+<h2 id="example">Example</h2>
+<pre class="language-dart"><code class="language-dart">@Service()
+final class UserService with Interceptable {
+  @CacheEvict({'users'}, condition: WhenExpr('#args[0] != null'), beforeInvocation: true)
+  Future&lt;void&gt; deleteUser(String userId) async {
+    return when(() async =&gt; userRepository.delete(userId));
+  }
+}
+</code></pre>
+<h2 id="behavior">Behavior</h2>
+<ul>
+<li>If <code>beforeInvocation</code> is <code>true</code>, eviction occurs <strong>before</strong> the method runs.</li>
+<li>If <code>beforeInvocation</code> is <code>false</code>, eviction occurs <strong>after</strong> successful execution.</li>
+<li>If <code>allEntries</code> is <code>true</code>, <strong>all entries</strong> in the specified caches are cleared.</li>
+<li>Otherwise, only entries corresponding to the generated cache key are removed.</li>
+<li>The operation will only proceed if:
+<ul>
+<li><code>condition</code> evaluates to <code>true</code>, and</li>
+<li><code>unless</code> evaluates to <code>false</code>.</li>
+</ul>
+</li>
+</ul>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><a href="../../jetleaf_resource/Cacheable/cacheNames.html">cacheNames</a> — The names of the caches to evict from.</li>
+<li><a href="../../jetleaf_resource/Cacheable/condition.html">condition</a> — A <a href="../../jetleaf_resource/ResourceCondition-class.html">ResourceCondition</a> determining whether eviction should occur.
+Defaults to <a href="../../jetleaf_resource/WhenAlways-class.html">WhenAlways</a>.</li>
+<li><a href="../../jetleaf_resource/Cacheable/unless.html">unless</a> — A <a href="../../jetleaf_resource/ResourceCondition-class.html">ResourceCondition</a> that, if <code>true</code>, prevents eviction.
+Defaults to <a href="../../jetleaf_resource/WhenNever-class.html">WhenNever</a>.</li>
+<li><code>allEntries</code> — When <code>true</code>, evicts all entries from the caches rather than a single key.
+Defaults to <code>false</code>.</li>
+<li><a href="../../jetleaf_resource/CacheEvict/beforeInvocation.html">beforeInvocation</a> — When <code>true</code>, performs eviction before the annotated method executes;
+otherwise, eviction happens afterward. Defaults to <code>false</code>.</li>
+<li><a href="../../jetleaf_resource/Cacheable/keyGenerator.html">keyGenerator</a> — Optional reference to a custom key generator name
+<code>customKeyGenerator</code>. Must be registered in the PodFactory context.</li>
+<li><a href="../../jetleaf_resource/Cacheable/cacheManager.html">cacheManager</a> — Optional reference to a custom cache manager name
+<code>customCacheManager</code>. Must be registered in the PodFactory context.</li>
+<li><a href="../../jetleaf_resource/Cacheable/cacheResolver.html">cacheResolver</a> — Optional reference to a custom cache resolver name
+<code>cacheResolverType</code>. Must be registered in the PodFactory context.</li>
+</ul>
+<h2 id="notes">Notes</h2>
+<ul>
+<li>Use <code>allEntries: true</code> for bulk invalidation (e.g., after data refresh operations).</li>
+<li>Use <code>beforeInvocation: true</code> to prevent stale data access during method execution.</li>
+<li>Both <a href="../../jetleaf_resource/Cacheable/condition.html">condition</a> and <a href="../../jetleaf_resource/Cacheable/unless.html">unless</a> support expression-based evaluation using <code>WhenExpr</code>.</li>
+</ul>
+<h2 id="see-also">See also</h2>
+<ul>
+<li><a href="../../jetleaf_resource/Cacheable-class.html">Cacheable</a> — for caching method results.</li>
+<li><a href="../../jetleaf_resource/CachePut-class.html">CachePut</a> — for updating cache entries.</li>
+</ul>
+</section>
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">const CacheEvict(super.cacheNames, {
+  super.condition = const WhenAlways(),
+  super.unless = const WhenNever(),
+  this.allEntries = false,
+  this.beforeInvocation = false,
+  super.keyGenerator,
+  super.cacheManager,
+  super.cacheResolver,
+});</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../../index.html">jetleaf_resource</a></li>
+    <li><a href="../../jetleaf_resource/">jetleaf_resource</a></li>
+    <li><a href="../../jetleaf_resource/CacheEvict-class.html">CacheEvict</a></li>
+    <li class="self-crumb">CacheEvict.new const constructor</li>
+</ol>
+
+    <h5>CacheEvict class</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div><!--/.sidebar-offcanvas-left-->
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    jetleaf_resource
+      1.0.0
+  </span>
+  
+</footer>
+
+
+<script src="../../static-assets/highlight.pack.js?v1"></script>
+<script src="../../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

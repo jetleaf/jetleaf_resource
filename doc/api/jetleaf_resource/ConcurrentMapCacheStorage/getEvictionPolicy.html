@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the getEvictionPolicy method from the ConcurrentMapCacheStorage class, for the Dart programming language.">
+  <title>getEvictionPolicy method - ConcurrentMapCacheStorage class - jetleaf_resource library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../../static-assets/styles.css?v1">
+  <link rel="icon" href="../../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../../index.html">jetleaf_resource</a></li>
+    <li><a href="../../jetleaf_resource/">jetleaf_resource.dart</a></li>
+    <li><a href="../../jetleaf_resource/ConcurrentMapCacheStorage-class.html">ConcurrentMapCacheStorage</a></li>
+    <li class="self-crumb">getEvictionPolicy method</li>
+  </ol>
+  <div class="self-name">getEvictionPolicy</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+<div
+    id="dartdoc-main-content"
+    class="main-content"
+    data-above-sidebar="jetleaf_resource&#47;ConcurrentMapCacheStorage-class-sidebar.html"
+    data-below-sidebar="">
+    <div>
+<h1><span class="kind-method">getEvictionPolicy</span> method 
+</h1></div>
+
+    <section class="multi-line-signature">
+      
+<span class="returntype"><a href="../../jetleaf_resource/CacheEvictionPolicy-class.html">CacheEvictionPolicy</a>?</span>
+<span class="name ">getEvictionPolicy</span>(<wbr>)
+
+      
+
+    </section>
+    
+<section class="desc markdown">
+  <p>Defines configuration capabilities for a cache storage implementation.</p>
+<p>The <a href="../../jetleaf_resource/ConfigurableCacheStorage-class.html">ConfigurableCacheStorage</a> interface provides runtime configurability
+for cache-related parameters such as eviction policies, time-to-live (TTL),
+capacity limits, and time zone behavior. It is designed to allow flexible
+cache tuning without rebuilding or redeploying components.</p>
+<h3 id="overview">Overview</h3>
+<p>Implementations of this interface enable dynamic control over how
+cached data is stored, evicted, and expired. This allows developers
+or framework integrators to optimize caching strategies for specific
+application workloads, environments, or performance goals.</p>
+<p>Typical implementations include:</p>
+<ul>
+<li><a href="../../jetleaf_resource/ConcurrentMapCacheStorage-class.html">ConcurrentMapCacheStorage</a></li>
+<li><code>HybridCacheStorage</code></li>
+<li><code>DistributedCacheStorage</code></li>
+</ul>
+<h3 id="configuration-parameters">Configuration Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Configuration</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Eviction Policy</strong></td>
+<td>Defines how entries are removed when capacity is exceeded.</td>
+<td><code>setEvictionPolicy(LruEvictionPolicy())</code></td>
+</tr>
+<tr>
+<td><strong>Default TTL</strong></td>
+<td>Controls expiration time for entries without explicit TTL.</td>
+<td><code>setDefaultTtl(Duration(minutes: 30))</code></td>
+</tr>
+<tr>
+<td><strong>Zone ID</strong></td>
+<td>Specifies the time zone for timestamped cache operations.</td>
+<td><code>setZoneId('UTC')</code></td>
+</tr>
+<tr>
+<td><strong>Max Entries</strong></td>
+<td>Sets the maximum cache capacity.</td>
+<td><code>setMaxEntries(500)</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="example-usage">Example Usage</h3>
+<pre class="language-dart"><code class="language-dart">final cache = ConcurrentMapCacheStorage();
+cache
+  ..setEvictionPolicy(LfuEvictionPolicy())
+  ..setDefaultTtl(Duration(hours: 1))
+  ..setZoneId('America/New_York')
+  ..setMaxEntries(1000);
+</code></pre>
+<h3 id="integration">Integration</h3>
+<ul>
+<li>Used by <a href="../../jetleaf_resource/CacheManager-class.html">CacheManager</a> to apply runtime cache tuning.</li>
+<li>Interacts with <a href="../../jetleaf_resource/CacheEvictionPolicy-class.html">CacheEvictionPolicy</a> to determine eviction behavior.</li>
+<li>Consulted by monitoring tools to inspect and update live cache parameters.</li>
+<li>Commonly used in auto-configuration modules to enforce cache defaults.</li>
+</ul>
+<h3 id="error-handling">Error Handling</h3>
+<p>Implementations are encouraged to validate configuration parameters strictly
+and throw descriptive exceptions such as:</p>
+<ul>
+<li><a href="https://api.dart.dev/stable/3.9.2/dart-core/ArgumentError-class.html">ArgumentError</a> → For null or invalid arguments.</li>
+<li><a href="https://pub.dev/documentation/jetleaf_lang/1.0.1/lang/IllegalArgumentException-class.html">IllegalArgumentException</a> → For invalid zone identifiers.</li>
+<li><a href="../../jetleaf_resource/CacheCapacityExceededException-class.html">CacheCapacityExceededException</a> → When existing capacity exceeds a new limit.</li>
+</ul>
+<p>Retrieves the currently configured <a href="../../jetleaf_resource/CacheEvictionPolicy-class.html">CacheEvictionPolicy</a>.</p>
+<p>The eviction policy determines which cache entries are selected for removal
+when the cache reaches its maximum capacity. Common implementations include:</p>
+<ul>
+<li><a href="../../jetleaf_resource/LruEvictionPolicy-class.html">LruEvictionPolicy</a> — Evicts the least recently used entry.</li>
+<li><a href="../../jetleaf_resource/LfuEvictionPolicy-class.html">LfuEvictionPolicy</a> — Evicts the least frequently used entry.</li>
+<li><a href="../../jetleaf_resource/FifoEvictionPolicy-class.html">FifoEvictionPolicy</a> — Evicts the oldest inserted entry.</li>
+</ul>
+<p>Returns <code>null</code> if no eviction policy is currently set.</p>
+</section>
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">CacheEvictionPolicy? getEvictionPolicy() =&gt; _evictionPolicy;</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../../index.html">jetleaf_resource</a></li>
+    <li><a href="../../jetleaf_resource/">jetleaf_resource</a></li>
+    <li><a href="../../jetleaf_resource/ConcurrentMapCacheStorage-class.html">ConcurrentMapCacheStorage</a></li>
+    <li class="self-crumb">getEvictionPolicy method</li>
+</ol>
+
+    <h5>ConcurrentMapCacheStorage class</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div><!--/.sidebar-offcanvas-->
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+</div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    jetleaf_resource
+      1.0.0
+  </span>
+  
+</footer>
+
+
+<script src="../../static-assets/highlight.pack.js?v1"></script>
+<script src="../../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

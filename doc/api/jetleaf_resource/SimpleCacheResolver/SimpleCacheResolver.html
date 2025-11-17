@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the SimpleCacheResolver.new constructor from Class SimpleCacheResolver from the jetleaf_resource library, for the Dart programming language.">
+  <title>SimpleCacheResolver.new constructor - SimpleCacheResolver - jetleaf_resource library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../../static-assets/styles.css?v1">
+  <link rel="icon" href="../../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../../index.html">jetleaf_resource</a></li>
+    <li><a href="../../jetleaf_resource/">jetleaf_resource.dart</a></li>
+    <li><a href="../../jetleaf_resource/SimpleCacheResolver-class.html">SimpleCacheResolver</a></li>
+    <li class="self-crumb">SimpleCacheResolver.new constructor</li>
+  </ol>
+  <div class="self-name">SimpleCacheResolver.new</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+  <div
+      id="dartdoc-main-content"
+      class="main-content"
+      data-above-sidebar="jetleaf_resource&#47;SimpleCacheResolver-class-sidebar.html"
+      data-below-sidebar="">
+      <div>
+<h1><span class="kind-constructor">SimpleCacheResolver</span> constructor 
+</h1></div>
+
+    <section class="multi-line-signature">
+      
+      <span class="name ">SimpleCacheResolver</span>(<wbr><ol class="parameter-list single-line"> <li><span class="parameter" id="-param-_cacheManager"><span class="type-annotation"><a href="../../jetleaf_resource/CacheManager-class.html">CacheManager</a></span> <span class="parameter-name">_cacheManager</span></span></li>
+</ol>)
+    </section>
+    
+<section class="desc markdown">
+  <p>Default JetLeaf implementation of the <a href="../../jetleaf_resource/CacheResolver-class.html">CacheResolver</a> interface, providing
+a simple yet extensible mechanism for resolving <a href="../../jetleaf_resource/Cacheable-class.html">Cacheable</a> annotations
+to their corresponding <a href="../../jetleaf_resource/CacheStorage-class.html">CacheStorage</a> instances.</p>
+<p>The <a href="../../jetleaf_resource/SimpleCacheResolver-class.html">SimpleCacheResolver</a> integrates closely with the JetLeaf dependency
+injection system by leveraging a <a href="https://pub.dev/documentation/jetleaf_pod/1.0.1/pod/ConfigurableListablePodFactory-class.html">ConfigurableListablePodFactory</a> to
+automatically discover and configure <a href="../../jetleaf_resource/CacheResolver-class.html">CacheResolver</a> and <a href="../../jetleaf_resource/CacheConfigurer-class.html">CacheConfigurer</a>
+pods within the application context. This allows it to dynamically extend
+its resolution chain based on active modules or framework components.</p>
+<h3 id="overview">Overview</h3>
+<p>The resolver maintains an <strong>ordered, composite chain</strong> of delegate
+<a href="../../jetleaf_resource/CacheResolver-class.html">CacheResolver</a>s. Each resolver in the chain is sorted and prioritized
+using the <a href="https://pub.dev/documentation/jetleaf_core/1.0.1/core/AnnotationAwareOrderComparator-class.html">AnnotationAwareOrderComparator</a>, ensuring deterministic and
+predictable resolution order.</p>
+<p>If no registered resolver can handle a particular <a href="../../jetleaf_resource/Cacheable-class.html">Cacheable</a> annotation,
+the <a href="../../jetleaf_resource/SimpleCacheResolver-class.html">SimpleCacheResolver</a> falls back to the provided <a href="../../jetleaf_resource/CacheManager-class.html">CacheManager</a> to
+resolve caches by name.</p>
+<h3 id="lifecycle--initialization">Lifecycle &amp; Initialization</h3>
+<p>During startup, the resolver:</p>
+<ol>
+<li>Receives a <a href="https://pub.dev/documentation/jetleaf_pod/1.0.1/pod/PodFactory-class.html">PodFactory</a> reference via <a href="../../jetleaf_resource/SimpleCacheResolver/setPodFactory.html">setPodFactory</a>.</li>
+<li>Discovers <a href="../../jetleaf_resource/CacheConfigurer-class.html">CacheConfigurer</a> pods via the factory.</li>
+<li>Invokes their <a href="../../jetleaf_resource/CacheConfigurer/configureCacheResolver.html">CacheConfigurer.configureCacheResolver</a> methods to
+dynamically register additional <a href="../../jetleaf_resource/CacheResolver-class.html">CacheResolver</a> instances.</li>
+<li>Sorts and chains all registered resolvers for runtime use.</li>
+</ol>
+<p>This behavior enables modular configuration of cache resolution logic across
+different JetLeaf packages or application layers.</p>
+<h3 id="example">Example</h3>
+<pre class="language-dart"><code class="language-dart">final resolver = SimpleCacheResolver(defaultCacheManager);
+await resolver.onReady();
+
+final caches = await resolver.resolveCaches(Cacheable('users'));
+for (final cache in caches) {
+  print('Resolved cache: ${cache.getName()}');
+}
+</code></pre>
+<h3 id="related-components">Related Components</h3>
+<ul>
+<li><a href="../../jetleaf_resource/CacheResolver-class.html">CacheResolver</a>: The interface this class implements.</li>
+<li><a href="../../jetleaf_resource/CacheManager-class.html">CacheManager</a>: Used as a fallback for direct cache lookups.</li>
+<li><a href="../../jetleaf_resource/CacheStorage-class.html">CacheStorage</a>: The concrete cache storage type returned by the resolver.</li>
+<li><a href="../../jetleaf_resource/CacheConfigurer-class.html">CacheConfigurer</a>: For dynamic resolver configuration.</li>
+<li><code>CompositeCacheResolver</code>: The more complex, composite alternative.</li>
+</ul>
+</section>
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">SimpleCacheResolver(this._cacheManager);</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../../index.html">jetleaf_resource</a></li>
+    <li><a href="../../jetleaf_resource/">jetleaf_resource</a></li>
+    <li><a href="../../jetleaf_resource/SimpleCacheResolver-class.html">SimpleCacheResolver</a></li>
+    <li class="self-crumb">SimpleCacheResolver.new constructor</li>
+</ol>
+
+    <h5>SimpleCacheResolver class</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div><!--/.sidebar-offcanvas-left-->
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    jetleaf_resource
+      1.0.0
+  </span>
+  
+</footer>
+
+
+<script src="../../static-assets/highlight.pack.js?v1"></script>
+<script src="../../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

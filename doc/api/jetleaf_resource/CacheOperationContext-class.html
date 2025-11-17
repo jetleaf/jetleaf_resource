@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the CacheOperationContext class from the jetleaf_resource library, for the Dart programming language.">
+  <title>CacheOperationContext class - jetleaf_resource library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../static-assets/styles.css?v1">
+  <link rel="icon" href="../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">jetleaf_resource</a></li>
+    <li><a href="../jetleaf_resource/">jetleaf_resource.dart</a></li>
+    <li class="self-crumb">CacheOperationContext<span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span> class</li>
+  </ol>
+  <div class="self-name">CacheOperationContext</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+<div
+    id="dartdoc-main-content"
+    class="main-content"
+    data-above-sidebar="jetleaf_resource&#47;jetleaf_resource-library-sidebar.html"
+    data-below-sidebar="jetleaf_resource&#47;CacheOperationContext-class-sidebar.html">
+    <div>
+<h1><span class="kind-class">CacheOperationContext&lt;<wbr><span class="type-parameter">T</span>&gt;</span> class 
+    <a href="https://dart.dev/language/class-modifiers#abstract" class="feature feature-abstract" title="This type can not be directly constructed.">abstract</a>
+    <a href="https://dart.dev/language/class-modifiers#interface" class="feature feature-interface" title="This class can only be implemented (not extended or mixed in).">interface</a>
+ 
+</h1></div>
+
+    
+<section class="desc markdown">
+  <p>Defines the execution context for a cache operation within JetLeaf’s
+caching subsystem.</p>
+<p>A <a href="../jetleaf_resource/CacheOperationContext-class.html">CacheOperationContext</a> represents the complete state of a cacheable
+method invocation, providing access to method metadata, generated cache
+keys, operation definitions, and resolved cache instances.</p>
+<p>This interface bridges the gap between <strong>runtime cache operations</strong>
+(like <code>Cacheable</code>, <code>CachePut</code>, <code>CacheEvict</code>) and their <strong>execution logic</strong>
+(implemented by <a href="../jetleaf_resource/CacheOperation-class.html">CacheOperation</a> objects).</p>
+<h3 id="responsibilities">Responsibilities</h3>
+<ul>
+<li>Generating and storing the <strong>cache key</strong> for the current method invocation.</li>
+<li>Tracking and managing <strong>cached results</strong> and <strong>execution results</strong>.</li>
+<li>Serving as a unified view of method invocation metadata through
+<a href="https://pub.dev/documentation/jetleaf_core/1.0.1/intercept/MethodInvocation-class.html">MethodInvocation</a>.</li>
+<li>Handling cache-related errors and resolving applicable caches.</li>
+</ul>
+<h3 id="lifecycle-overview">Lifecycle Overview</h3>
+<ol>
+<li>A cacheable method is invoked.</li>
+<li>A <a href="../jetleaf_resource/CacheOperationContext-class.html">CacheOperationContext</a> is created by the cache interceptor.</li>
+<li>The operation (e.g., <code>CacheableOperation</code>) calls <a href="../jetleaf_resource/CacheOperationContext/generateKey.html">generateKey</a> and
+<a href="../jetleaf_resource/CacheResolver/resolveCaches.html">resolveCaches</a> to locate or modify caches.</li>
+<li>Results or errors are recorded using <a href="../jetleaf_resource/CacheOperationContext/setCachedResult.html">setCachedResult</a>,
+<a href="../jetleaf_resource/CacheOperationContext/setResult.html">setResult</a>, or <a href="../jetleaf_resource/CacheErrorHandler-class.html">CacheErrorHandler</a>.</li>
+<li>The context may then be reused for post-execution processing.</li>
+</ol>
+<h3 id="example">Example</h3>
+<pre class="language-dart"><code class="language-dart">final context = MyCacheOperationContext(invocation, cacheOperation);
+
+// Generate a cache key
+final key = await context.generateKey(annotation.keyGenerator);
+
+// Fetch or store results
+if (context.hasCachedResult()) {
+  return context.getCachedResult();
+}
+
+final result = await invocation.proceed();
+context.setResult(result);
+
+await cache.put(key, result);
+</code></pre>
+<h3 id="implementations">Implementations</h3>
+<p>Custom implementations may be created for advanced caching behavior,
+such as distributed cache contexts, asynchronous cache coordination,
+or context-aware error policies.</p>
+<h3 id="thread-safety">Thread Safety</h3>
+<p>Implementations should ensure thread safety, particularly when caching
+is performed concurrently or in reactive execution models.</p>
+<h3 id="see-also">See Also</h3>
+<ul>
+<li><a href="../jetleaf_resource/CacheOperation-class.html">CacheOperation</a></li>
+<li><a href="../jetleaf_resource/Cacheable-class.html">Cacheable</a></li>
+<li><a href="../jetleaf_resource/CacheResolver-class.html">CacheResolver</a></li>
+<li><a href="../jetleaf_resource/CacheErrorHandler-class.html">CacheErrorHandler</a></li>
+<li><a href="https://pub.dev/documentation/jetleaf_core/1.0.1/intercept/MethodInvocation-class.html">MethodInvocation</a></li>
+</ul>
+</section>
+
+
+    <section>
+      <dl class="dl-horizontal">
+        
+
+        
+  <dt>Implemented types</dt>
+  <dd>
+    <ul class="comma-separated clazz-relationships">
+        <li><a href="../jetleaf_resource/OperationContext-class.html">OperationContext</a></li>
+        <li><a href="../jetleaf_resource/CacheResolver-class.html">CacheResolver</a></li>
+        <li><a href="../jetleaf_resource/CacheErrorHandler-class.html">CacheErrorHandler</a></li>
+    </ul>
+  </dd>
+        
+
+
+        
+        
+
+
+      </dl>
+    </section>
+
+    
+    
+  <section
+      class="summary offset-anchor inherited"
+      id="instance-properties">
+    <h2>Properties</h2>
+    <dl class="properties">
+        <dt id="hashCode" class="property inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object/hashCode.html">hashCode</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/int-class.html">int</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  The hash code for this object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="runtimeType" class="property inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object/runtimeType.html">runtimeType</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/Type-class.html">Type</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  A representation of the runtime type of the object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+
+    
+  <section
+      class="summary offset-anchor"
+      id="instance-methods">
+    <h2>Methods</h2>
+    <dl class="callables">
+        <dt id="generateKey" class="callable">
+  <span class="name"><a href="../jetleaf_resource/CacheOperationContext/generateKey.html">generateKey</a></span><span class="signature">(<wbr>[<span class="parameter" id="generateKey-param-preferredKeyGeneratorName"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">preferredKeyGeneratorName</span></span>])
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-async/FutureOr-class.html">FutureOr</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object-class.html">Object</a></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Generates a unique cache key for the current method invocation.
+  
+
+</dd>
+
+        <dt id="getCachedResult" class="callable">
+  <span class="name"><a href="../jetleaf_resource/CacheOperationContext/getCachedResult.html">getCachedResult</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/Object-class.html">Object</a>?</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Retrieves the cached result associated with the current context.
+  
+
+</dd>
+
+        <dt id="getEnvironment" class="callable inherited">
+  <span class="name"><a href="../jetleaf_resource/OperationContext/getEnvironment.html">getEnvironment</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://pub.dev/documentation/jetleaf_env/1.0.1/env/Environment-class.html">Environment</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Returns the active <a href="https://pub.dev/documentation/jetleaf_env/1.0.1/env/Environment-class.html">Environment</a> associated with the current operation.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="getMethodInvocation" class="callable">
+  <span class="name"><a href="../jetleaf_resource/CacheOperationContext/getMethodInvocation.html">getMethodInvocation</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://pub.dev/documentation/jetleaf_core/1.0.1/intercept/MethodInvocation-class.html">MethodInvocation</a><span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Returns the reflective method invocation associated with this context.
+  
+
+</dd>
+
+        <dt id="getPodFactory" class="callable inherited">
+  <span class="name"><a href="../jetleaf_resource/OperationContext/getPodFactory.html">getPodFactory</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://pub.dev/documentation/jetleaf_pod/1.0.1/pod/ConfigurableListablePodFactory-class.html">ConfigurableListablePodFactory</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Returns the <a href="https://pub.dev/documentation/jetleaf_pod/1.0.1/pod/ConfigurableListablePodFactory-class.html">ConfigurableListablePodFactory</a> associated with this context.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="getResult" class="callable">
+  <span class="name"><a href="../jetleaf_resource/CacheOperationContext/getResult.html">getResult</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/Object-class.html">Object</a>?</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Retrieves the actual result from the target method invocation.
+  
+
+</dd>
+
+        <dt id="hasCachedResult" class="callable">
+  <span class="name"><a href="../jetleaf_resource/CacheOperationContext/hasCachedResult.html">hasCachedResult</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Returns <code>true</code> if a cached result was found.
+  
+
+</dd>
+
+        <dt id="hasResult" class="callable">
+  <span class="name"><a href="../jetleaf_resource/CacheOperationContext/hasResult.html">hasResult</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Returns <code>true</code> if the target method produced a result.
+  
+
+</dd>
+
+        <dt id="isCacheMiss" class="callable">
+  <span class="name"><a href="../jetleaf_resource/CacheOperationContext/isCacheMiss.html">isCacheMiss</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Returns <code>true</code> if the current invocation resulted in a cache miss.
+  
+
+</dd>
+
+        <dt id="noSuchMethod" class="callable inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Invocation-class.html">Invocation</a></span> <span class="parameter-name">invocation</span></span>)
+    <span class="returntype parameter">&#8594; dynamic</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Invoked when a nonexistent method or property is accessed.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="onClear" class="callable inherited">
+  <span class="name"><a href="../jetleaf_resource/CacheErrorHandler/onClear.html">onClear</a></span><span class="signature">(<wbr><span class="parameter" id="onClear-param-exception"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">exception</span>, </span><span class="parameter" id="onClear-param-stackTrace"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/StackTrace-class.html">StackTrace</a></span> <span class="parameter-name">stackTrace</span>, </span><span class="parameter" id="onClear-param-cache"><span class="type-annotation"><a href="../jetleaf_resource/CacheStorage-class.html">CacheStorage</a></span> <span class="parameter-name">cache</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-async/FutureOr-class.html">FutureOr</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Handles an error that occurred during a cache <strong>clear</strong> or <strong>invalidate</strong> operation.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="onEvict" class="callable inherited">
+  <span class="name"><a href="../jetleaf_resource/CacheErrorHandler/onEvict.html">onEvict</a></span><span class="signature">(<wbr><span class="parameter" id="onEvict-param-exception"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">exception</span>, </span><span class="parameter" id="onEvict-param-stackTrace"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/StackTrace-class.html">StackTrace</a></span> <span class="parameter-name">stackTrace</span>, </span><span class="parameter" id="onEvict-param-cache"><span class="type-annotation"><a href="../jetleaf_resource/CacheStorage-class.html">CacheStorage</a></span> <span class="parameter-name">cache</span>, </span><span class="parameter" id="onEvict-param-key"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">key</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-async/FutureOr-class.html">FutureOr</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Handles an error that occurred during a cache <strong>evict</strong> operation.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="onGet" class="callable inherited">
+  <span class="name"><a href="../jetleaf_resource/CacheErrorHandler/onGet.html">onGet</a></span><span class="signature">(<wbr><span class="parameter" id="onGet-param-exception"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">exception</span>, </span><span class="parameter" id="onGet-param-stackTrace"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/StackTrace-class.html">StackTrace</a></span> <span class="parameter-name">stackTrace</span>, </span><span class="parameter" id="onGet-param-cache"><span class="type-annotation"><a href="../jetleaf_resource/CacheStorage-class.html">CacheStorage</a></span> <span class="parameter-name">cache</span>, </span><span class="parameter" id="onGet-param-key"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">key</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-async/FutureOr-class.html">FutureOr</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Handles an error that occurred during a cache <strong>get</strong> operation.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="onPut" class="callable inherited">
+  <span class="name"><a href="../jetleaf_resource/CacheErrorHandler/onPut.html">onPut</a></span><span class="signature">(<wbr><span class="parameter" id="onPut-param-exception"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">exception</span>, </span><span class="parameter" id="onPut-param-stackTrace"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/StackTrace-class.html">StackTrace</a></span> <span class="parameter-name">stackTrace</span>, </span><span class="parameter" id="onPut-param-cache"><span class="type-annotation"><a href="../jetleaf_resource/CacheStorage-class.html">CacheStorage</a></span> <span class="parameter-name">cache</span>, </span><span class="parameter" id="onPut-param-key"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">key</span>, </span><span class="parameter" id="onPut-param-value"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object-class.html">Object</a>?</span> <span class="parameter-name">value</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-async/FutureOr-class.html">FutureOr</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Handles an error that occurred during a cache <strong>put</strong> operation.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="resolveCaches" class="callable inherited">
+  <span class="name"><a href="../jetleaf_resource/CacheResolver/resolveCaches.html">resolveCaches</a></span><span class="signature">(<wbr><span class="parameter" id="resolveCaches-param-cacheable"><span class="type-annotation"><a href="../jetleaf_resource/Cacheable-class.html">Cacheable</a></span> <span class="parameter-name">cacheable</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-async/FutureOr-class.html">FutureOr</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Iterable-class.html">Iterable</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../jetleaf_resource/CacheStorage-class.html">CacheStorage</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Resolves the <a href="../jetleaf_resource/CacheStorage-class.html">CacheStorage</a> instances to be used for a given <a href="../jetleaf_resource/Cacheable-class.html">Cacheable</a> operation.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="setCachedResult" class="callable">
+  <span class="name"><a href="../jetleaf_resource/CacheOperationContext/setCachedResult.html">setCachedResult</a></span><span class="signature">(<wbr><span class="parameter" id="setCachedResult-param-result"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object-class.html">Object</a>?</span> <span class="parameter-name">result</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Records a retrieved value from the cache.
+  
+
+</dd>
+
+        <dt id="setCacheMiss" class="callable">
+  <span class="name"><a href="../jetleaf_resource/CacheOperationContext/setCacheMiss.html">setCacheMiss</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Marks the context as a cache miss.
+  
+
+</dd>
+
+        <dt id="setResult" class="callable">
+  <span class="name"><a href="../jetleaf_resource/CacheOperationContext/setResult.html">setResult</a></span><span class="signature">(<wbr><span class="parameter" id="setResult-param-result"><span class="type-annotation">T?</span> <span class="parameter-name">result</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Sets the result produced by the target method.
+  
+
+</dd>
+
+        <dt id="toString" class="callable inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object/toString.html">toString</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/String-class.html">String</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  A string representation of this object.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor inherited"
+      id="operators">
+    <h2>Operators</h2>
+    <dl class="callables">
+        <dt id="operator ==" class="callable inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">other</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  The equality operator.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+    
+    
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../index.html">jetleaf_resource</a></li>
+    <li><a href="../jetleaf_resource/">jetleaf_resource</a></li>
+    <li class="self-crumb">CacheOperationContext<span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span> class</li>
+</ol>
+
+    <h5>jetleaf_resource library</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div>
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    jetleaf_resource
+      1.0.0
+  </span>
+  
+</footer>
+
+
+<script src="../static-assets/highlight.pack.js?v1"></script>
+<script src="../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+
