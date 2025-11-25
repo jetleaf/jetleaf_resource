@@ -12,34 +12,151 @@
 // 
 // 🔧 Powered by Hapnium — the Dart backend engine 🍃
 
-/// JetLeaf Cache Library
+/// 🗄️ **JetLeaf Caching Library**
 ///
-/// Provides declarative caching infrastructure for JetLeaf,
-/// including annotations, configuration, and storage implementations.
+/// This library provides a comprehensive caching system for JetLeaf applications,
+/// including annotations, storage, eviction policies, operations, metrics, and
+/// error handling.
 ///
-/// This module enables fine-grained cache control and customization
-/// through components like:
+/// It supports declarative caching with method interceptors, programmatic cache
+/// management, and extensible backends.
 ///
-/// - `annotations.dart` → cache-related annotations (e.g. `@Cacheable`, `@CachePut`)  
-/// - `cache.dart` → cache interfaces and operations  
-/// - `cache_component_registrar.dart` → auto-registers cache components  
-/// - `cache_configuration.dart` → default cache configuration setup  
-/// - `concurrent_map_cache_storage.dart` → thread-safe in-memory cache storage  
-/// - `cache_error_handler.dart` → handles cache-related errors gracefully  
-/// - `simple_cache_manager.dart` → lightweight cache manager implementation  
-/// - `simple_cache_resolver.dart` → default resolver for cache lookups  
 ///
-/// Typically imported as:
+/// ## 🔑 Key Concepts
+///
+/// - **Cache Operations**: define actions like `put`, `evict`, `expire`, and `cacheable`.
+/// - **Cache Storage**: backends for storing cached data (in-memory, configurable stores, etc.).
+/// - **Eviction Policies**: LRU, LFU, FIFO strategies for automatic cache pruning.
+/// - **Error Handling**: robust handling of cache errors with pluggable handlers.
+/// - **Events & Metrics**: observe cache activity and gather statistics.
+///
+///
+/// ## 📦 Exports Overview
+///
+/// ### ⚙ Core
+/// - `CacheAnnotationMethodInterceptor` — intercepts annotated methods for caching  
+/// - `CacheComponentRegistrar` — registers cache components  
+/// - `CacheOperationContext` / `DefaultCacheOperationContext` — runtime operation metadata
+///
+///
+/// ### ⚠ Error Handlers
+/// - `CacheErrorHandler` — base interface  
+/// - `CacheErrorHandlerRegistry` — manages multiple handlers  
+/// - `LoggableCacheErrorHandler` — logs errors instead of throwing  
+/// - `ThrowableCacheErrorHandler` — propagates exceptions
+///
+///
+/// ### 🏷 Events
+/// - `CacheEvent` — base class  
+/// - `CacheHitEvent`, `CacheMissEvent`, `CachePutEvent`, `CacheEvictEvent`, `CacheExpireEvent`, `CacheClearEvent`  
+/// Allows observing cache lifecycle activities.
+///
+///
+/// ### 🗑 Eviction Policies
+/// - `CacheEvictionPolicy` — base interface  
+/// - `FifoEvictionPolicy`, `LfuEvictionPolicy`, `LruEvictionPolicy`
+///
+///
+/// ### 🏗 Managers
+/// - `CacheManager` — primary cache orchestrator  
+/// - `CacheManagerRegistry` — registry for multiple managers  
+/// - `SimpleCacheManager` — default implementation
+///
+///
+/// ### 📊 Metrics
+/// - `CacheMetrics` — metrics collection interface  
+/// - `SimpleCacheMetrics` — basic implementation for monitoring
+///
+///
+/// ### 💾 Cache Operations
+/// - `CacheOperation` — base interface for all operations  
+/// - `CachePutOperation`, `CacheEvictOperation`, `CacheableOperation`
+///
+///
+/// ### 🔍 Resolver
+/// - `CacheResolver` — resolves cache targets dynamically  
+/// - `CacheResolverRegistry` — manages multiple resolvers  
+/// - `SimpleCacheResolver` — default implementation
+///
+///
+/// ### 🗄 Storage
+/// - `CacheStorage` — interface for cache stores  
+/// - `CacheStorageRegistry` — manage multiple stores  
+/// - `Cache` / `DefaultCache` — standard cache abstraction  
+/// - `ConfigurableCacheStorage` — customizable backends  
+/// - `CacheResource` — resource abstraction  
+/// - `DefaultCacheStorage` — default in-memory storage
+///
+///
+/// ### 📝 Annotations & Config
+/// - `annotations.dart` — declarative caching via method-level annotations  
+/// - `CacheConfigurer` — programmatic configuration of caches
+///
+///
+/// ## 🎯 Intended Usage
+///
+/// Import this library to enable full caching capabilities in JetLeaf:
 /// ```dart
 /// import 'package:jetleaf_resource/cache.dart';
+///
+/// @Cacheable('myCache')
+/// String fetchData(String key) {
+///   return computeData(key);
+/// }
 /// ```
+///
+/// Supports pluggable storage, metrics, events, and error handling.
+///
+///
+/// © 2025 Hapnium & JetLeaf Contributors
 library;
 
+export 'src/cache/core/cache_annotation_method_interceptor.dart';
+export 'src/cache/core/cache_component_registrar.dart';
+export 'src/cache/core/cache_operation_context.dart';
+export 'src/cache/core/default_cache_operation_context.dart';
+
+export 'src/cache/error_handler/cache_error_handler.dart';
+export 'src/cache/error_handler/cache_error_handler_registry.dart';
+export 'src/cache/error_handler/loggable_cache_error_handler.dart';
+export 'src/cache/error_handler/throwable_cache_error_handler.dart';
+
+export 'src/cache/event/cache_clear_event.dart';
+export 'src/cache/event/cache_event.dart';
+export 'src/cache/event/cache_evict_event.dart';
+export 'src/cache/event/cache_expire_event.dart';
+export 'src/cache/event/cache_hit_event.dart';
+export 'src/cache/event/cache_miss_event.dart';
+export 'src/cache/event/cache_put_event.dart';
+
+export 'src/cache/eviction_policy/cache_eviction_policy.dart';
+export 'src/cache/eviction_policy/fifo_eviction_policy.dart';
+export 'src/cache/eviction_policy/lfu_eviction_policy.dart';
+export 'src/cache/eviction_policy/lru_eviction_policy.dart';
+
+export 'src/cache/manager/cache_manager.dart';
+export 'src/cache/manager/cache_manager_registry.dart';
+export 'src/cache/manager/simple_cache_manager.dart';
+
+export 'src/cache/metrics/cache_metrics.dart';
+export 'src/cache/metrics/simple_cache_metrics.dart';
+
+export 'src/cache/operation/cache_evict_operation.dart';
+export 'src/cache/operation/cache_operation.dart';
+export 'src/cache/operation/cache_put_operation.dart';
+export 'src/cache/operation/cacheable_operation.dart';
+
+export 'src/cache/resolver/cache_resolver.dart';
+export 'src/cache/resolver/cache_resolver_registry.dart';
+export 'src/cache/resolver/simple_cache_resolver.dart';
+
+export 'src/cache/storage/cache.dart';
+export 'src/cache/storage/cache_resource.dart';
+export 'src/cache/storage/cache_storage.dart';
+export 'src/cache/storage/cache_storage_registry.dart';
+export 'src/cache/storage/configurable_cache_storage.dart';
+export 'src/cache/storage/default_cache.dart';
+export 'src/cache/storage/default_cache_storage.dart';
+
 export 'src/cache/annotations.dart';
-export 'src/cache/cache.dart';
-export 'src/cache/cache_component_registrar.dart';
-export 'src/cache/cache_configuration.dart';
-export 'src/cache/concurrent_map_cache_storage.dart';
-export 'src/cache/cache_error_handler.dart';
-export 'src/cache/simple_cache_manager.dart';
-export 'src/cache/simple_cache_resolver.dart';
+export 'src/cache/cache_configurer.dart';

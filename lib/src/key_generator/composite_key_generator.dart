@@ -19,8 +19,9 @@ import 'package:jetleaf_core/intercept.dart';
 import 'package:jetleaf_lang/lang.dart';
 import 'package:jetleaf_pod/pod.dart';
 
+import '../cache/cache_configurer.dart';
 import 'key_generator.dart';
-import '../cache/cache.dart';
+import 'simple_key_generator.dart';
 
 /// {@template jet_composite_key_generator}
 /// A composite [KeyGenerator] that aggregates and coordinates multiple
@@ -74,7 +75,7 @@ import '../cache/cache.dart';
 /// - [CacheConfigurer]
 ///
 /// {@endtemplate}
-final class CompositeKeyGenerator extends KeyGenerator implements InitializingPod, PodFactoryAware, KeyGeneratorRegistry {
+final class CompositeKeyGenerator implements KeyGenerator, InitializingPod, PodFactoryAware, KeyGeneratorRegistry {
   // ---------------------------------------------------------------------------
   // Internal State
   // ---------------------------------------------------------------------------
@@ -115,6 +116,10 @@ final class CompositeKeyGenerator extends KeyGenerator implements InitializingPo
         AnnotationAwareOrderComparator.sort(generators);
 
         for (final generator in generators) {
+          if (generator is CompositeKeyGenerator) {
+            continue;
+          }
+          
           addKeyGenerator(generator);
         }
       } else {}
@@ -203,6 +208,7 @@ final class CompositeKeyGenerator extends KeyGenerator implements InitializingPo
   @override
   Object generate(Object target, Method method, MethodArgument? argument) {
     final generators = _getKeyGenerators();
+    final simpleGenerator = SimpleKeyGenerator();
 
     for (final generator in generators) {
       if (generator is ConditionalKeyGenerator) {
@@ -215,9 +221,12 @@ final class CompositeKeyGenerator extends KeyGenerator implements InitializingPo
       }
     }
 
-    return super.generate(target, method, argument);
+    return simpleGenerator.generate(target, method, argument);
   }
 
   @override
   String getPackageName() => PackageNames.RESOURCE;
+
+  @override
+  List<Object?> equalizedProperties() => [runtimeType];
 }

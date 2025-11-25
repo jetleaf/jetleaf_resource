@@ -15,7 +15,7 @@
 import 'package:jetleaf_lang/lang.dart';
 import 'package:meta/meta_meta.dart';
 
-import '../conditions.dart';
+import '../base/conditions.dart';
 
 /// {@template cacheable_annotation}
 /// Marks a method as cacheable — its result will be stored in one or more caches.

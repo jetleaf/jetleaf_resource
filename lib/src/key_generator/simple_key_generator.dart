@@ -12,7 +12,11 @@
 // 
 // 🔧 Powered by Hapnium — the Dart backend engine 🍃
 
+import 'package:jetleaf_core/intercept.dart';
+import 'package:jetleaf_lang/lang.dart';
+
 import 'key_generator.dart';
+import 'simple_key.dart';
 
 /// {@template jet_simple_key_generator}
 /// A lightweight [KeyGenerator] implementation that delegates directly to the
@@ -66,7 +70,33 @@ import 'key_generator.dart';
 /// - [CompositeKeyGenerator]: Alternative implementation that combines multiple strategies.
 ///
 /// {@endtemplate}
-final class SimpleKeyGenerator extends KeyGenerator {
+final class SimpleKeyGenerator implements KeyGenerator {
   /// {@macro jet_simple_key_generator}
   SimpleKeyGenerator();
+
+  @override
+  Object generate(Object target, Method method, MethodArgument? argument) {
+    // Case 1: No arguments — use canonical empty key.
+    if (argument == null || (argument.getNamedArguments().isEmpty && argument.getPositionalArguments().isEmpty)) {
+      return SimpleKey.EMPTY;
+    }
+
+    // Case 2: Single named argument — use its value directly.
+    if (argument.getNamedArguments().length == 1) {
+      final param = argument.getNamedArguments().entries.first.value;
+      return param ?? SimpleKey.EMPTY;
+    }
+
+    // Case 3: Single positional argument — use its value directly.
+    if (argument.getPositionalArguments().length == 1) {
+      final param = argument.getPositionalArguments()[0];
+      return param ?? SimpleKey.EMPTY;
+    }
+
+    // Case 4: Multiple arguments — generate a composite key.
+    return SimpleKey(argument);
+  }
+
+  @override
+  List<Object?> equalizedProperties() => [runtimeType];
 }

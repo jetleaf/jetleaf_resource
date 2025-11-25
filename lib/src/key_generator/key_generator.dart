@@ -15,104 +15,6 @@
 import 'package:jetleaf_core/intercept.dart';
 import 'package:jetleaf_lang/lang.dart';
 
-/// {@template jet_cache_simple_key}
-/// A lightweight, immutable representation of a method invocation key.
-///
-/// The [_SimpleKey] class serves as the **default composite cache key** used by
-/// JetLeaf’s caching infrastructure. It provides a deterministic, equality-
-/// comparable key representation suitable for use in cache lookups, especially
-/// when multiple method arguments need to be combined.
-///
-/// ### Design Overview
-/// - Each instance wraps an optional [MethodArgument], which holds both
-///   positional and named parameters passed to a method.
-/// - The class implements equality and hashing via the `EqualsAndHashCode` mixin,
-///   ensuring that two `_SimpleKey` instances representing identical method
-///   invocations are considered equal.
-/// - When no arguments are present, the static singleton [_SimpleKey.EMPTY]
-///   is used to represent the canonical “empty” key.
-///
-/// ### Example
-/// ```dart
-/// final key1 = _SimpleKey();                 // Equivalent to _SimpleKey.EMPTY
-/// final key2 = _SimpleKey(MethodArgument([42], {}));
-/// final key3 = _SimpleKey(MethodArgument([42, 'foo'], {'flag': true}));
-///
-/// print(key1 == _SimpleKey.EMPTY); // true
-///
-/// // Equality is based on the wrapped MethodArgument
-/// final key4 = _SimpleKey(MethodArgument([42], {}));
-/// print(key2 == key4); // true
-/// ```
-///
-/// ### Equality and Hashing
-/// The equality comparison includes:
-/// - The [MethodArgument] (if present)
-/// - The [runtimeType] (for cross-type safety)
-///
-/// This ensures that subclasses or extended variants of `_SimpleKey` do not
-/// collide in hash-based collections (e.g., maps or sets).
-///
-/// ### Usage
-/// `_SimpleKey` is primarily used by [DefaultKeyGenerator] and custom cache
-/// implementations that require a consistent composite key mechanism.
-///
-/// ### Thread Safety
-/// - `_SimpleKey` is immutable and therefore **thread-safe**.
-/// - The [_SimpleKey.EMPTY] instance can be safely reused across threads.
-///
-/// ### See Also
-/// - [DefaultKeyGenerator]
-/// - [KeyGenerator]
-/// - [Cacheable]
-/// - [MethodArgument]
-/// {@endtemplate}
-final class _SimpleKey with EqualsAndHashCode {
-  /// An empty, canonical [_SimpleKey] instance representing no parameters.
-  static final _SimpleKey EMPTY = _SimpleKey();
-
-  /// The method argument associated with this key, or `null` if empty.
-  final MethodArgument? _argument;
-
-  /// {@macro jet_cache_simple_key}
-  const _SimpleKey([this._argument]);
-
-  @override
-  List<Object?> equalizedProperties() => _argument != null ? [_argument, runtimeType] : [runtimeType];
-
-  @override
-  String toString() {
-    if (_argument == null) {
-      return "SimpleKey()";
-    }
-
-    final builder = StringBuilder();
-    List<Object?> positional = _argument.getPositionalArguments();
-    Map<String, Object?> named = _argument.getNamedArguments();
-
-    builder.append("SimpleKey(");
-
-    // Write positional arguments
-    if (positional.isNotEmpty) {
-      builder.append(positional.map((e) => e.toString()).join(", "));
-    }
-
-    // Add comma if both positional and named exist
-    if (positional.isNotEmpty && named.isNotEmpty) {
-      builder.append(", ");
-    }
-
-    // Write named arguments
-    if (named.isNotEmpty) {
-      builder.append(named.entries.map((e) => "${e.key}: ${e.value}").join(", "));
-    }
-
-    builder.append(")");
-
-    return builder.toString();
-  }
-}
-
 /// {@template jetleaf_key_generator}
 /// ## KeyGenerator — Strategy for Cache Key Generation
 ///
@@ -188,14 +90,14 @@ final class _SimpleKey with EqualsAndHashCode {
 /// - Ignoring named arguments in favor of positional-only logic
 ///
 /// ### 🔗 Related Components
-/// - [_SimpleKey] — Default composite key type used for multi-argument invocations.
+/// - [SimpleKey] — Default composite key type used for multi-argument invocations.
 /// - [ConditionalKeyGenerator] — Extended form that decides applicability dynamically.
 /// - [Cacheable], [CachePut], [CacheEvict] — Annotations that rely on key generation
 ///   for cache operation resolution.
 /// {@endtemplate}
 ///
 /// {@macro jetleaf_key_generator}
-abstract class KeyGenerator {
+abstract interface class KeyGenerator with EqualsAndHashCode {
   /// Generates a unique and deterministic cache key for the given
   /// method invocation.
   ///
@@ -208,35 +110,7 @@ abstract class KeyGenerator {
   /// - [target] — The object instance on which the method is invoked.
   /// - [method] — The reflective representation of the invoked method.
   /// - [argument] — The runtime arguments of the method call (may be `null`).
-  ///
-  /// **Returns:**  
-  /// A non-null object to be used as the cache key.
-  ///
-  /// **Default Behavior:**
-  /// - Returns [_SimpleKey.EMPTY] for no arguments.
-  /// - Returns the single argument if only one exists.
-  /// - Returns a [_SimpleKey] composed of all arguments otherwise.
-  Object generate(Object target, Method method, MethodArgument? argument) {
-    // Case 1: No arguments — use canonical empty key.
-    if (argument == null || (argument.getNamedArguments().isEmpty && argument.getPositionalArguments().isEmpty)) {
-      return _SimpleKey.EMPTY;
-    }
-
-    // Case 2: Single named argument — use its value directly.
-    if (argument.getNamedArguments().length == 1) {
-      final param = argument.getNamedArguments().entries.first.value;
-      return param ?? _SimpleKey.EMPTY;
-    }
-
-    // Case 3: Single positional argument — use its value directly.
-    if (argument.getPositionalArguments().length == 1) {
-      final param = argument.getPositionalArguments()[0];
-      return param ?? _SimpleKey.EMPTY;
-    }
-
-    // Case 4: Multiple arguments — generate a composite key.
-    return _SimpleKey(argument);
-  }
+  Object generate(Object target, Method method, MethodArgument? argument);
 }
 
 /// {@template jetleaf_conditional_key_generator}

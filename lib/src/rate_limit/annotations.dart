@@ -15,7 +15,7 @@
 import 'package:jetleaf_lang/lang.dart';
 import 'package:meta/meta_meta.dart';
 
-import '../conditions.dart';
+import '../base/conditions.dart';
 
 /// {@template rate_limit_annotation}
 /// Annotation that marks a method to be subject to rate limiting.

@@ -23,8 +23,7 @@ Unified resource management utilities for caching, rate limiting, and key genera
 
 ```yaml
 dependencies:
-  jetleaf_resource:
-    path: ./jetleaf_resource
+  jetleaf_resource: ^1.0.0
 ```
 
 ### Basic Caching
