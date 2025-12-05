@@ -1,8 +1,8 @@
 import 'dart:async';
 
+import 'package:jetleaf_core/core.dart';
 import 'package:jetleaf_lang/lang.dart';
 
-import '../../base/resource.dart';
 import 'cache.dart';
 
 /// {@template cache}
@@ -84,7 +84,7 @@ abstract interface class CacheStorage with EqualsAndHashCode {
   ///   nativeCache.trimToSize(1000);
   /// }
   /// ```
-  Resource getResource();
+  Resource<Object, Cache> getResource();
 
   /// {@macro cacheGet}
   /// Retrieves a value from the cache.

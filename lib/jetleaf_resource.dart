@@ -85,7 +85,6 @@ export 'src/config/rate_limit_configuration.dart';
 export 'src/base/conditions.dart';
 export 'src/base/exceptions.dart';
 export 'src/base/operation_context.dart';
-export 'src/base/resource.dart';
 export 'src/base/when_matching.dart';
 
 export 'src/util/resource_utils.dart';

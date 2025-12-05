@@ -2,16 +2,17 @@ import 'dart:async';
 import 'dart:collection';
 
 import 'package:jetleaf_core/context.dart';
+import 'package:jetleaf_core/core.dart';
 import 'package:jetleaf_core/intercept.dart';
 import 'package:jetleaf_env/env.dart';
 import 'package:jetleaf_lang/lang.dart';
 import 'package:jetleaf_pod/pod.dart';
 
-import '../../base/resource.dart';
 import '../../key_generator/key_generator.dart';
 import '../annotations.dart';
 import '../manager/rate_limit_manager.dart';
 import '../resolver/rate_limit_resolver.dart';
+import '../storage/rate_limit_entry.dart';
 import '../storage/rate_limit_storage.dart';
 import 'rate_limit_operation_context.dart';
 
@@ -122,7 +123,7 @@ final class DefaultRateLimitOperationContext<T> implements RateLimitOperationCon
   /// for method execution or runtime operations.
   ///
   /// Initialized as an empty list by default.
-  List<Resource> _resources = [];
+  List<Resource<Object, RateLimitEntry>> _resources = [];
 
   /// Creates a new [DefaultRateLimitOperationContext] for the given method invocation,
   /// dependency context, and configuration.
@@ -197,17 +198,17 @@ final class DefaultRateLimitOperationContext<T> implements RateLimitOperationCon
   MethodArgument? getArgument() => _invocation.getArgument();
 
   @override
-  void setResources(List<Resource> resources) {
+  void setResources(List<Resource<Object, RateLimitEntry>> resources) {
     _resources = resources;
   }
 
   @override
-  void addResource(Resource resource) {
+  void addResource(Resource<Object, RateLimitEntry> resource) {
     _resources.add(resource);
   }
 
   @override
-  List<Resource> getResources() => UnmodifiableListView(_resources);
+  List<Resource<Object, RateLimitEntry>> getResources() => UnmodifiableListView(_resources);
 
   @override
   ConfigurableListablePodFactory getPodFactory() => _applicationContext;

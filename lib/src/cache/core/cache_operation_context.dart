@@ -5,6 +5,7 @@ import 'package:jetleaf_core/intercept.dart';
 import '../../base/operation_context.dart';
 import '../error_handler/cache_error_handler.dart';
 import '../resolver/cache_resolver.dart';
+import '../storage/cache.dart';
 
 /// {@template jet_cache_operation_context}
 /// Defines the execution context for a cache operation within JetLeaf’s
@@ -68,7 +69,7 @@ import '../resolver/cache_resolver.dart';
 /// - [CacheErrorHandler]
 /// - [MethodInvocation]
 /// {@endtemplate}
-abstract interface class CacheOperationContext<T> implements ConfigurableOperationContext, CacheResolver, CacheErrorHandler {
+abstract interface class CacheOperationContext<T> implements ConfigurableOperationContext<Object, Cache>, CacheResolver, CacheErrorHandler {
   /// Generates a unique cache key for the current method invocation.
   ///
   /// This key is typically based on the target object, method signature,

@@ -1,10 +1,11 @@
 import 'dart:async';
 
+import 'package:jetleaf_core/core.dart';
 import 'package:jetleaf_lang/lang.dart';
 
-import '../../base/resource.dart';
 import '../metrics/rate_limit_metrics.dart';
 import '../rate_limit_result.dart';
+import 'rate_limit_entry.dart';
 
 /// {@template rate_limit_storage}
 /// The [RateLimitStorage] interface defines the abstraction for JetLeaf’s
@@ -84,7 +85,7 @@ abstract interface class RateLimitStorage with EqualsAndHashCode {
   /// print(redis.clientName);
   /// ```
   /// {@endtemplate}
-  Resource getResource();
+  Resource<Object, RateLimitEntry> getResource();
 
   /// {@template rate_limit_storage_is_allowed}
   /// Determines whether a request is permitted under the defined rate limit.

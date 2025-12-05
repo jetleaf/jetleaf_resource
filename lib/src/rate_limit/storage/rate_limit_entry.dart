@@ -174,9 +174,85 @@ abstract interface class RateLimitEntry {
   /// {@endtemplate}
   Duration getWindowDuration();
 
-  /// Resets all entry data to zero, clearing the historical statistics.
+  /// Resets the rate limit entry to the initial state for a new window.
   ///
-  /// This is useful for monitoring windows or when starting a new
-  /// measurement interval.
+  /// Calling `reset()` clears all tracked data associated with the current
+  /// rate limit window. Implementations must:
+  ///
+  /// - Set the internal request count to zero  
+  /// - Update the timestamp to the current time  
+  /// - Compute and assign a new reset time based on [getWindowDuration]  
+  ///
+  /// The method is typically invoked when:
+  /// - The entry has expired (`isExpired()` returns `true`)
+  /// - The storage backend intentionally begins a new tracking interval
+  /// - A rate limit rule is reconfigured or rotated
+  ///
+  /// ### Example
+  /// ```dart
+  /// if (entry.isExpired()) {
+  ///   entry.reset();
+  ///   print('Rate limit window restarted.');
+  /// }
+  /// ```
+  ///
+  /// Implementations **must ensure concurrency safety**, preventing
+  /// inconsistent state during simultaneous reset or increment operations.
   void reset();
+
+  /// Increments the tracked request count by one.
+  ///
+  /// This method is called each time a request is recorded for the
+  /// rate-limited identifier associated with this entry.
+  ///
+  /// Implementations must ensure:
+  /// - Atomic updates in concurrent environments
+  /// - Count integrity even under high throughput
+  ///
+  /// ### Example
+  /// ```dart
+  /// entry.increment();
+  /// print(entry.getCount()); // e.g., 11
+  /// ```
+  void increment();
+
+  /// Decrements the current request count by one, if possible,
+  /// and returns the updated count.
+  ///
+  /// This operation is **best-effort** and is typically used for rollback
+  /// scenarios where a previously counted request must be undone.  
+  ///
+  /// Implementations should:
+  /// - Never reduce the count below zero  
+  /// - Preserve consistency in concurrent environments  
+  ///
+  /// **Returns:**
+  /// - The new count after decrementing.
+  ///
+  /// ### Example
+  /// ```dart
+  /// final newCount = entry.decrement();
+  /// print('Adjusted count: $newCount');
+  /// ```
+  int decrement();
+
+  /// Returns the remaining number of whole seconds before the current
+  /// rate limit window resets.
+  ///
+  /// The returned value must be:
+  /// - Always non-negative (≥ 0)
+  /// - Rounded down to the nearest whole second
+  ///
+  /// This method is commonly used when producing HTTP rate-limit
+  /// metadata such as the `Retry-After` or `X-RateLimit-Reset` headers.
+  ///
+  /// **Returns:**
+  /// - An integer representing the number of seconds until the window expires.
+  ///
+  /// ### Example
+  /// ```dart
+  /// final remaining = entry.secondsUntilReset();
+  /// print('Reset in: $remaining seconds');
+  /// ```
+  int secondsUntilReset();
 }

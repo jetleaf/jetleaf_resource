@@ -1,10 +1,9 @@
+import 'package:jetleaf_core/core.dart';
 import 'package:jetleaf_lang/lang.dart';
 
-import '../../base/resource.dart';
-import '../../base/when_matching.dart';
 import 'cache.dart';
 
-/// {@template concurrent_map_cache_resource}
+/// {@template cache_resource}
 /// A concurrent in-memory cache resource based on [HashMap], implementing
 /// the [Resource] interface.
 ///
@@ -60,10 +59,13 @@ import 'cache.dart';
 /// - [CacheManager] – Higher-level coordinator that utilizes this resource.
 /// - [DefaultCacheStorage] – A concrete cache storage built on this resource.
 /// {@endtemplate}
-final class CacheResource extends HashMap<Object, Cache> implements Resource {
+final class CacheResource extends HashMap<Object, Cache> implements Resource<Object, Cache> {
+  /// {@macro cache_resource}
+  CacheResource();
+
   @override
   bool exists(Object key) => this[key] != null;
 
   @override
-  bool matches(WhenMatching match, Object key) => false;
+  Cache? get(Object key) => this[key];
 }

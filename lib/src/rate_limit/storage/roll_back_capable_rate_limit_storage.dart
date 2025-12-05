@@ -72,12 +72,10 @@ final class RollbackCapableRateLimitStorage extends DefaultRateLimitStorage {
   /// - Exceptions are swallowed and logged at DEBUG level.
   FutureOr<void> rollbackConsume(Object identifier, Duration window) async {
     final windowKey = getWindowKey(window);
+    final mergedKey = mergeKey(identifier, windowKey);
 
     await synchronizedAsync(store, () async {
-      final inner = store[identifier];
-      if (inner == null) return;
-
-      final entry = inner[windowKey];
+      final entry = store[mergedKey];
       if (entry == null) return;
 
       // If expired, nothing to rollback
@@ -85,26 +83,25 @@ final class RollbackCapableRateLimitStorage extends DefaultRateLimitStorage {
 
       try {
         // decrement once (best-effort) and get the new count
-        final concrete = entry;
-        final newCount = concrete.decrement(); // should return the new count (>= 0)
+        final newCount = entry.decrement(); // should return the new count (>= 0)
 
         // adjust metrics only if enabled
         if (metricsEnabled) {
           metrics.decrementAllowed(identifier);
         }
 
-        // if the count reached zero, remove the inner key and cleanup outer map
+        // if the count reached zero, remove the entry
         if (newCount <= 0) {
-          inner.remove(windowKey);
-          if (inner.isEmpty) {
-            store.remove(identifier);
-          }
+          store.remove(mergedKey);
         }
       } catch (e, st) {
         // Best-effort rollback: swallow exceptions but consider logging at DEBUG level.
-
         if (_logger.getIsDebugEnabled()) {
-          _logger.debug('rollbackConsume failed for $identifier: $e', error: e, stacktrace: st);
+          _logger.debug(
+            'rollbackConsume failed for $identifier: $e',
+            error: e,
+            stacktrace: st,
+          );
         }
       }
     });
