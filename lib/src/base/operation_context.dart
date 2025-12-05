@@ -12,12 +12,11 @@
 // 
 // 🔧 Powered by Hapnium — the Dart backend engine 🍃
 
+import 'package:jetleaf_core/core.dart';
 import 'package:jetleaf_core/intercept.dart';
 import 'package:jetleaf_env/env.dart';
 import 'package:jetleaf_lang/lang.dart';
 import 'package:jetleaf_pod/pod.dart';
-
-import 'resource.dart';
 
 /// {@template jetleaf_operation_context}
 /// A central contract in **JetLeaf** representing the operational context
@@ -99,7 +98,8 @@ import 'resource.dart';
 /// - Access through this context should be preferred over static lookups,
 ///   ensuring consistent runtime scoping within the JetLeaf container.
 /// {@endtemplate}
-abstract interface class OperationContext {
+@Generic(OperationContext)
+abstract interface class OperationContext<Key, Value> {
   /// Returns the active [Environment] associated with the current operation.
   ///
   /// The environment provides access to configuration properties,
@@ -156,7 +156,7 @@ abstract interface class OperationContext {
   ///   // process or inspect resource
   /// }
   /// ```
-  List<Resource> getResources();
+  List<Resource<Key, Value>> getResources();
 
   /// Returns the [ConfigurableListablePodFactory] associated with this context.
   ///
@@ -176,15 +176,16 @@ abstract interface class OperationContext {
 /// - Adding resources dynamically
 /// - Overriding existing resources before method invocation
 /// - Managing operation-specific contextual objects
-abstract interface class ConfigurableOperationContext extends OperationContext {
+@Generic(ConfigurableOperationContext)
+abstract interface class ConfigurableOperationContext<Key, Value> extends OperationContext<Key, Value> {
   /// Replaces the current list of resources with [resources].
   ///
   /// This allows the caller to reset or configure all resources at once.
-  void setResources(List<Resource> resources);
+  void setResources(List<Resource<Key, Value>> resources);
 
   /// Adds a single [resource] to the current list of resources.
   ///
   /// Useful for dynamically augmenting the operation context with additional
   /// resources without replacing the existing ones.
-  void addResource(Resource resource);
+  void addResource(Resource<Key, Value> resource);
 }

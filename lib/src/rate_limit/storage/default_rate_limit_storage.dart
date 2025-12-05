@@ -21,7 +21,6 @@ import 'package:jetleaf_lang/lang.dart';
 import 'package:jetleaf_pod/pod.dart';
 import 'package:meta/meta.dart';
 
-import '../../base/resource.dart';
 import 'simple_rate_limit_entry.dart';
 import '../events/rate_limit_allowed_event.dart';
 import '../events/rate_limit_clear_event.dart';
@@ -204,44 +203,27 @@ base class DefaultRateLimitStorage implements RateLimitStorage, ConfigurableRate
     metrics = SimpleRateLimitMetrics(_DEFAULT_RATE_LIMIT_NAME, _zoneId);
   }
 
-  // ---------------------------------------------------------------------------
-  // Helper: Event emitter
-  // ---------------------------------------------------------------------------
-
-  /// Publish a [RateLimitEvent] to the configured [ApplicationContext] if events are enabled.
-  ///
-  /// This internal helper:
-  /// - Guards emission using the [eventEnabled] flag to avoid unnecessary work.
-  /// - Asynchronously publishes the event via [_applicationContext.publishEvent].
-  /// - Keeps event emission decoupled from core logic so that tests can disable
-  ///   or replace event handling without modifying operational code paths.
-  ///
-  /// Note: The method intentionally swallows neither exceptions nor returns a value;
-  /// any exceptions thrown by the application context will propagate to callers.
-  Future<void> _emitEvent(RateLimitEvent event) async {
-    if (eventEnabled) {
-      await _applicationContext.publishEvent(event);
-    }
-  }
-
   @override
   FutureOr<void> clear() async {
     return synchronizedAsync(store, () async {
-      // capture snapshot for events
       final snapshotKeys = store.keys.toList(growable: false);
       final snapshotCounts = <Object, int>{};
+
       for (final key in snapshotKeys) {
-        final inner = store[key]!;
-        var tot = 0;
-        inner.forEach((_, entry) => tot += entry.getCount());
-        snapshotCounts[key] = tot;
+        snapshotCounts[key] = store[key]?.getCount() ?? 0;
       }
 
       store.clear();
 
-      // emit events with per-identifier counts (not total for every event)
-      for (final k in snapshotKeys) {
-        if (eventEnabled) _emitEvent(RateLimitClearEvent(k, _name, snapshotCounts[k] ?? 0, DateTime.now().toUtc()));
+      for (final key in snapshotKeys) {
+        if (eventEnabled) {
+          _emitEvent(RateLimitClearEvent(
+            extractIdentifier(key), 
+            _name, 
+            snapshotCounts[key] ?? 0, 
+            DateTime.now().toUtc()
+          ));
+        }
       }
 
       metrics.reset();
@@ -259,17 +241,6 @@ base class DefaultRateLimitStorage implements RateLimitStorage, ConfigurableRate
   
   @override
   String getPackageName() => PackageNames.RESOURCE;
-
-  /// Generates a window key based on the duration.
-  @protected
-  String getWindowKey(Duration window) => 'window_${window.inSeconds}';
-
-  /// Gets or creates rate limit data for an identifier and window.
-  @protected
-  SimpleRateLimitEntry getOrCreate(Object identifier, String windowKey, Duration window) {
-    final identifierData = store.putIfAbsent(identifier, () => {});
-    return identifierData.putIfAbsent(windowKey, () => SimpleRateLimitEntry(windowKey, window, _zoneId));
-  }
   
   @override
   FutureOr<int> getRemainingRequests(Object identifier, int limit, Duration window) async {
@@ -281,15 +252,11 @@ base class DefaultRateLimitStorage implements RateLimitStorage, ConfigurableRate
   @override
   FutureOr<int> getRequestCount(Object identifier, Duration window) async {
     final windowKey = getWindowKey(window);
+    final key = mergeKey(identifier, windowKey);
 
     return synchronizedAsync(store, () {
-      final entry = store[identifier]?[windowKey];
-      if (entry == null) return 0;
-
-      if (entry.isExpired()) {
-        return 0;
-      }
-
+      final entry = store[key];
+      if (entry == null || entry.isExpired()) return 0;
       return entry.getCount();
     });
   }
@@ -297,64 +264,51 @@ base class DefaultRateLimitStorage implements RateLimitStorage, ConfigurableRate
   @override
   FutureOr<DateTime?> getResetTime(Object identifier, Duration window) async {
     final windowKey = getWindowKey(window);
+    final key = mergeKey(identifier, windowKey);
+
     return synchronizedAsync(store, () {
-      final entry = store[identifier]?[windowKey];
-
-      if (entry == null) {
-        return null;
-      }
-
-      if (entry.isExpired()) {
-        return ZonedDateTime.now(_zoneId).toDateTime();
-      }
-
+      final entry = store[key];
+      if (entry == null) return null;
+      if (entry.isExpired()) return ZonedDateTime.now(_zoneId).toDateTime();
       return entry.getResetTime().toDateTime();
     });
   }
   
   @override
-  Resource getResource() => store;
+  Resource<Object, RateLimitEntry> getResource() => store;
   
   @override
   FutureOr<ZonedDateTime?> getRetryAfter(Object identifier, Duration window) async {
     final windowKey = getWindowKey(window);
+    final key = mergeKey(identifier, windowKey);
 
     return synchronizedAsync(store, () {
-      final entry = store[identifier]?[windowKey];
-      if (entry == null) {
-        return null;
-      }
-
-      if (!entry.isExpired()) {
-        return entry.getResetTime();
-      }
-
-      return null;
+      final entry = store[key];
+      if (entry == null || entry.isExpired()) return null;
+      return entry.getResetTime();
     });
   }
   
   @override
   FutureOr<void> invalidate() async {
     return synchronizedAsync(store, () async {
-      final toRemoveOuter = <Object, List<String>>{};
-      store.forEach((outer, inner) {
-        final expired = <String>[];
-        inner.forEach((innerKey, entry) {
-          if (entry.isExpired()) expired.add(innerKey);
-        });
-        if (expired.isNotEmpty) toRemoveOuter[outer] = expired;
+      final toRemove = <Object>[];
+
+      store.forEach((key, entry) {
+        if (entry.isExpired()) toRemove.add(key);
       });
 
-      for (final outer in toRemoveOuter.keys) {
-        final innerKeys = toRemoveOuter[outer]!;
-        for (final innerKey in innerKeys) {
-          final removed = store[outer]?.remove(innerKey);
-          if (removed != null) {
-            if (metricsEnabled) metrics.recordReset(outer);
-            if (eventEnabled) _emitEvent(RateLimitResetEvent(outer, _name, removed.getResetTime().toDateTime()));
+      for (final key in toRemove) {
+        final removed = store.remove(key);
+        if (removed != null) {
+          if (metricsEnabled) {
+            metrics.recordReset(extractIdentifier(key));
+          }
+
+          if (eventEnabled) {
+            _emitEvent(RateLimitResetEvent(extractIdentifier(key), _name, removed.getResetTime().toDateTime()));
           }
         }
-        if (store[outer]?.isEmpty ?? false) store.remove(outer);
       }
     });
   }
@@ -478,7 +432,12 @@ base class DefaultRateLimitStorage implements RateLimitStorage, ConfigurableRate
   
   @override
   FutureOr<void> reset(Object identifier) async {
-    return synchronizedAsync(store, () async => store.remove(identifier));
+    return synchronizedAsync(store, () async {
+      final keysToRemove = store.keys.where((k) => extractIdentifier(k) == identifier).toList();
+      for (final key in keysToRemove) {
+        store.remove(key);
+      }
+    });
   }
   
   @override
@@ -508,6 +467,108 @@ base class DefaultRateLimitStorage implements RateLimitStorage, ConfigurableRate
   void setZoneId(String zone) {
     _zoneId = ZoneId.of(zone);
     metrics.zoneId = _zoneId;
+  }
+
+  /// Publish a [RateLimitEvent] to the configured [ApplicationContext] if events are enabled.
+  ///
+  /// This internal helper:
+  /// - Guards emission using the [eventEnabled] flag to avoid unnecessary work.
+  /// - Asynchronously publishes the event via [_applicationContext.publishEvent].
+  /// - Keeps event emission decoupled from core logic so that tests can disable
+  ///   or replace event handling without modifying operational code paths.
+  ///
+  /// Note: The method intentionally swallows neither exceptions nor returns a value;
+  /// any exceptions thrown by the application context will propagate to callers.
+  Future<void> _emitEvent(RateLimitEvent event) async {
+    if (eventEnabled) {
+      await _applicationContext.publishEvent(event);
+    }
+  }
+
+  /// Generates a unique **window key** string for a given duration, based on the
+  /// current timestamp.
+  ///
+  /// This key can be used for bucketing, rate-limiting, or time-windowed analytics.
+  ///
+  /// The resulting key encodes:
+  /// - The window duration in seconds (`window.inSeconds`)
+  /// - The starting boundary of the window, adjusted to the appropriate
+  ///   granularity (second, minute, or hour) based on the duration.
+  ///
+  /// Example:
+  /// ```dart
+  /// final key = getWindowKey(Duration(minutes: 5));
+  /// print(key); // "300s|ZoneX"
+  /// ```
+  @protected
+  String getWindowKey(Duration window) {
+    final now = ZonedDateTime.now();
+    final windowStart = _calculateWindowStart(now, window);
+    return "${window.inSeconds}s|${windowStart.zone}";
+  }
+
+  /// Calculates the **start of the current window** based on the given duration
+  /// and current timestamp.
+  ///
+  /// Rounds the time to:
+  /// - Second, if window ≤ 1 minute  
+  /// - Minute, if window ≤ 1 hour  
+  /// - Hour, if window > 1 hour
+  ///
+  /// This ensures all events within the same logical window map to the same start time.
+  ///
+  /// Returns a [ZonedDateTime] representing the start of the current window.
+  ZonedDateTime _calculateWindowStart(ZonedDateTime now, Duration window) {
+    DateTime dateTime;
+
+    if (window.inSeconds <= 60) {
+      dateTime = DateTime(now.year, now.month, now.day, now.hour, now.minute, now.second);
+    } else if (window.inSeconds <= 3600) {
+      dateTime = DateTime(now.year, now.month, now.day, now.hour, now.minute);
+    } else {
+      dateTime = DateTime(now.year, now.month, now.day, now.hour);
+    }
+
+    return ZonedDateTime.fromDateTime(dateTime);
+  }
+
+  /// Retrieves an existing [RateLimitEntry] for the given [identifier] and
+  /// [windowKey], or creates a new one if none exists.
+  ///
+  /// - `identifier` — The object being rate-limited or tracked.
+  /// - `windowKey` — The time window bucket key generated via [getWindowKey].
+  /// - `window` — Duration of the window for new entries.
+  ///
+  /// Returns the corresponding [RateLimitEntry] from the store.
+  @protected
+  RateLimitEntry getOrCreate(Object identifier, String windowKey, Duration window) {
+    final key = mergeKey(identifier, windowKey);
+    return store.putIfAbsent(key, () => SimpleRateLimitEntry(windowKey, window, _zoneId));
+  }
+
+  /// Combines an [identifier] and [windowKey] into a single string key for storage.
+  ///
+  /// The resulting key format is:
+  /// ```
+  /// "<identifier>::<windowKey>"
+  /// ```
+  /// This is used internally to index rate limit entries in the store.
+  @protected
+  String mergeKey(Object identifier, String windowKey) {
+    return '$identifier::$windowKey';
+  }
+
+  /// Extracts the original identifier from a merged key created by [mergeKey].
+  ///
+  /// If the merged key is a string, splits by `::` and returns the first component.
+  /// If the merged key is not a string, returns it as-is.
+  @protected
+  Object extractIdentifier(Object mergedKey) {
+    if (mergedKey is String) {
+      final split = mergedKey.split('::');
+      return split.first;
+    }
+    return mergedKey;
   }
 
   /// {@macro tunable_rate_limit_storage}

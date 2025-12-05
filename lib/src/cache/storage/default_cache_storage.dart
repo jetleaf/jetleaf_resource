@@ -20,7 +20,6 @@ import 'package:jetleaf_lang/lang.dart';
 import 'package:jetleaf_pod/pod.dart';
 
 import '../../base/exceptions.dart';
-import '../../base/resource.dart';
 import '../../config/cache_configuration.dart';
 import '../cache_configurer.dart';
 import '../event/cache_clear_event.dart';
@@ -506,7 +505,7 @@ final class DefaultCacheStorage implements CacheStorage, ConfigurableCacheStorag
   String getName() => _name;
 
   @override
-  Resource getResource() => _store;
+  Resource<Object, Cache> getResource() => _store;
 
   /// Retrieves the [ZoneId] used by this cache for time-based computations.
   ///

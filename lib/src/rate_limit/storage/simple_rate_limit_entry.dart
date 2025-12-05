@@ -89,20 +89,19 @@ final class SimpleRateLimitEntry with EqualsAndHashCode implements RateLimitEntr
     _resetTime = now.plus(_windowDuration);
   }
 
-  /// For increasing the count size
+  @override
   void increment() {
     _count++;
   }
 
-   /// Return number of seconds until reset (>= 0).
+  @override
   int secondsUntilReset() {
     final diff = _resetTime.toDateTime().difference(ZonedDateTime.now(_zoneId).toDateTime()).inSeconds;
     return diff < 0 ? 0 : diff;
   }
 
 
-  /// Decrement the count by one if > 0; return the new count.
-  /// This is best-effort (used for rollback).
+  @override
   int decrement() {
     if (_count > 0) {
       _count--;

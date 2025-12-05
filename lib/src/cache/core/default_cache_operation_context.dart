@@ -2,17 +2,18 @@ import 'dart:async';
 import 'dart:collection';
 
 import 'package:jetleaf_core/context.dart';
+import 'package:jetleaf_core/core.dart';
 import 'package:jetleaf_core/intercept.dart';
 import 'package:jetleaf_env/env.dart';
 import 'package:jetleaf_lang/lang.dart';
 import 'package:jetleaf_pod/pod.dart';
 
-import '../../base/resource.dart';
 import '../../key_generator/key_generator.dart';
 import '../annotations.dart';
 import '../error_handler/cache_error_handler.dart';
 import '../manager/cache_manager.dart';
 import '../resolver/cache_resolver.dart';
+import '../storage/cache.dart';
 import '../storage/cache_storage.dart';
 import 'cache_operation_context.dart';
 
@@ -140,7 +141,7 @@ final class DefaultCacheOperationContext<T> implements CacheOperationContext<T> 
   /// for method execution or runtime operations.
   ///
   /// Initialized as an empty list by default.
-  List<Resource> _resources = [];
+  List<Resource<Object, Cache>> _resources = [];
 
   /// Creates a new cache operation context with all required collaborators.
   /// 
@@ -210,17 +211,17 @@ final class DefaultCacheOperationContext<T> implements CacheOperationContext<T> 
   MethodArgument? getArgument() => _invocation.getArgument();
 
   @override
-  void setResources(List<Resource> resources) {
+  void setResources(List<Resource<Object, Cache>> resources) {
     _resources = resources;
   }
 
   @override
-  void addResource(Resource resource) {
+  void addResource(Resource<Object, Cache> resource) {
     _resources.add(resource);
   }
 
   @override
-  List<Resource> getResources() => UnmodifiableListView(_resources);
+  List<Resource<Object, Cache>> getResources() => UnmodifiableListView(_resources);
 
   @override
   Object? getResult() => _result;

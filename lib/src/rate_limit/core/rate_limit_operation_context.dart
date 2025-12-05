@@ -5,6 +5,7 @@ import 'package:jetleaf_lang/lang.dart';
 
 import '../../base/operation_context.dart';
 import '../resolver/rate_limit_resolver.dart';
+import '../storage/rate_limit_entry.dart';
 
 /// {@template rate_limit_operation_context}
 /// Context object representing the state and behavior of a rate-limited
@@ -20,7 +21,7 @@ import '../resolver/rate_limit_resolver.dart';
 /// - Accessing or updating rate limit metadata.
 /// {@endtemplate}
 @Generic(RateLimitOperationContext)
-abstract interface class RateLimitOperationContext<T> implements ConfigurableOperationContext, RateLimitResolver {
+abstract interface class RateLimitOperationContext<T> implements ConfigurableOperationContext<Object, RateLimitEntry>, RateLimitResolver {
   /// Generates a unique key for the current rate-limited entity.
   ///
   /// This is typically based on the target object, method signature,
