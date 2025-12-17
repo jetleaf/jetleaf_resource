@@ -1,4 +1,3 @@
-import 'package:jetleaf_core/intercept.dart';
 import 'package:jetleaf_lang/lang.dart';
 
 /// {@template jet_cache_simple_key}
@@ -58,7 +57,7 @@ final class SimpleKey with EqualsAndHashCode {
   static final SimpleKey EMPTY = SimpleKey();
 
   /// The method argument associated with this key, or `null` if empty.
-  final MethodArgument? _argument;
+  final ExecutableArgument? _argument;
 
   /// {@macro jet_cache_simple_key}
   const SimpleKey([this._argument]);

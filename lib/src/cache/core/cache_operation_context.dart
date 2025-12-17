@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:jetleaf_core/intercept.dart';
+import 'package:jetleaf_lang/lang.dart';
 
 import '../../base/operation_context.dart';
 import '../error_handler/cache_error_handler.dart';
@@ -69,54 +70,97 @@ import '../storage/cache.dart';
 /// - [CacheErrorHandler]
 /// - [MethodInvocation]
 /// {@endtemplate}
+@Generic(CacheOperationContext)
 abstract interface class CacheOperationContext<T> implements ConfigurableOperationContext<Object, Cache>, CacheResolver, CacheErrorHandler {
   /// Generates a unique cache key for the current method invocation.
   ///
-  /// This key is typically based on the target object, method signature,
-  /// and argument values (see [KeyGenerator]).
-  /// 
-  /// - param [preferredKeyGeneratorName] is for any custom generator the developer prefers to use
+  /// The generated key uniquely identifies the invocation and is typically
+  /// derived from:
+  /// - The target object instance
+  /// - The invoked method signature
+  /// - The resolved argument values
+  ///
+  /// The actual key generation strategy is delegated to a [KeyGenerator].
+  ///
+  /// If [preferredKeyGeneratorName] is provided, the cache system will attempt
+  /// to resolve and use a custom key generator with that name. If no matching
+  /// generator is found, the default generator is used.
+  ///
+  /// Returns either:
+  /// - A synchronously generated key, or
+  /// - A [Future] that completes with the generated key
+  ///
+  /// The returned key must be stable and suitable for use as a cache lookup
+  /// identifier.
   FutureOr<Object> generateKey([String? preferredKeyGeneratorName]);
 
-  /// Records a retrieved value from the cache.
+  /// Records a value retrieved from the cache for the current invocation.
   ///
-  /// This marks the current invocation as having a cached result,
-  /// allowing subsequent checks through [hasCachedResult].
+  /// Calling this method marks the context as having successfully resolved
+  /// a cached result. This state is observable via [hasCachedResult].
+  ///
+  /// The provided [result] may be `null` if the cache explicitly stores
+  /// `null` values.
   void setCachedResult(Object? result);
 
-  /// Marks the context as a cache miss.
+  /// Marks the current invocation as a cache miss.
   ///
-  /// Indicates that no cached value was found for the generated key.
+  /// This indicates that no entry was found in the cache for the generated key.
+  /// Once marked, [isCacheMiss] will return `true`.
+  ///
+  /// This method does not affect the invocation result produced by the
+  /// underlying method.
   void setCacheMiss();
 
   /// Returns `true` if the current invocation resulted in a cache miss.
+  ///
+  /// A cache miss indicates that no cached value was available for the
+  /// generated key.
   bool isCacheMiss();
 
-  /// Returns `true` if the target method produced a result.
+  /// Returns `true` if the target method invocation has produced a result.
+  ///
+  /// This reflects the presence of a computed or assigned result value,
+  /// independent of whether it originated from the cache or from method
+  /// execution.
   bool hasResult();
 
-  /// Retrieves the actual result from the target method invocation.
+  /// Retrieves the result produced by the target method invocation.
   ///
-  /// Returns `null` if no result is yet available.
+  /// Returns the method result if available, or `null` if the method has not
+  /// yet been executed or no result has been assigned.
   Object? getResult();
 
-  /// Sets the result produced by the target method.
+  /// Sets the result produced by the target method invocation.
   ///
-  /// This allows caching operations (e.g., [CachePutOperation]) to store
-  /// the method result into cache layers.
+  /// This method is typically called after successful execution of the
+  /// underlying method. The assigned result may later be stored in the
+  /// cache by cache put or update operations.
+  ///
+  /// The [result] may be `null` if the method legitimately returns `null`.
   void setResult(T? result);
 
-  /// Returns `true` if a cached result was found.
+  /// Returns `true` if a cached result has been successfully resolved.
+  ///
+  /// A cached result is considered present if [setCachedResult] has been
+  /// called for the current invocation context.
   bool hasCachedResult();
 
-  /// Retrieves the cached result associated with the current context.
+  /// Retrieves the cached result associated with the current invocation.
   ///
-  /// Returns `null` if no cached result is available.
+  /// Returns the cached value if present, or `null` if no cached result
+  /// has been recorded.
   Object? getCachedResult();
 
   /// Returns the reflective method invocation associated with this context.
   ///
-  /// Contains method metadata and invocation state such as arguments,
-  /// target instance, and return value handling.
+  /// The returned [MethodInvocation] provides access to:
+  /// - The target instance
+  /// - Method metadata
+  /// - Invocation arguments
+  /// - Result handling state
+  ///
+  /// This invocation object is shared across cache resolution,
+  /// error handling, and execution pipelines.
   MethodInvocation<T> getMethodInvocation();
 }

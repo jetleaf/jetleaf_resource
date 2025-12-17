@@ -12,7 +12,6 @@
 // 
 // 🔧 Powered by Hapnium — the Dart backend engine 🍃
 
-import 'package:jetleaf_core/intercept.dart';
 import 'package:jetleaf_lang/lang.dart';
 
 /// {@template jetleaf_key_generator}
@@ -110,7 +109,7 @@ abstract interface class KeyGenerator with EqualsAndHashCode {
   /// - [target] — The object instance on which the method is invoked.
   /// - [method] — The reflective representation of the invoked method.
   /// - [argument] — The runtime arguments of the method call (may be `null`).
-  Object generate(Object target, Method method, MethodArgument? argument);
+  Object generate(Object target, Method method, ExecutableArgument? argument);
 }
 
 /// {@template jetleaf_conditional_key_generator}

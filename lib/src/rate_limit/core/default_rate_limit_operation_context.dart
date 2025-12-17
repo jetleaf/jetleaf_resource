@@ -195,7 +195,7 @@ final class DefaultRateLimitOperationContext<T> implements RateLimitOperationCon
   Object getTarget() => _invocation.getTarget();
 
   @override
-  MethodArgument? getArgument() => _invocation.getArgument();
+  ExecutableArgument? getArgument() => _invocation.getArgument();
 
   @override
   void setResources(List<Resource<Object, RateLimitEntry>> resources) {
