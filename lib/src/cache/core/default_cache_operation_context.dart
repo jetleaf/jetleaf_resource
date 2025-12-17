@@ -83,6 +83,7 @@ import 'cache_operation_context.dart';
 /// - [CacheErrorHandler]
 /// - [PodExpressionResolver]
 /// {@endtemplate}
+@Generic(DefaultCacheOperationContext)
 final class DefaultCacheOperationContext<T> implements CacheOperationContext<T> {
   /// The reflective method invocation associated with this cache context.
   late MethodInvocation<T> _invocation;
@@ -208,7 +209,7 @@ final class DefaultCacheOperationContext<T> implements CacheOperationContext<T> 
   Object getTarget() => _invocation.getTarget();
 
   @override
-  MethodArgument? getArgument() => _invocation.getArgument();
+  ExecutableArgument? getArgument() => _invocation.getArgument();
 
   @override
   void setResources(List<Resource<Object, Cache>> resources) {

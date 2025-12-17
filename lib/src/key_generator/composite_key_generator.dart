@@ -15,7 +15,6 @@
 import 'dart:async';
 
 import 'package:jetleaf_core/core.dart';
-import 'package:jetleaf_core/intercept.dart';
 import 'package:jetleaf_lang/lang.dart';
 import 'package:jetleaf_pod/pod.dart';
 
@@ -206,7 +205,7 @@ final class CompositeKeyGenerator implements KeyGenerator, InitializingPod, PodF
   List<KeyGenerator> _getKeyGenerators() => AnnotationAwareOrderComparator.getOrderedItems(_cacheKeyGenerators);
 
   @override
-  Object generate(Object target, Method method, MethodArgument? argument) {
+  Object generate(Object target, Method method, ExecutableArgument? argument) {
     final generators = _getKeyGenerators();
     final simpleGenerator = SimpleKeyGenerator();
 

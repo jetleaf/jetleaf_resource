@@ -12,7 +12,6 @@
 // 
 // 🔧 Powered by Hapnium — the Dart backend engine 🍃
 
-import 'package:jetleaf_core/intercept.dart';
 import 'package:jetleaf_lang/lang.dart';
 
 import 'key_generator.dart';
@@ -75,7 +74,7 @@ final class SimpleKeyGenerator implements KeyGenerator {
   SimpleKeyGenerator();
 
   @override
-  Object generate(Object target, Method method, MethodArgument? argument) {
+  Object generate(Object target, Method method, ExecutableArgument? argument) {
     // Case 1: No arguments — use canonical empty key.
     if (argument == null || (argument.getNamedArguments().isEmpty && argument.getPositionalArguments().isEmpty)) {
       return SimpleKey.EMPTY;

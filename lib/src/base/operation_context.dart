@@ -13,7 +13,6 @@
 // 🔧 Powered by Hapnium — the Dart backend engine 🍃
 
 import 'package:jetleaf_core/core.dart';
-import 'package:jetleaf_core/intercept.dart';
 import 'package:jetleaf_env/env.dart';
 import 'package:jetleaf_lang/lang.dart';
 import 'package:jetleaf_pod/pod.dart';
@@ -120,7 +119,7 @@ abstract interface class OperationContext<Key, Value> {
   Method getMethod();
 
   /// Represents the arguments passed to a method invocation within JetLeaf’s interception system.
-  MethodArgument? getArgument();
+  ExecutableArgument? getArgument();
 
   /// Returns the target object associated with the current operation or handler.
   ///
