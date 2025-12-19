@@ -6,9 +6,18 @@ This project follows a simple, human-readable changelog format inspired by
 
 ---
 
+## [1.1.0]
+
+### Changed
+
+- Updated dependencies: `jetleaf_lang`, `jetleaf_env`, `jetleaf_core`, `jetleaf_logging`, `jetleaf_pod`.
+
+---
+
 ## [1.0.9]
 
 ### Changed
+
 - Updated dependencies: `jetleaf_lang`, `jetleaf_env`, `jetleaf_core`, `jetleaf_logging`, `jetleaf_pod`.
 
 ---
@@ -16,6 +25,7 @@ This project follows a simple, human-readable changelog format inspired by
 ## [1.0.8]
 
 ### Changed
+
 - Updated dependencies: `jetleaf_lang`, `jetleaf_env`, `jetleaf_core`, `jetleaf_logging`, `jetleaf_pod`.
 
 ---
@@ -23,6 +33,7 @@ This project follows a simple, human-readable changelog format inspired by
 ## [1.0.7]
 
 ### Changed
+
 - Updated dependencies: `jetleaf_lang`, `jetleaf_env`, `jetleaf_core`, `jetleaf_logging`, `jetleaf_pod`.
 
 ---
@@ -30,6 +41,7 @@ This project follows a simple, human-readable changelog format inspired by
 ## [1.0.6]
 
 ### Changed
+
 - Updated dependencies: `jetleaf_env`, `jetleaf_core`.
 
 ---
@@ -37,6 +49,7 @@ This project follows a simple, human-readable changelog format inspired by
 ## [1.0.5]
 
 ### Changed
+
 - Updated dependencies.
 
 ---
@@ -44,6 +57,7 @@ This project follows a simple, human-readable changelog format inspired by
 ## [1.0.4]
 
 ### Changed
+
 - Updated dependencies.
 
 ---
@@ -51,6 +65,7 @@ This project follows a simple, human-readable changelog format inspired by
 ## [1.0.3]
 
 ### Changed
+
 - Updated dependencies.
 
 ---
@@ -58,6 +73,7 @@ This project follows a simple, human-readable changelog format inspired by
 ## [1.0.2]
 
 ### Changed
+
 - Updated dependencies.
 
 ---
@@ -65,6 +81,7 @@ This project follows a simple, human-readable changelog format inspired by
 ## [1.0.1]
 
 ### Changed
+
 - Updated dependencies.
 
 ---
@@ -74,6 +91,7 @@ This project follows a simple, human-readable changelog format inspired by
 Patch release focused on dependency alignment and small improvements.
 
 ### Changed
+
 - Updated package dependencies and aligned with other JetLeaf modules.
 
 ---
@@ -83,6 +101,7 @@ Patch release focused on dependency alignment and small improvements.
 Initial release.
 
 ### Added
+
 - Caching utilities, rate-limiting strategies, key generators, and pod integration for resources.
 - Multiple caching strategies and conditional caching helpers.
 
@@ -90,10 +109,10 @@ Initial release.
 
 ## Links
 
-- Homepage: https://jetleaf.hapnium.com  
-- Documentation: https://jetleaf.hapnium.com/docs/resource  
-- Repository: https://github.com/jetleaf/jetleaf_resource  
-- Issues: https://github.com/jetleaf/jetleaf_resource/issues  
+- Homepage: <https://jetleaf.hapnium.com>  
+- Documentation: <https://jetleaf.hapnium.com/docs/resource>  
+- Repository: <https://github.com/jetleaf/jetleaf_resource>  
+- Issues: <https://github.com/jetleaf/jetleaf_resource/issues>  
 
 ---
 
