@@ -1,6 +1,6 @@
 name: jetleaf_resource
 description: Resource management module for JetLeaf — handles caching and rate limiting efficiently.
-version: 1.1.2
+version: 1.1.3
 
 homepage: https://jetleaf.hapnium.com
 repository: https://github.com/jetleaf/jetleaf_resource
@@ -28,8 +28,8 @@ dependencies:
   meta: ^1.17.0
   jetleaf_lang: ^1.1.2
   jetleaf_logging: ^1.1.2
-  jetleaf_pod: ^1.1.2
-  jetleaf_core: ^1.1.3
+  jetleaf_pod: ^1.1.3
+  jetleaf_core: ^1.1.4
   jetleaf_env: ^1.1.3
 
 dev_dependencies:
